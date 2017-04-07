@@ -9,10 +9,7 @@
   "keywords": ["xtu", "api"],
   "author": "magicalLu",
   "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/ww522413622/apilu.git"
-  },
+  "private": true,
   "dependencies": {
     "config-lite": "^1.6.0"
   },
