@@ -1,12 +1,22 @@
 {
-  "name": "apiLu",
+  "name": "apilu",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "为开发者提供湘大相关的数据支持",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": ["xtu", "api"],
+  "author": "magicalLu",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ww522413622/apilu.git"
+  },
+  "dependencies": {
+    "config-lite": "^1.6.0"
+  },
+  "devDependencies": {
+    "supervisor": "^0.12.0"
+  }
 }
