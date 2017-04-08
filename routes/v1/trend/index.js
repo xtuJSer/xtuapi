@@ -8,8 +8,11 @@ router.get('/trend', (req, res) => {
 // 校园动态
 router.get('/trend/news', require('./news'))
 router.get('/trend/news/:count', require('./news'))
+
 router.get('/trend/notice', require('./notice'))
 router.get('/trend/notice/:count', require('./notice'))
+
 router.get('/trend/media', require('./media'))
+router.get('/trend/media/:count', require('./media'))
 
 module.exports = router

@@ -4,6 +4,7 @@ const charset = require('superagent-charset')
 charset(request)
 const cheerio = require('cheerio')
 const eventproxy = require('eventproxy')
+const config = require('../config/default')
 
 module.exports = function (req, res, target, html) {
   console.log(`正在获取 ${target} 下的数据`)
@@ -11,21 +12,36 @@ module.exports = function (req, res, target, html) {
       list = [],
       $cur = $('.list a')
 
-  // 获取新闻页下的数据
+  // 处理在“媒体湘大”列表类名不统一的问题
+  target === 'media' && ($cur = $('.newsgridlist a'))
+
+  // 获取 list 下的数据
   for (let i = 0, len = $cur.length; i < len; i++) {
     let temp = {},
         $a = $($cur[i])
 
-    temp.href = $a.attr('href')
+    // console.log(config.xtuUrl.trend.host + $a.attr('href'))
+    temp.href = $a.attr('href').indexOf('http') > -1
+      ? $a.attr('href')
+      : config.xtuUrl.trend.host + $a.attr('href')
+
+    // 处理在“媒体湘大”列表域名不统一的问题
+    target === 'media' && (temp.href = temp.href.replace(/w{3}/g, 'news'))
+
     temp.title = $a.attr('title')
+
     temp.time = $a.find('span').text()
+    target === 'media' && (temp.time = $('li').eq(i).text().trim().replace(/\[(\d){4}\/(\d){2}\/(\d){2}\]/g, function (match, g1, g2, g3) {
+      return
+    }))
     list.push(temp)
   }
   console.log(list)
 
-  // 并发获取所有详情页的信息
   let ep = new eventproxy(),
       count = req.params.count || list.length
+
+  // 并发获取所有详情页的信息
   ep.after('getDetail', count, function (details) {
     details = details.map(detail => {
       $ = cheerio.load(detail.html)
@@ -34,10 +50,16 @@ module.exports = function (req, res, target, html) {
       temp.time = detail.el.time
       temp.content = []
 
-      let $content = $('.newsshow .content'),
-          // imgs = $content.find('img'),
-          ps = $content.find('p')
+      let $content
+      if (target === 'news' || target === 'media') {
+        $content = $('.content')
+      } else if (target === 'notice' || target === 'cathedra') {
+        $content = $('.con-tent-box')
+      } else {
+        $content = $('.DCT_viewcontent')
+      }
 
+      let ps = $content.find('p')
       for (let i = 0, len = ps.length; i < len; i++) {
         let $p = $(ps[i])
         temp.content.push($p.text().trim())
@@ -46,6 +68,8 @@ module.exports = function (req, res, target, html) {
     })
     res.status(200).send(details)
   })
+
+  console.log(list)
 
   list.forEach(el => {
     request
@@ -57,4 +81,5 @@ module.exports = function (req, res, target, html) {
         ep.emit('getDetail', { html: sres.text, el })
       })
   })
+
 }
