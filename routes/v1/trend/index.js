@@ -9,6 +9,7 @@ router.get('/trend', (req, res) => {
 router.get('/trend/news', require('./news'))
 router.get('/trend/news/:count', require('./news'))
 router.get('/trend/notice', require('./notice'))
+router.get('/trend/notice/:count', require('./notice'))
 router.get('/trend/media', require('./media'))
 
 module.exports = router

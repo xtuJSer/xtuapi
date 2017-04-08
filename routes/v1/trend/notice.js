@@ -1,3 +1,5 @@
+const trendCrawler = require('../../../crawlers/trendCrawler')
+
 module.exports = function (req, res) {
-  res.status(200).send('notice')
+  trendCrawler(req, res, 'notice')
 }
