@@ -1,7 +1,7 @@
 module.exports = {
   port: 3000,
   session: {
-    secret: 'lululululu',
+    secret: 'magicalLu',
     key: 'apiLu',
     maxAge: 1000 * 60 * 60 * 24 * 30
   },

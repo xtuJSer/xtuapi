@@ -4,14 +4,20 @@
   "description": "为开发者提供湘大相关的数据支持",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "NODE_ENV=dev supervisor --harmony app.js",
+    "start": "NODE_NEV=prod pm2 start app.js --node-args='harmony' --name 'apiLu'"
   },
-  "keywords": ["xtu", "api"],
+  "keywords": [
+    "xtu",
+    "api"
+  ],
   "author": "magicalLu",
   "license": "ISC",
   "private": true,
   "dependencies": {
-    "config-lite": "^1.6.0"
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.2",
+    "express-session": "^1.15.2"
   },
   "devDependencies": {
     "supervisor": "^0.12.0"
