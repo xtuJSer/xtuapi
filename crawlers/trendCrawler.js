@@ -2,7 +2,7 @@ const request = require('superagent')
 const charset = require('superagent-charset')
 charset(request)
 
-const trendGetOthers = require('./trendGetOthers')
+const trendGetDetails = require('./trendGetDetails')
 const trend = require('../config/default').xtuUrl.trend
 
 module.exports = function (req, res, target) {
@@ -20,6 +20,6 @@ module.exports = function (req, res, target) {
     .charset(charset)
     .end((err, sres) => {
       if (err) { throw new Error('获取动态失败') }
-      trendGetOthers(req, res, target, sres.text)
+      trendGetDetails(req, res, target, sres.text)
     })
 }

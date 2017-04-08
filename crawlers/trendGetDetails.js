@@ -52,7 +52,6 @@ module.exports = function (req, res, target, html) {
       temp.title = detail.el.title
       temp.time = detail.el.time
       temp.href = detail.el.href
-      // temp.content = []
 
       let $content
       if (target === 'news' || target === 'media') {
@@ -61,11 +60,6 @@ module.exports = function (req, res, target, html) {
         $content = $('.con-tent-box')
       }
 
-      // let ps = $content.find('p')
-      // for (let i = 0, len = ps.length; i < len; i++) {
-      //   let $p = $(ps[i])
-      //   temp.content.push($p.text().trim())
-      // }
       temp.content = $content.text().split(/\s{2,}(?!\s*话)/)
       temp.content.shift()
       temp.content.pop()
