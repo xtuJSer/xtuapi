@@ -70,7 +70,7 @@ module.exports = function (req, res, target, html) {
       //   let $p = $(ps[i])
       //   temp.content.push($p.text().trim())
       // }
-      temp.content = $content.text().split(/\s{2,}/)
+      temp.content = $content.text().split(/\s{2,}(?!\s*话)/)
       temp.content.shift()
       temp.content.pop()
       return temp
