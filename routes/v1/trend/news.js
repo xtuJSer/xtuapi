@@ -33,7 +33,6 @@ module.exports = function (req, res) {
         let temp = {}
         temp.title = detail.el.title
         temp.time = detail.el.time
-        temp.click = $('.newsshow .date').text().split('<script/>')[1]
         temp.content = []
 
         let $content = $('.newsshow .content'),
