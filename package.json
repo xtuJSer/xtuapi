@@ -23,7 +23,8 @@
     "express": "^4.15.2",
     "express-session": "^1.15.2",
     "mongoose": "^4.9.3",
-    "superagent": "^3.5.2"
+    "superagent": "^3.5.2",
+    "superagent-charset": "^1.1.1"
   },
   "devDependencies": {
     "supervisor": "^0.12.0"
