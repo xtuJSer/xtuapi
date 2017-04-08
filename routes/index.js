@@ -12,5 +12,5 @@ module.exports = function (app) {
   })
 
   // 查询湘大校园相关数据
-  app.use('/xtu/v1', require('./xtu'))
+  app.use('/v1', require('./trend'))
 }
