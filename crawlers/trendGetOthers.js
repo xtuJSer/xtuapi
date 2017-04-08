@@ -10,7 +10,12 @@ module.exports = function (req, res, target, html) {
   console.log(`正在获取 ${target} 下的数据`)
   let $ = cheerio.load(html),
       list = [],
-      $cur = $('.list a')
+      $cur = $('.list a'),
+      charset = 'utf8'
+
+  if (target === 'news' || target === 'media') {
+    charset = 'gbk'
+  }
 
   // 处理在“媒体湘大”列表类名不统一的问题
   target === 'media' && ($cur = $('.newsgridlist a'))
@@ -48,7 +53,8 @@ module.exports = function (req, res, target, html) {
       let temp = {}
       temp.title = detail.el.title
       temp.time = detail.el.time
-      temp.content = []
+      temp.href = detail.el.href
+      // temp.content = []
 
       let $content
       if (target === 'news' || target === 'media') {
@@ -59,11 +65,14 @@ module.exports = function (req, res, target, html) {
         $content = $('.DCT_viewcontent')
       }
 
-      let ps = $content.find('p')
-      for (let i = 0, len = ps.length; i < len; i++) {
-        let $p = $(ps[i])
-        temp.content.push($p.text().trim())
-      }
+      // let ps = $content.find('p')
+      // for (let i = 0, len = ps.length; i < len; i++) {
+      //   let $p = $(ps[i])
+      //   temp.content.push($p.text().trim())
+      // }
+      temp.content = $content.text().split(/\s{2,}/)
+      temp.content.shift()
+      temp.content.pop()
       return temp
     })
     res.status(200).send(details)
@@ -74,7 +83,7 @@ module.exports = function (req, res, target, html) {
   list.forEach(el => {
     request
       .get(el.href)
-      .charset('gbk')
+      .charset(charset)
       .end((err, sres) => {
         if (err) { throw new Error(`获取 ${target} 详情失败`)}
         console.log(`成功获取 ${el.href}`)
