@@ -28,16 +28,17 @@
 
 GET
 ```
-  获取用户成绩: http://api.magicallu.cn/xtu/v1/score?year=2016&half=1
-  获取用户专业/班级名次: http://api.magicallu.cn/xtu/v1/rate
+  获取校内新闻: http://xtuapi.magicallu.cn/v1/trend/news/:count
+  获取用户成绩: http://xtuapi.magicallu.cn/v1/score?year=2016&half=1
+  获取用户专业/班级名次: http://xtuapi.magicallu.cn/xtu/v1/rate
 ```
 POST
 ```
-  模拟教务系统: http://api.magicallu.cn/xtu/v1/login
+  模拟教务系统: http://xtuapi.magicallu.cn/v1/login
 ```
 DELETE
 ```
-  退出登陆: http://api.magicallu.cn/xtu/v1/login
+  退出登陆: http://xtuapi.magicallu.cn/v1/login
 ```
 
 ## 使用方法

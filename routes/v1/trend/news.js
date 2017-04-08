@@ -9,11 +9,10 @@ const trendCrawler = require('../../../crawlers/trendCrawler')
 
 module.exports = function (req, res) {
   trendCrawler('news', function (html) {
-    // fs.writeFile(__dirname + '/news.html', data)
-
     let $ = cheerio.load(html),
         newsList = [],
         $cur = $('.list a')
+
     // 获取新闻页下的数据
     for (let i = 0, len = $cur.length; i < len; i++) {
       let temp = {},
@@ -25,6 +24,7 @@ module.exports = function (req, res) {
       newsList.push(temp)
     }
 
+    // 并发获取所有详情页的信息
     let ep = new eventproxy(),
         count = req.params.count || newsList.length
     ep.after('getNewsDetail', count, function (details) {
@@ -38,9 +38,7 @@ module.exports = function (req, res) {
         let $content = $('.newsshow .content'),
             // imgs = $content.find('img'),
             ps = $content.find('p')
-        // for (let i = 0, len = imgs.length; i < len; i++) {
-        //   temp.content.img = imgs
-        // }
+
         for (let i = 0, len = ps.length; i < len; i++) {
           let $p = $(ps[i])
           temp.content.push($p.text().trim())
@@ -60,9 +58,5 @@ module.exports = function (req, res) {
           ep.emit('getNewsDetail', { html: sres.text, el })
         })
     })
-
-    // res.status(200).send(newsList)
-
-    // 并发获取所有详情页的信息
   })
 }
