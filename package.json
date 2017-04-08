@@ -15,9 +15,11 @@
   "license": "ISC",
   "private": true,
   "dependencies": {
+    "connect-mongo": "^1.3.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
-    "express-session": "^1.15.2"
+    "express-session": "^1.15.2",
+    "mongoose": "^4.9.3"
   },
   "devDependencies": {
     "supervisor": "^0.12.0"

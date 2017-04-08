@@ -3,7 +3,7 @@ module.exports = {
   session: {
     secret: 'magicalLu',
     key: 'apiLu',
-    maxAge: 1000 * 60 * 60 * 24 * 30
+    maxAge: 1000 * 60 * 60 * 24
   },
   mongodb: 'mongodb://localhost:27017/apilu'
 }
