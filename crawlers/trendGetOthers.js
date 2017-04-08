@@ -25,23 +25,21 @@ module.exports = function (req, res, target, html) {
     let temp = {},
         $a = $($cur[i])
 
-    // console.log(config.xtuUrl.trend.host + $a.attr('href'))
     temp.href = $a.attr('href').indexOf('http') > -1
       ? $a.attr('href')
       : config.xtuUrl.trend.host + $a.attr('href')
-
-    // 处理在“媒体湘大”列表域名不统一的问题
-    target === 'media' && (temp.href = temp.href.replace(/w{3}/g, 'news'))
-
     temp.title = $a.attr('title')
-
     temp.time = $a.find('span').text()
-    target === 'media' && ($('li').eq(i).text().trim().replace(/\[(\d{4})\/(\d{2})\/(\d{2})\]/g, function (match, g1, g2, g3) {
-      temp.time = [g1, g2, g3].join('-')
-    }))
+
+    // 处理在“媒体湘大”列表域名、时间不统一的问题
+    if (target === 'media') {
+      temp.href = temp.href.replace(/w{3}/g, 'news')
+      $('li').eq(i).text().trim().replace(/\[(\d{4})\/(\d{2})\/(\d{2})\]/g, function (match, g1, g2, g3) {
+        temp.time = [g1, g2, g3].join('-')
+      })
+    }
     list.push(temp)
   }
-  console.log(list)
 
   let ep = new eventproxy(),
       count = req.params.count || list.length
@@ -61,8 +59,6 @@ module.exports = function (req, res, target, html) {
         $content = $('.content')
       } else if (target === 'notice' || target === 'cathedra') {
         $content = $('.con-tent-box')
-      } else {
-        $content = $('.DCT_viewcontent')
       }
 
       // let ps = $content.find('p')
@@ -77,8 +73,6 @@ module.exports = function (req, res, target, html) {
     })
     res.status(200).send(details)
   })
-
-  console.log(list)
 
   list.forEach(el => {
     request

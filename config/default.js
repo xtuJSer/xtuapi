@@ -12,7 +12,6 @@ module.exports = {
       path: {
         news: 'xdxw/xnxw/',             // 新闻
         cathedra: 'xysh/xywh/xsjz/',    // 讲座
-        topic: 'zxzt/',                 // 专题
         notice: 'gonggao/',             // 公告
         media: 'html/meitixd/'          // 媒体
       }
