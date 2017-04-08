@@ -8,8 +8,6 @@ const eventproxy = require('eventproxy')
 const trendCrawler = require('../../../crawlers/trendCrawler')
 
 module.exports = function (req, res) {
-  // console.log(req.params.count)
-
   trendCrawler('news', function (html) {
     // fs.writeFile(__dirname + '/news.html', data)
 
@@ -27,8 +25,9 @@ module.exports = function (req, res) {
       newsList.push(temp)
     }
 
-    let ep = new eventproxy()
-    ep.after('getNewsDetail', newsList.length, function (details) {
+    let ep = new eventproxy(),
+        count = req.params.count || newsList.length
+    ep.after('getNewsDetail', count, function (details) {
       details = details.map(detail => {
         $ = cheerio.load(detail.html)
         let temp = {}
@@ -38,7 +37,7 @@ module.exports = function (req, res) {
         temp.content = []
 
         let $content = $('.newsshow .content'),
-            imgs = $content.find('img'),
+            // imgs = $content.find('img'),
             ps = $content.find('p')
         // for (let i = 0, len = imgs.length; i < len; i++) {
         //   temp.content.img = imgs
