@@ -31,8 +31,8 @@ module.exports = function (req, res, target, html) {
     temp.title = $a.attr('title')
 
     temp.time = $a.find('span').text()
-    target === 'media' && (temp.time = $('li').eq(i).text().trim().replace(/\[(\d){4}\/(\d){2}\/(\d){2}\]/g, function (match, g1, g2, g3) {
-      return
+    target === 'media' && ($('li').eq(i).text().trim().replace(/\[(\d{4})\/(\d{2})\/(\d{2})\]/g, function (match, g1, g2, g3) {
+      temp.time = [g1, g2, g3].join('-')
     }))
     list.push(temp)
   }
