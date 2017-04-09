@@ -1,35 +1,70 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs')
+const path = require('path')
 
 const cheerio = require('cheerio')
-const charset = require('superagent-charset');
-const superagent = require('superagent');
-charset(superagent);
+const charset = require('superagent-charset')
+const request = require('superagent')
+charset(request)
 
-const tesseract = require('node-tesseract');
-const gm = require('gm');
+const tesseract = require('node-tesseract')
+const gm = require('gm')
 
 const config = require('../../../config/default')
-
-let Header = {
-  // 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36',
-  'User-Agent': "Mozilla/5.0 (Windows; U; Win98; zh-CN; rv:0.9.2) Gecko/20010725 Netscape6/6.1",
-  'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-  'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4,de;q=0.2,la;q=0.2'
-};
+const header = config.header
+const userUrl = config.xtuUrl.user
+const loginUrl = userUrl.host
+const postUrl = loginUrl + userUrl.path.login
+const imgUrl = loginUrl + userUrl.path.verification
 
 module.exports = function (req, res) {
-  const loginUrl = config.xtuUrl.user.host
-  const postUrl = loginUrl + config.xtuUrl.user.path.login
-  const imgUrl = loginUrl + config.xtuUrl.user.path.verification
+  const username = req.body.username
+  const password = req.body.password
 
-  const username = req.body.username;
-  const password = req.body.password;
-
-  // let cookie = req.session.xtu;
-
+  // let cookie = req.session.xtu || ''
+  let cookie
   // let isSuccess = false;
 
+  function getCookie () {
+    return new Promise((resolve, reject) => {
+      request
+        .get(loginUrl)
+        .end((err, sres) => {
+          if (err) { reject('获取登录Cookie失败') }
+          cookie = sres.headers['set-cookie'].pop().split(';')[0]
+          resolve(cookie)
+        })
+    })
+  }
+
+  function getImg () {
+    return new Promise((resolve, reject) => {
+      request
+        .get(imgUrl)
+        .set(header)
+        .set('Cookie', cookie)
+        .end((err, sres) => {
+          if (err) { reject('获取验证码失败') }
+          console.log(imgUrl)
+          console.log(sres.body)
+          resolve(sres.body)
+        })
+    })
+  }
+
+  function saveImg (img) {
+    fs.writeFileSync(__dirname + '/test.jpg', img)
+  }
+
+  ;(async () => {
+    try {
+      await getCookie()
+      console.log(cookie)
+      saveImg(await getImg())
+      res.status(200).send('登录成功')
+    } catch (err) {
+      res.status(500).send(`登录失败: ${err}`)
+    }
+  })()
 
   // let p = new Promise((resolve, reject) => {
   //   superagent
@@ -41,7 +76,7 @@ module.exports = function (req, res) {
 
   //       superagent
   //         .get(imgUrl)
-  //         .set(Header)
+  //         .set(header)
   //         .set('Cookie', cookie)
   //         .end((err1, sres1) => {
   //           if (err1) { reject(err) }
@@ -63,8 +98,8 @@ module.exports = function (req, res) {
   //       }
   //       tesseract.process('./img/gm.jpg', options, function (err1, ret) {
   //           if (err1) { throw new Error(err1) }
-  //           ret = ret.replace(/[\r\n\s]/gm, '').substr(0, 4).toLowerCase();
-  //           console.log(ret);
+  //           ret = ret.replace(/[\r\n\s]/gm, '').substr(0, 4).toLowerCase()
+  //           console.log(ret)
   //           if (ret.length !== 4 || ret.match(/\W/g) !== null) {
   //             console.log('验证码不符合要求 ' + ret)
   //             res.status(500).send('验证码不正确，登录失败: ' + ret)
@@ -73,7 +108,7 @@ module.exports = function (req, res) {
   //           superagent
   //             .post(postUrl)
   //             .type('form')
-  //             .set(Header)
+  //             .set(header)
   //             .set('Cookie', cookie)
   //             .charset('gbk')
   //             .send({
@@ -91,13 +126,13 @@ module.exports = function (req, res) {
   //                 // let $ = cheerio.load(sres.text)
   //                 // fs.writeFileSync('login_test', sres.text)
   //                 // req.session.xtu = cookie
-  //                 // console.log('成功申请到的 cookie, 并存入 req.session: ' + req.session.xtu);
+  //                 // console.log('成功申请到的 cookie, 并存入 req.session: ' + req.session.xtu)
   //                 // res.send('Success...')
   //                 res.status(200).send('成功登录')
   //               }
 
   //               else {
-  //                 console.log(sres.text);
+  //                 console.log(sres.text)
   //                 console.log('验证码不正确, 登录失败: ' + ret)
   //                 res.status(500).send('验证码不正确，登录失败: ' + ret)
   //               }
