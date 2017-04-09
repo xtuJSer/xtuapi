@@ -10,6 +10,8 @@ const tesseract = require('node-tesseract')
 const gm = require('gm')
 
 const config = require('../../../config/default')
+const imgDir = path.join(__dirname, '../../../public/images')
+
 const header = config.header
 const userUrl = config.xtuUrl.user
 const loginUrl = userUrl.host
@@ -24,7 +26,7 @@ module.exports = function (req, res) {
   let cookie
   // let isSuccess = false;
 
-  function getCookie () {
+  const getCookie = () => {
     return new Promise((resolve, reject) => {
       request
         .get(loginUrl)
@@ -36,7 +38,7 @@ module.exports = function (req, res) {
     })
   }
 
-  function getImg () {
+  const getImg = () => {
     return new Promise((resolve, reject) => {
       request
         .get(imgUrl)
@@ -44,22 +46,20 @@ module.exports = function (req, res) {
         .set('Cookie', cookie)
         .end((err, sres) => {
           if (err) { reject('获取验证码失败') }
-          console.log(imgUrl)
-          console.log(sres.body)
           resolve(sres.body)
         })
     })
   }
 
-  function saveImg (img) {
-    fs.writeFileSync(__dirname + '/test.jpg', img)
+  const saveImg = (img, dir) => {
+    fs.writeFileSync(imgDir + '/test.jpg', img)
   }
 
   ;(async () => {
     try {
       await getCookie()
       console.log(cookie)
-      saveImg(await getImg())
+      saveImg(await getImg(), imgDir)
       res.status(200).send('登录成功')
     } catch (err) {
       res.status(500).send(`登录失败: ${err}`)
