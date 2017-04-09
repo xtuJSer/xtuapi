@@ -5,6 +5,7 @@ charset(request)
 const cheerio = require('cheerio')
 const eventproxy = require('eventproxy')
 const config = require('../config/default')
+// const mongo = require('../store/mongo')
 
 module.exports = function (req, res, target, html) {
   console.log(`正在获取 ${target} 下的数据`)
@@ -63,6 +64,15 @@ module.exports = function (req, res, target, html) {
       temp.content = $content.text().split(/\s{2,}(?!\s*话)/)
       temp.content.shift()
       temp.content.pop()
+
+      // let model = new mongo[mongo.getFullkey(target)]({
+      //   title: temp.title,
+      //   time: temp.time,
+      //   href: temp.href,
+      //   content: temp.content
+      // })
+      // model.save()
+      // console.log(mongo.getFullkey(target))
       return temp
     })
     res.status(200).send(details)
