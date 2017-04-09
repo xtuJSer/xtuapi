@@ -93,3 +93,6 @@ typings/
 # configuration
 config/*
 !config/default.*
+
+# public/images
+public/images/*
