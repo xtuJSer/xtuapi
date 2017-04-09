@@ -76,6 +76,7 @@ module.exports = function (req, res) {
         if (ret.length !== 4 || ret.match(/\W/g) !== null) {
           reject(`验证码不合法: ${ret}`)
         }
+        console.log(`验证码为: ${ret}`)
         resolve(ret)
       })
     })
@@ -108,16 +109,19 @@ module.exports = function (req, res) {
   }
 
   ;(async () => {
-    try {
-      await getCookie()
-      await saveImg(await getImg())
-      await editImg()
-      let ret = await spotImg()
-      console.log(ret)
-      await loginToJWXT(ret)
-      res.status(200).send('登录成功')
-    } catch (err) {
-      res.status(500).send(`登录失败:\n ${err}`)
+    let isSuccess = false
+    while (!isSuccess) {
+      try {
+        await getCookie()
+        await saveImg(await getImg())
+        await editImg()
+        await loginToJWXT(await spotImg())
+        isSuccess = true
+        res.status(200).send('登录成功')
+      } catch (err) {
+        // res.status(500).send(`登录失败:\n ${err}`)
+        console.log(`登录失败:\n ${err}`)
+      }
     }
   })()
 }
