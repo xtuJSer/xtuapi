@@ -28,8 +28,7 @@ module.exports = function (req, res) {
 
   const getCookie = () => {
     return new Promise((resolve, reject) => {
-      request
-        .get(loginUrl)
+      request.get(loginUrl)
         .end((err, sres) => {
           if (err) { reject('获取登录Cookie失败') }
           cookie = sres.headers['set-cookie'].pop().split(';')[0]
@@ -40,8 +39,7 @@ module.exports = function (req, res) {
 
   const getImg = () => {
     return new Promise((resolve, reject) => {
-      request
-        .get(imgUrl)
+      request.get(imgUrl)
         .set(header)
         .set('Cookie', cookie)
         .end((err, sres) => {
@@ -52,50 +50,48 @@ module.exports = function (req, res) {
   }
 
   const saveImg = (img, dir) => {
-    fs.writeFileSync(imgDir + '/test.jpg', img)
+    return new Promise((resolve) => {
+      fs.writeFileSync(imgDir + `/${username}.jpg`, img)
+      resolve()
+    })
+  }
+
+  const editImg = () => {
+    return new Promise((resolve, reject) => {
+      gm(imgDir + `/${username}.jpg`)
+        .despeckle() //去斑
+        .contrast(-2000) //对比度调整
+        .write(imgDir + `/${username}_gm.jpg`, function (err) {
+          if (err) { reject(err) }
+          resolve()
+        })
+    })
+  }
+
+  const spotImg = () => {
+    return new Promise((resolve, reject) => {
+      tesseract.process(imgDir + `/${username}_gm.jpg`, config.spotImgOptions, (err, ret) => {
+        if (err) { reject(err) }
+        ret = ret.replace(/[\r\n\s]/gm, '').substr(0, 4).toLowerCase()
+        console.log(ret)
+        resolve()
+      })
+    })
   }
 
   ;(async () => {
     try {
       await getCookie()
-      console.log(cookie)
-      saveImg(await getImg(), imgDir)
+      await saveImg(await getImg(), imgDir)
+      await editImg()
+      await spotImg()
+
       res.status(200).send('登录成功')
     } catch (err) {
       res.status(500).send(`登录失败: ${err}`)
     }
   })()
 
-  // let p = new Promise((resolve, reject) => {
-  //   superagent
-  //     .get(loginUrl)
-  //     .end((err, sres) => {
-  //       if (err) { reject(err) }
-  //       cookie = sres.headers['set-cookie'].pop().split(';')[0]
-  //       console.log('新建 cookie: ' + cookie)
-
-  //       superagent
-  //         .get(imgUrl)
-  //         .set(header)
-  //         .set('Cookie', cookie)
-  //         .end((err1, sres1) => {
-  //           if (err1) { reject(err) }
-  //           fs.writeFileSync('./img/' + username + '.jpg', sres1.body)
-  //           resolve()
-  //         })
-  //     })
-  // })
-  // .then(() => {
-  //   gm('./img/' + username + '.jpg')
-  //     .despeckle() //去斑
-  //     .contrast(-2000) //对比度调整
-  //     .write('./img/gm.jpg', function (err) {
-  //       if (err) { throw new Error(err)}
-  //       let options = {
-  //         l: 'lu',
-  //         // binary: '/usr/bin/tesseract' // centos
-  //         binary: '/usr/local/bin/tesseract' // mac
-  //       }
   //       tesseract.process('./img/gm.jpg', options, function (err1, ret) {
   //           if (err1) { throw new Error(err1) }
   //           ret = ret.replace(/[\r\n\s]/gm, '').substr(0, 4).toLowerCase()
