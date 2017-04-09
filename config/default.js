@@ -38,6 +38,7 @@ module.exports = {
         login: 'xk/LoginToXk',                  // 登录接口
         verification: 'verifycode.servlet',     // 验证码
         course: 'kscj/cjcx_list?xq=',           // 成绩
+        class: 'xskb/xskb_list.do'
       }
     }
   }
