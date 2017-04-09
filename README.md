@@ -31,22 +31,51 @@
 
 GET
 ```
-  获取校内新闻: http://xtuapi.magicallu.cn/v1/trend/news/:count
-  获取用户成绩: http://xtuapi.magicallu.cn/v1/score?year=2016&half=1
-  获取用户专业/班级名次: http://xtuapi.magicallu.cn/xtu/v1/rate
 ```
 POST
 ```
-  模拟教务系统: http://xtuapi.magicallu.cn/v1/login
 ```
 DELETE
 ```
-  退出登陆: http://xtuapi.magicallu.cn/v1/login
 ```
 
 ## 使用方法
-
-待续..
+### 获取咨询 - 无需登陆
+校内新闻:
+```
+GET http://xtuapi.magicallu.cn/v1/trend/news
+GET http://xtuapi.magicallu.cn/v1/trend/news/:count
+```
+通知公告:
+```
+GET http://xtuapi.magicallu.cn/v1/trend/notice
+GET http://xtuapi.magicallu.cn/v1/trend/notice/:count
+```
+媒体湘大:
+```
+GET http://xtuapi.magicallu.cn/v1/trend/media
+GET http://xtuapi.magicallu.cn/v1/trend/media/:count
+```
+学术活动:
+```
+GET http://xtuapi.magicallu.cn/v1/trend/cathedra
+GET http://xtuapi.magicallu.cn/v1/trend/cathedra/:count
+```
+### 获取教务系统相关信息 - 需要登陆
+登陆教务系统:
+```
+POST http://xtuapi.magicallu.cn/v1/user/login
+[username, password]
+```
+获取成绩:
+```
+GET http://xtuapi.magicallu.cn/v1/user/course
+POST http://xtuapi.magicallu.cn/v1/user/course [year, half]
+```
+获取课程表:
+```
+GET http://xtuapi.magicallu.cn/v1/user/class
+```
 
 ## 提问
 
