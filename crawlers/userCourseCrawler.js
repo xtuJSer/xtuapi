@@ -27,15 +27,14 @@ module.exports = (req, res) => {
 
       let $ = cheerio.load(sres.text)
       $('#dataList').find('tr').each((idx, tr) => {
-        let $tr = $(tr)
-        let item = {}
+        let $td = $(tr).find('td'),
+            item = {}
 
-        // item.courseName = $($tr.find('td')[2]).text()
-        item.courseName = $tr.find('td').eq(2).text()
-        item.courseScore = $tr.find('td').eq(3).text()
-        item.courseCredit = $tr.find('td').eq(4).text()
-        item.courseTotalTime = $tr.find('td').eq(5).text()
-        item.courseProperty = $tr.find('td').eq(7).text()
+        item.courseName = $td.eq(2).text()
+        item.courseScore = $td.eq(3).text()
+        item.courseCredit = $td.eq(4).text()
+        item.courseTotalTime = $td.eq(5).text()
+        item.courseProperty = $td.eq(7).text()
 
         table.course.push(item)
       })
