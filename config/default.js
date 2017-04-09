@@ -15,6 +15,13 @@ module.exports = {
         notice: 'gonggao/',             // 公告
         media: 'html/meitixd/'          // 媒体
       }
+    },
+    user: {
+      host: 'http://jwxt.xtu.edu.cn/jsxsd/',    // 登录界面
+      path: {
+        login: 'xk/LoginToXk/',                 // 登录接口
+        verification: 'verifycode.servlet/'     // 验证码
+      }
     }
   }
 }

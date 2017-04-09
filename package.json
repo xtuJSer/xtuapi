@@ -22,7 +22,9 @@
     "eventproxy": "^0.3.5",
     "express": "^4.15.2",
     "express-session": "^1.15.2",
+    "gm": "^1.23.0",
     "mongoose": "^4.9.3",
+    "node-tesseract": "^0.2.7",
     "superagent": "^3.5.2",
     "superagent-charset": "^1.1.1"
   },

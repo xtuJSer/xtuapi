@@ -11,6 +11,8 @@ module.exports = function (app) {
     })
   })
 
+  // v1 路径下返回功能信息
   app.use('/v1', require('./v1/index'))
   app.use('/v1', require('./v1/trend'))
+  app.use('/v1', require('./v1/user'))
 }
