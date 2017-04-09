@@ -9,8 +9,8 @@ const user = require('../config/default').xtuUrl.user
 module.exports =  (req, res) => {
   const year = 2016
   const half = 2
-  let data = `cj0701id=&zc=&demo=&xnxq01id=${year}-${year + 1}-${half}&sfFD=1`
-  const classUrl = 'http://jwxt.xtu.edu.cn/jsxsd/xskb/xskb_list.do'
+  const data = `cj0701id=&zc=&demo=&xnxq01id=${year}-${year + 1}-${half}&sfFD=1`
+  const classUrl = user.host + user.path.class
 
   request.post(classUrl)
     .set(header)
