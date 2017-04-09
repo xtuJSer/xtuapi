@@ -1,6 +1,7 @@
 const request = require('superagent')
-const charst = require('superagent-charset')
+const charset = require('superagent-charset')
 charset(request)
+const cheerio = require('cheerio')
 
 const header = require('../config/default').header
 const user = require('../config/default').xtuUrl.user

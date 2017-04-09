@@ -19,8 +19,8 @@ module.exports = {
   },
   spotImgOptions: {
     l: 'lu',
-    binary: '/usr/bin/tesseract' // centos
-    // binary: '/usr/local/bin/tesseract' // mac
+    // binary: '/usr/bin/tesseract' // centos
+    binary: '/usr/local/bin/tesseract' // mac
   },
   xtuUrl: {
     trend: {
