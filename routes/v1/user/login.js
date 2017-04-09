@@ -21,10 +21,7 @@ const imgUrl = loginUrl + userUrl.path.verification
 module.exports = function (req, res) {
   const username = req.body.username
   const password = req.body.password
-
-  // let cookie = req.session.xtu || ''
-  let cookie
-  // let isSuccess = false;
+  let cookie = req.session.xtu || ''
 
   const getCookie = () => {
     return new Promise((resolve, reject) => {
@@ -101,7 +98,7 @@ module.exports = function (req, res) {
           } else if (sres.text.indexOf('验证码错误') > -1) {
             reject(`验证码错误: ${ret}`)
           } else {
-            // req.session.xtu = cookie
+            req.session.xtu = cookie
             resolve()
           }
         })
@@ -112,6 +109,10 @@ module.exports = function (req, res) {
     let isSuccess = false,
         loopTime = 0
     while (!isSuccess && loopTime < 5) {
+      // if (req.session.xtu) {
+      //   isSuccess = true
+      //   res.status(200).send('登录成功')
+      // }
       try {
         await getCookie()
         await saveImg(await getImg())

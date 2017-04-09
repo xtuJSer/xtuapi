@@ -3,7 +3,11 @@ module.exports = {
   session: {
     secret: 'magicalLu',
     key: 'xtuApiLu',
-    maxAge: 1000 * 60 * 60 * 24
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 1
+    },
+    saveUninitialized: true,
+    resave: true
   },
   mongodb: 'mongodb://localhost:27017/xtuapilu',
   header: {
