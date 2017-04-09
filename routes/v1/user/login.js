@@ -119,7 +119,10 @@ module.exports = function (req, res) {
         await editImg()
         await loginToJWXT(await spotImg())
         isSuccess = true
-        res.status(200).send('登录成功')
+        res.status(200).json({
+          msg: '登录成功',
+          cookie
+        })
       } catch (err) {
         loopTime++
         console.log(`登录失败:\n ${err}`)
