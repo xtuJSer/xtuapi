@@ -62,7 +62,7 @@ module.exports = function (req, res) {
         .despeckle() //去斑
         .contrast(-2000) //对比度调整
         .write(imgDir + `/${username}_gm.jpg`, err => {
-          if (err) { reject(err) }
+          if (err) { reject(`图片处理中出错: ${err}`) }
           resolve()
         })
     })
@@ -73,8 +73,37 @@ module.exports = function (req, res) {
       tesseract.process(imgDir + `/${username}_gm.jpg`, config.spotImgOptions, (err, ret) => {
         if (err) { reject(err) }
         ret = ret.replace(/\s*/gm, '').substr(0, 4).toLowerCase()
+        if (ret.length !== 4 || ret.match(/\W/g) !== null) {
+          reject(`验证码不合法: ${ret}`)
+        }
         resolve(ret)
       })
+    })
+  }
+
+  const loginToJWXT = (ret) => {
+    return new Promise ((resolve, reject) => {
+      request.post(postUrl)
+        .type('form')
+        .set(header)
+        .set('Cookie', cookie)
+        .charset('gbk')
+        .send({
+          USERNAME: username,
+          PASSWORD: password,
+          RANDOMCODE: ret
+        })
+        .end((err, sres) => {
+          if (err) { reject(err) }
+          if (sres.text.indexOf('用户名或密码错误') > -1) {
+            reject('用户名或密码错误')
+          } else if (sres.text.indexOf('验证码错误') > -1) {
+            reject(`验证码错误: ${ret}`)
+          } else {
+            // req.session.xtu = cookie
+            resolve()
+          }
+        })
     })
   }
 
@@ -85,57 +114,10 @@ module.exports = function (req, res) {
       await editImg()
       let ret = await spotImg()
       console.log(ret)
+      await loginToJWXT(ret)
       res.status(200).send('登录成功')
     } catch (err) {
-      res.status(500).send(`登录失败: ${err}`)
+      res.status(500).send(`登录失败:\n ${err}`)
     }
   })()
-
-  //       tesseract.process('./img/gm.jpg', options, function (err1, ret) {
-  //           if (err1) { throw new Error(err1) }
-  //           ret = ret.replace(/[\r\n\s]/gm, '').substr(0, 4).toLowerCase()
-  //           console.log(ret)
-  //           if (ret.length !== 4 || ret.match(/\W/g) !== null) {
-  //             console.log('验证码不符合要求 ' + ret)
-  //             res.status(500).send('验证码不正确，登录失败: ' + ret)
-  //             throw new Error('验证码不符合要求 ' + ret)
-  //           }
-  //           superagent
-  //             .post(postUrl)
-  //             .type('form')
-  //             .set(header)
-  //             .set('Cookie', cookie)
-  //             .charset('gbk')
-  //             .send({
-  //               USERNAME: username,
-  //               PASSWORD: password,
-  //               RANDOMCODE: ret
-  //             })
-  //             .end((err2, sres) => {
-  //               if (err2) {
-  //                 throw new Error(err2)
-  //               }
-
-  //               if (sres.text.indexOf('用户名或密码错误') === -1) {
-  //                 console.log('成功登录')
-  //                 // let $ = cheerio.load(sres.text)
-  //                 // fs.writeFileSync('login_test', sres.text)
-  //                 // req.session.xtu = cookie
-  //                 // console.log('成功申请到的 cookie, 并存入 req.session: ' + req.session.xtu)
-  //                 // res.send('Success...')
-  //                 res.status(200).send('成功登录')
-  //               }
-
-  //               else {
-  //                 console.log(sres.text)
-  //                 console.log('验证码不正确, 登录失败: ' + ret)
-  //                 res.status(500).send('验证码不正确，登录失败: ' + ret)
-  //               }
-  //             })
-  //         })
-  //     })
-  // })
-  // .catch((err) => {
-  //   res.status(500).send('登录过程发生错误')
-  // })
 }
