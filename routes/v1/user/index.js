@@ -8,4 +8,9 @@ router.get('/user', (req, res) => {
 // 教务系统登录
 router.post('/user/login', require('./login'))
 
+// 获取成绩
+router.post('/user/course', require('./course'))
+// 默认获取最近一个学期的成绩
+router.get('/user/course', require('./course'))
+
 module.exports = router

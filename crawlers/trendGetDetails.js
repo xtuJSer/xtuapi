@@ -7,7 +7,7 @@ const eventproxy = require('eventproxy')
 const config = require('../config/default')
 // const mongo = require('../store/mongo')
 
-module.exports = function (req, res, target, html) {
+module.exports = (req, res, target, html) => {
   console.log(`正在获取 ${target} 下的数据`)
   let $ = cheerio.load(html),
       list = [],

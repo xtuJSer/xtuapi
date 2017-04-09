@@ -19,8 +19,8 @@ module.exports = {
   },
   spotImgOptions: {
     l: 'lu',
-    // binary: '/usr/bin/tesseract' // centos
-    binary: '/usr/local/bin/tesseract' // mac
+    binary: '/usr/bin/tesseract' // centos
+    // binary: '/usr/local/bin/tesseract' // mac
   },
   xtuUrl: {
     trend: {
@@ -36,7 +36,8 @@ module.exports = {
       host: 'http://jwxt.xtu.edu.cn/jsxsd/',    // 登录界面
       path: {
         login: 'xk/LoginToXk',                  // 登录接口
-        verification: 'verifycode.servlet'      // 验证码
+        verification: 'verifycode.servlet',     // 验证码
+        course: 'kscj/cjcx_list?xq=',           // 成绩
       }
     }
   }

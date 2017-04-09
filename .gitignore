@@ -96,3 +96,6 @@ config/*
 
 # public/images
 public/images/*
+
+# sftp-config
+sftp-config.json

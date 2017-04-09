@@ -5,7 +5,7 @@ charset(request)
 const trendGetDetails = require('./trendGetDetails')
 const trend = require('../config/default').xtuUrl.trend
 
-module.exports = function (req, res, target) {
+module.exports = (req, res, target) => {
   let url = trend.host + trend.path[target],
       charset = 'utf8'
 
