@@ -109,8 +109,9 @@ module.exports = function (req, res) {
   }
 
   ;(async () => {
-    let isSuccess = false
-    while (!isSuccess) {
+    let isSuccess = false,
+        loopTime = 0
+    while (!isSuccess && loopTime < 5) {
       try {
         await getCookie()
         await saveImg(await getImg())
@@ -119,9 +120,10 @@ module.exports = function (req, res) {
         isSuccess = true
         res.status(200).send('登录成功')
       } catch (err) {
-        // res.status(500).send(`登录失败:\n ${err}`)
+        loopTime++
         console.log(`登录失败:\n ${err}`)
       }
     }
+    (!isSuccess || loopTime === 5) && res.status(500).send('教务系统可能崩了 :)')
   })()
 }
