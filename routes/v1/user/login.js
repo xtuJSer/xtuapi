@@ -49,7 +49,7 @@ module.exports = function (req, res) {
     })
   }
 
-  const saveImg = (img, dir) => {
+  const saveImg = (img) => {
     return new Promise((resolve) => {
       fs.writeFileSync(imgDir + `/${username}.jpg`, img)
       resolve()
@@ -61,7 +61,7 @@ module.exports = function (req, res) {
       gm(imgDir + `/${username}.jpg`)
         .despeckle() //去斑
         .contrast(-2000) //对比度调整
-        .write(imgDir + `/${username}_gm.jpg`, function (err) {
+        .write(imgDir + `/${username}_gm.jpg`, err => {
           if (err) { reject(err) }
           resolve()
         })
@@ -72,9 +72,8 @@ module.exports = function (req, res) {
     return new Promise((resolve, reject) => {
       tesseract.process(imgDir + `/${username}_gm.jpg`, config.spotImgOptions, (err, ret) => {
         if (err) { reject(err) }
-        ret = ret.replace(/[\r\n\s]/gm, '').substr(0, 4).toLowerCase()
-        console.log(ret)
-        resolve()
+        ret = ret.replace(/\s*/gm, '').substr(0, 4).toLowerCase()
+        resolve(ret)
       })
     })
   }
@@ -82,10 +81,10 @@ module.exports = function (req, res) {
   ;(async () => {
     try {
       await getCookie()
-      await saveImg(await getImg(), imgDir)
+      await saveImg(await getImg())
       await editImg()
-      await spotImg()
-
+      let ret = await spotImg()
+      console.log(ret)
       res.status(200).send('登录成功')
     } catch (err) {
       res.status(500).send(`登录失败: ${err}`)
