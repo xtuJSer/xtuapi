@@ -9,6 +9,14 @@ const Schema = {
 // 定义获取全名的方法
 const getFullKey = (target) => 'Trend' + target.replace(/^\w/g, (el) => el.toUpperCase())
 
+const checkRepeat = () => {
+
+}
+
+const saveModel = (model) => {
+
+}
+
 module.exports = {
   Schema,
   getFullKey
