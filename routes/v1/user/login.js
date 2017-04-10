@@ -107,8 +107,9 @@ module.exports = function (req, res) {
 
   ;(async () => {
     let isSuccess = false,
+        isWrong = false,
         loopTime = 0
-    while (!isSuccess && loopTime < 5) {
+    while (!isSuccess && loopTime < 5 && !isWrong) {
       // if (req.session.xtu) {
       //   isSuccess = true
       //   res.status(200).send('登录成功')
@@ -125,9 +126,16 @@ module.exports = function (req, res) {
         })
       } catch (err) {
         loopTime++
+        if (err.indexOf('用户名或密码错误') > -1) { isWrong = true }
         console.log(`登录失败:\n ${err}`)
       }
     }
-    (!isSuccess || loopTime === 5) && res.status(500).send('教务系统可能崩了 :)')
+
+    if (isWrong) {
+      res.status(500).send('用户名或密码错误')
+    } else if (!isSuccess || loopTime === 5) {
+      res.status(500).send('教务系统可能崩了 :)')
+    }
+
   })()
 }

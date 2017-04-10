@@ -73,10 +73,13 @@ module.exports = (req, res, target, html) => {
       // console.log(mongo.getFullkey(target))
       return temp
     })
+    // details = require('./trendSort')(details)
     res.status(200).send(details)
   })
 
-  list.forEach(el => {
+  for (let i in list) {
+    let el = list[i]
+    if (i == count) { break }
     request
       .get(el.href)
       .charset(charset)
@@ -85,6 +88,6 @@ module.exports = (req, res, target, html) => {
         console.log(`成功获取 ${el.href}`)
         ep.emit('getDetail', { html: sres.text, el })
       })
-  })
+  }
 
 }
