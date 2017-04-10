@@ -6,7 +6,7 @@ const cheerio = require('cheerio')
 const header = require('../config/default').header
 const user = require('../config/default').xtuUrl.user
 
-module.exports =  (req, res) => {
+module.exports = (req, res) => {
   const year = 2016
   const half = 2
   const data = `cj0701id=&zc=&demo=&xnxq01id=${year}-${year + 1}-${half}&sfFD=1`

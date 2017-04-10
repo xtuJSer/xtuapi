@@ -16,4 +16,7 @@ router.post('/user/course', require('./course'))
 // 获取课程表
 router.get('/user/class', require('./class'))
 
+// 空闲教室
+router.get('/user/classroom', require('./classroom'))
+
 module.exports = router
