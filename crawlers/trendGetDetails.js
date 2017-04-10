@@ -44,6 +44,7 @@ module.exports = (req, res, target, html) => {
 
   let ep = new eventproxy(),
       count = req.params.count || list.length
+  count > list.length && (count = list.length)
 
   // 并发获取所有详情页的信息
   ep.after('getDetail', count, function (details) {
@@ -73,13 +74,13 @@ module.exports = (req, res, target, html) => {
       // console.log(mongo.getFullkey(target))
       return temp
     })
-    // details = require('./trendSort')(details)
+    details = require('./trendSort')(details)
     res.status(200).send(details)
   })
 
   for (let i in list) {
     let el = list[i]
-    if (i == count) { break }
+    if (parseInt(i) === count) { break }
     request
       .get(el.href)
       .charset(charset)
