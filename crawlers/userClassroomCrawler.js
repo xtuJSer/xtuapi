@@ -20,6 +20,8 @@ module.exports = (req, res) => {
     .set('Cookie', req.session.xtu)
     .charset('utf-8')
     .end((err, sres) => {
+      if (err) { throw new Error('获取空闲教室失败') }
+
       let $ = cheerio.load(sres.text)
       let table = []
 
@@ -55,7 +57,6 @@ module.exports = (req, res) => {
                   nextName = name,
                   pos = name.search(/\w/g)
 
-              // let curIdx = -1
               if (/\-/g.test(name)) {
                 curName = name.split('-')[0]
                 nextName = name.split('-')[1]
