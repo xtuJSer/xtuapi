@@ -61,9 +61,7 @@ module.exports = (req, res, target, html) => {
         $content = $('.con-tent-box')
       }
 
-      temp.content = $content.text().split(/\s{2,}(?!\s*话)/)
-      temp.content.shift()
-      temp.content.pop()
+      temp.content = require('./trendFormatConent')($content.text().split(/[\r\n\t]/))
 
       // let model = new mongo[mongo.getFullkey(target)]({
       //   title: temp.title,

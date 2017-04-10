@@ -35,6 +35,7 @@ GET
 ```
 POST
 ```
+发送数据：{key: value}
 ```
 DELETE
 ```
