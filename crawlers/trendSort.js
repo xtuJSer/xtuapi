@@ -1,7 +1,3 @@
 module.exports = (details) => {
-  return details.sort((a, b) => {
-    if (a.time > b.time) { return -1 }
-    else if (a.time < b.time) { return 1 }
-    return 0
-  })
+  return details.sort((a, b) => a.time > b.time ? -1 : 1)
 }
