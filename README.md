@@ -31,6 +31,7 @@
 
 GET
 ```
+协议://子域名.magicallu.cn/版本号/类别/数据/数量
 ```
 POST
 ```
@@ -44,33 +45,32 @@ DELETE
 校内新闻:
 ```
 GET http://xtuapi.magicallu.cn/v1/trend/news
-GET http://xtuapi.magicallu.cn/v1/trend/news/:count
+GET http://xtuapi.magicallu.cn/v1/trend/news/count {count: 数据的数量（≤25）}
 ```
 通知公告:
 ```
 GET http://xtuapi.magicallu.cn/v1/trend/notice
-GET http://xtuapi.magicallu.cn/v1/trend/notice/:count
+GET http://xtuapi.magicallu.cn/v1/trend/notice/count {count: 数据的数量（≤25）}
 ```
 媒体湘大:
 ```
 GET http://xtuapi.magicallu.cn/v1/trend/media
-GET http://xtuapi.magicallu.cn/v1/trend/media/:count
+GET http://xtuapi.magicallu.cn/v1/trend/media/count {count: 数据的数量（≤25）}
 ```
 学术活动:
 ```
 GET http://xtuapi.magicallu.cn/v1/trend/cathedra
-GET http://xtuapi.magicallu.cn/v1/trend/cathedra/:count
+GET http://xtuapi.magicallu.cn/v1/trend/cathedra/count {count: 数据的数量（≤25）}
 ```
 ### 获取教务系统相关信息 - 需要登陆
 登陆教务系统:
 ```
-POST http://xtuapi.magicallu.cn/v1/user/login
-[username, password]
+POST http://xtuapi.magicallu.cn/v1/user/login {username: 学号, password: 密码}
 ```
 获取成绩:
 ```
 GET http://xtuapi.magicallu.cn/v1/user/course
-POST http://xtuapi.magicallu.cn/v1/user/course [year, half]
+POST http://xtuapi.magicallu.cn/v1/user/course {year: 学年（2016）, half: 学期（1/2）}
 ```
 获取课程表:
 ```
