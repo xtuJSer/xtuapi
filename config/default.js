@@ -39,7 +39,8 @@ module.exports = {
         verification: 'verifycode.servlet',     // 验证码
         course: 'kscj/cjcx_list?xq=',           // 成绩
         class: 'xskb/xskb_list.do',             // 课程表
-        classroom: 'kbxx/kxjs_query'            // 空教室
+        classroom: 'kbxx/kxjs_query',           // 空教室
+        rank: 'kscj/cjjd_list'                  // 排名
       }
     }
   }

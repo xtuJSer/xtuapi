@@ -20,4 +20,8 @@ router.get('/user/class', require('./class'))
 router.get('/user/classroom', require('./classroom'))
 router.post('/user/classroom', require('./classroom'))
 
+// 获取排名
+router.get('/user/rank', require('./rank'))
+router.post('/user/rank', require('./rank'))
+
 module.exports = router
