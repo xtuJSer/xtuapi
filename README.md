@@ -50,27 +50,27 @@ DELETE
 参数 count: 数据数量（≤25）
 ```
 GET http://xtuapi.magicallu.cn/v1/trend/news
-GET http://xtuapi.magicallu.cn/v1/trend/news/count
+GET http://xtuapi.magicallu.cn/v1/trend/news/:count
 ```
 
 #### 通知公告
 参数 count: 数据数量（≤25）
 ```
 GET http://xtuapi.magicallu.cn/v1/trend/notice
-GET http://xtuapi.magicallu.cn/v1/trend/notice/count
+GET http://xtuapi.magicallu.cn/v1/trend/notice/:count
 ```
 
 #### 媒体湘大
 参数 count: 数据数量（≤25）
 ```
 GET http://xtuapi.magicallu.cn/v1/trend/media
-GET http://xtuapi.magicallu.cn/v1/trend/media/count
+GET http://xtuapi.magicallu.cn/v1/trend/media/:count
 ```
 #### 学术活动
 参数 count: 数据数量（≤25）
 ```
 GET http://xtuapi.magicallu.cn/v1/trend/cathedra
-GET http://xtuapi.magicallu.cn/v1/trend/cathedra/count
+GET http://xtuapi.magicallu.cn/v1/trend/cathedra/:count
 ```
 
 ### 获取教务系统相关信息 - 需要登陆
