@@ -43,7 +43,7 @@ module.exports = (req, res) => {
       result.push(obj)
     })
     result.sort((a, b) => a.year > b.year ? 1 : -1)
-    console.log('=== 获取排名成功 ===')
+    console.log('=== 成功获取排名 ===')
     res.status(200).json(result)
   })
 

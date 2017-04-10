@@ -40,7 +40,7 @@ module.exports = (req, res) => {
       })
 
       table.course.shift(0)
-      console.log(`获取成绩成功:\n ${table}`)
+      console.log('=== 成功获取成绩 ===')
       res.status(200).send(table)
     })
 }

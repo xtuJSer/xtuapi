@@ -75,6 +75,7 @@ module.exports = (req, res, target, html) => {
       return temp
     })
     details = require('./trendSort')(details)
+    console.log('=== 成功获取动态 ===')
     res.status(200).send(details)
   })
 
@@ -86,7 +87,7 @@ module.exports = (req, res, target, html) => {
       .charset(charset)
       .end((err, sres) => {
         if (err) { throw new Error(`获取 ${target} 详情失败`)}
-        console.log(`成功获取 ${el.href}`)
+        console.log(`正在爬取 ${el.href}`)
         ep.emit('getDetail', { html: sres.text, el })
       })
   }

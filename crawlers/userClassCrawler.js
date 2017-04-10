@@ -73,6 +73,7 @@ module.exports = (req, res) => {
           res.status(500).send('获取课程失败')
         }
         // fs.writeFileSync('output_' + Date.now() + '.json', JSON.stringify(ret, null, 2))
+        console.log('=== 成功获取课程表 ===')
         res.status(200).json(ret)
       })()
     })
