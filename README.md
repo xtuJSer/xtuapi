@@ -11,6 +11,10 @@ ps: 原则上只对学校数据进行查询，不会进行任何的增删改操�
 2. 抓取并返回个人数据（个人信息，不存入数据库）
 3. 或直接免登陆获取湘大官网的新闻资讯（公共信息，存入数据库）
 
+### 登录功能
+1. 验证码识别率可达95%+
+2. 网络问题
+
 ## 可获取的数据
 ### 需要登录:
 1. 考试成绩
@@ -42,46 +46,56 @@ DELETE
 
 ## 使用方法
 ### 获取咨询 - 无需登陆
-校内新闻:
+#### 校内新闻
+参数 count: 数据数量（≤25）
 ```
 GET http://xtuapi.magicallu.cn/v1/trend/news
-GET http://xtuapi.magicallu.cn/v1/trend/news/count {count: 数据的数量（≤25）}
+GET http://xtuapi.magicallu.cn/v1/trend/news/count
 ```
-通知公告:
+
+#### 通知公告
+参数 count: 数据数量（≤25）
 ```
 GET http://xtuapi.magicallu.cn/v1/trend/notice
-GET http://xtuapi.magicallu.cn/v1/trend/notice/count {count: 数据的数量（≤25）}
+GET http://xtuapi.magicallu.cn/v1/trend/notice/count
 ```
-媒体湘大:
+
+#### 媒体湘大
+参数 count: 数据数量（≤25）
 ```
 GET http://xtuapi.magicallu.cn/v1/trend/media
-GET http://xtuapi.magicallu.cn/v1/trend/media/count {count: 数据的数量（≤25）}
+GET http://xtuapi.magicallu.cn/v1/trend/media/count
 ```
-学术活动:
+#### 学术活动
+参数 count: 数据数量（≤25）
 ```
 GET http://xtuapi.magicallu.cn/v1/trend/cathedra
-GET http://xtuapi.magicallu.cn/v1/trend/cathedra/count {count: 数据的数量（≤25）}
+GET http://xtuapi.magicallu.cn/v1/trend/cathedra/count
 ```
+
 ### 获取教务系统相关信息 - 需要登陆
-登陆教务系统:
+#### 登陆教务系统
+post 格式：{ username: 学号, password: 密码 }
 ```
-POST http://xtuapi.magicallu.cn/v1/user/login {username: 学号, password: 密码}
+POST http://xtuapi.magicallu.cn/v1/user/login
 ```
-获取成绩:
+
+#### 获取成绩
+post 格式：{ year: 学年（2016）, half: 学期（1/2）}
 ```
 GET http://xtuapi.magicallu.cn/v1/user/course
-POST http://xtuapi.magicallu.cn/v1/user/course {year: 学年（2016）, half: 学期（1/2）}
+POST http://xtuapi.magicallu.cn/v1/user/course
 ```
-获取课程表:
+
+#### 获取课程表
 ```
 GET http://xtuapi.magicallu.cn/v1/user/class
 ```
 
-## 提问
+## 建议
+若有有什么见解或想得到的校方数据，欢迎在 issues 中 @我
 
-待续..
+## 报错或疑问
+若有 BUG 请提 issue，或直接私信本人，感谢。
 
-## 报错
-
-待续..
 

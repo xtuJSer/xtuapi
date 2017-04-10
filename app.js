@@ -6,14 +6,15 @@ const routes = require('./routes')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const session = require('express-session')
+const compress = require('compression')
 // const MongoStore = require('connect-mongo')(session)
 
 const express = require('express')
 const app = express()
 
 app.use(cookieParser())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
+app.use(bodyParser.json({ limit: '1mb' }))
 app.use(session({
   name: config.session.key,
   secret: config.session.secret,
@@ -27,6 +28,7 @@ app.use(session({
   //   url: config.mongodb
   // })
 }))
+app.use(compress())
 
 routes(app)
 
