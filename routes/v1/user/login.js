@@ -21,6 +21,7 @@ const imgUrl = loginUrl + userUrl.path.verification
 module.exports = function (req, res) {
   let username = req.body.username
   let password = req.body.password
+  let revoke = req.body.revoke || 0
   let cookie = req.session.xtu || ''
 
   const getCookie = () => {
@@ -59,7 +60,7 @@ module.exports = function (req, res) {
         .despeckle() //去斑
         .contrast(-2000) //对比度调整
         .write(imgDir + `/${username}_gm.jpg`, err => {
-          if (err) { reject(`图片处理中出错: ${err}`) }
+          if (err) { reject(`图片处理中出错`) }
           resolve()
         })
     })
@@ -71,9 +72,8 @@ module.exports = function (req, res) {
         if (err) { reject(err) }
         ret = ret.replace(/\s*/gm, '').substr(0, 4).toLowerCase()
         if (ret.length !== 4 || ret.match(/\W/g) !== null) {
-          reject(`验证码不合法: ${ret}`)
+          reject(`验证码不合法`)
         }
-        console.log(`验证码为: ${ret}`)
         resolve(ret)
       })
     })
@@ -96,7 +96,7 @@ module.exports = function (req, res) {
           if (sres.text.indexOf('用户名或密码错误') > -1) {
             reject('用户名或密码错误')
           } else if (sres.text.indexOf('验证码错误') > -1) {
-            reject(`验证码错误: ${ret}`)
+            reject(`验证码错误`)
           } else {
             req.session.xtu = cookie
             resolve()
@@ -109,7 +109,7 @@ module.exports = function (req, res) {
     console.log('=== 成功登录 ===')
     res.status(200).json({
       msg: 'success',
-      cookie
+      // cookie
     })
     return true
   }
@@ -119,16 +119,17 @@ module.exports = function (req, res) {
         isWrong = false,
         loopTime = 0,
         isFormat = true
-    req.session.xtu && (isSuccess = successLogin())
+    req.session.xtu && !revoke && (isSuccess = successLogin())
 
-    if (username === undefined || !password) {
+    if (username === undefined || (!password && password === undefined)) {
       isFormat = false
-      res.status(500).send('账号或密码不能为空')
+      res.status(500).json({ detail: '账号或密码不能为空', msg: 'wrong' })
     } else if (username.length !== 10) {
       isFormat = false
-      res.status(500).send('请输入正确的学号')
+      res.status(500).json({ detail: '请输入正确的学号', msg: 'wrong' })
     }
 
+    console.log('--- 正在登录 ---')
     while (!isSuccess && loopTime < 6 && !isWrong && isFormat) {
       try {
         await getCookie()
@@ -139,14 +140,14 @@ module.exports = function (req, res) {
       } catch (err) {
         loopTime++
         if (err.indexOf('用户名或密码错误') > -1) { isWrong = true }
-        console.log(`登录失败:\n ${err}`)
+        console.log(`登录失败: ${err}`)
       }
     }
 
     if (isWrong && isFormat) {
-      res.status(500).send('用户名或密码错误')
+      res.status(500).json({ detail: '用户名或密码错误', msg: 'wrong' })
     } else if ((!isSuccess || loopTime === 6) && isFormat) {
-      res.status(500).send('教务系统可能崩了')
+      res.status(500).json({ detail: '教务系统可能崩了', msg: 'error' })
     }
 
   })()
