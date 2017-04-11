@@ -76,33 +76,37 @@ GET http://xtuapi.magicallu.cn/v1/trend/cathedra/:count
 
 ### 获取教务系统相关信息 - 需要登陆
 #### 登陆教务系统
-post 格式：{ username: 学号, password: 密码 }
+POST 格式：{ username: 学号, password: 密码 }
 ```
 POST http://xtuapi.magicallu.cn/v1/user/login
 ```
 
 #### 获取成绩
-post 格式：{ year: 学年（2016）, half: 学期（1/2）}
+POST 格式：{ year: 学年（如：2016）, half: 学期（如：1或2）}
+默认返回 2016-2017-1 的成绩
 ```
 GET http://xtuapi.magicallu.cn/v1/user/course
 POST http://xtuapi.magicallu.cn/v1/user/course
 ```
 
 #### 获取课程表
+默认返回当前学期的课程表
 ```
 GET http://xtuapi.magicallu.cn/v1/user/class
 ```
 
 #### 获取空闲教室
-post 格式：{ day: 今/明（0/1）} 默认查询今天的成绩
+POST 格式：{ day: 今/明（0/1）}
+默认返回今天的空闲教室
 ```
 GET http://xtuapi.magicallu.cn/v1/user/classroom
 POST http://xtuapi.magicallu.cn/v1/user/classroom
 ```
 
 #### 获取排名
-post 格式：{ fullYear: 学期的完整时间（如：'2016-2017-1'） }
-post 格式：{ fullYear: 连续几个学期的综合排名，使用 & 链接（如：'2015-2016-2&2016-2017-1'）}
+POST 格式：{ fullYear: 学期的完整时间（如：'2016-2017-1'） }
+POST 格式：{ fullYear: 连续几个学期的综合排名，使用 & 链接（如：'2015-2016-2&2016-2017-1'）}
+默认返回 2016-2017-1 的排名
 ```
 GET http://xtuapi.magicallu.cn/v1/user/rank
 POST http://xtuapi.magicallu.cn/v1/user/rank
