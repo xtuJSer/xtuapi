@@ -15,4 +15,7 @@ module.exports = function (app) {
   app.use('/v1', require('./v1/index'))
   app.use('/v1', require('./v1/trend'))
   app.use('/v1', require('./v1/user'))
+  app.get('*', (req, res) => {
+    res.status(404).send('您所访问的资源不存在, 请查阅相关文档')
+  })
 }

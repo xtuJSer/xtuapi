@@ -8,6 +8,9 @@ router.get('/user', (req, res) => {
 
 // 教务系统登录
 router.post('/user/login', require('./login'))
+router.get('/user/login', (req, res, next) => {
+  return res.status(500).send('登录需要 POST 请求')
+})
 
 // 默认获取最近一个学期的成绩
 router.get('/user/course', checkLogin, require('./course'))
