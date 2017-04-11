@@ -6,7 +6,7 @@ module.exports = {
     cookie: {
       maxAge: 1000 * 60 * 60 * 1
     },
-    saveUninitialized: true,
+    saveUninitialized: false,
     resave: true
   },
   mongodb: 'mongodb://localhost:27017/xtuApiLu',

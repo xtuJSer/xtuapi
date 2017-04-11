@@ -42,7 +42,7 @@ module.exports = (req, res) => {
       obj.table = table
       result.push(obj)
     })
-    result.sort((a, b) => a.year > b.year ? 1 : -1)
+    // result.sort((a, b) => a.year > b.year ? 1 : -1)
     console.log('=== 成功获取排名 ===')
     res.status(200).json(result)
   })

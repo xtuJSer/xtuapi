@@ -105,25 +105,26 @@ module.exports = function (req, res) {
     })
   }
 
+  const successLogin = () => {
+    console.log('=== 成功登录 ===')
+    res.status(200).json({ cookie })
+    return true
+  }
+
   ;(async () => {
     let isSuccess = false,
         isWrong = false,
         loopTime = 0
-    while (!isSuccess && loopTime < 5 && !isWrong) {
-      // if (req.session.xtu) {
-      //   isSuccess = true
-      //   res.status(200).send('登录成功')
-      // }
+    if (req.session.xtu) {
+      isSuccess = successLogin()
+    }
+    while (!isSuccess && loopTime < 6 && !isWrong) {
       try {
         await getCookie()
         await saveImg(await getImg())
         await editImg()
         await loginToJWXT(await spotImg())
-        isSuccess = true
-        res.status(200).json({
-          msg: '登录成功',
-          cookie
-        })
+        isSuccess = successLogin()
       } catch (err) {
         loopTime++
         if (err.indexOf('用户名或密码错误') > -1) { isWrong = true }
@@ -133,8 +134,8 @@ module.exports = function (req, res) {
 
     if (isWrong) {
       res.status(500).send('用户名或密码错误')
-    } else if (!isSuccess || loopTime === 5) {
-      res.status(500).send('教务系统可能崩了 :)')
+    } else if (!isSuccess || loopTime === 6) {
+      res.status(500).send('教务系统可能崩了')
     }
 
   })()
