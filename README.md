@@ -21,15 +21,15 @@ ps: 原则上只对学校数据进行查询，不会进行任何的增删改操�
 1. 考试成绩
 2. 课程表
 3. 班级、专业排名
-4. 待更新..
+4. 空闲教室
+5. 待更新..
 
 ### 无需登录:
 1. 校内新闻
 2. 媒体湘大
 3. 通知公告
 4. 学术活动
-5. 空闲教室
-6. 待更新..
+5. 待更新..
 
 ## RESTful API 设计
 
@@ -91,6 +91,21 @@ POST http://xtuapi.magicallu.cn/v1/user/course
 #### 获取课程表
 ```
 GET http://xtuapi.magicallu.cn/v1/user/class
+```
+
+#### 获取空闲教室
+post 格式：{ day: 今/明（0/1）} 默认查询今天的成绩
+```
+GET http://xtuapi.magicallu.cn/v1/user/classroom
+POST http://xtuapi.magicallu.cn/v1/user/classroom
+```
+
+#### 获取排名
+post 格式：{ fullYear: 学期的完整时间（如：'2016-2017-1'） }
+post 格式：{ fullYear: 连续几个学期的综合排名，使用 & 链接（如：'2015-2016-2&2016-2017-1'）}
+```
+GET http://xtuapi.magicallu.cn/v1/user/rank
+POST http://xtuapi.magicallu.cn/v1/user/rank
 ```
 
 ## 建议
