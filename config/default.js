@@ -1,8 +1,8 @@
 module.exports = {
   port: 3000,
   session: {
-    secret: 'magicalLu',
-    key: 'xtuApiLu',
+    secret: '2017 magicalLu',
+    key: 'xtu',
     cookie: {
       maxAge: 1000 * 60 * 60 * 1
     },
