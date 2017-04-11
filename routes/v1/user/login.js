@@ -21,7 +21,6 @@ const imgUrl = loginUrl + userUrl.path.verification
 module.exports = function (req, res) {
   let username = req.body.username
   let password = req.body.password
-  console.log(username + '\n' + password)
   let cookie = req.session.xtu || ''
 
   const getCookie = () => {
