@@ -43,6 +43,7 @@ POST
 ```
 DELETE
 ```
+暂无
 ```
 
 ## 使用方法
@@ -83,6 +84,7 @@ POST http://xtuapi.magicallu.cn/v1/user/login
 
 #### 获取成绩
 POST 格式：{ year: 学年（如：2016）, half: 学期（如：1或2）}
+
 默认返回 2016-2017-1 的成绩
 ```
 GET http://xtuapi.magicallu.cn/v1/user/course
@@ -97,6 +99,7 @@ GET http://xtuapi.magicallu.cn/v1/user/class
 
 #### 获取空闲教室
 POST 格式：{ day: 今/明（0/1）}
+
 默认返回今天的空闲教室
 ```
 GET http://xtuapi.magicallu.cn/v1/user/classroom
@@ -105,7 +108,9 @@ POST http://xtuapi.magicallu.cn/v1/user/classroom
 
 #### 获取排名
 POST 格式：{ fullYear: 学期的完整时间（如：'2016-2017-1'） }
-POST 格式：{ fullYear: 连续几个学期的综合排名，使用 & 链接（如：'2015-2016-2&2016-2017-1'）}
+
+POST 格式：{ fullYear: 连续几个学期的综合排名，使用 & 连接（如：'2015-2016-2&2016-2017-1'）}
+
 默认返回 2016-2017-1 的排名
 ```
 GET http://xtuapi.magicallu.cn/v1/user/rank
