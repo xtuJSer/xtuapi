@@ -16,8 +16,30 @@ module.exports = (req, res) => {
   ]
   const prop = ['all', '7', '1']
 
-  let fullYear = req.body.fullYear || '2016-2017-1'
-  fullYear.indexOf('&') > -1 && (year = fullYear.replace(/&/g, '&kksj='))
+  const formatYear = (curYear, half) => {
+    let nextYear = +curYear+1
+    return curYear + '-' + nextYear + '-' + half
+  }
+
+  // 2014-1
+  // 2014-1&2014-2&2015-1
+
+  let fullYear = req.body.fullYear || '2016-1'
+  let year
+
+  // 若 & 存在，则开始处理
+  if (fullYear.indexOf('&') > -1) {
+    fullYear = fullYear.split('&').map(el => formatYear(el.split('-')[0], el.split('-')[1]))
+    console.log(fullYear)
+    year = fullYear.reduce((a, b) => a + '&kksj=' + b)
+    console.log(year)
+    // year = fullYear.replace(/&/g, '&kksj=')
+  } else {
+    let temp = fullYear.split('-')
+    year = formatYear(temp[0], temp[1])
+  }
+
+  // let fullYear = req.body.fullYear || '2016-2017-1'
 
   let ep = new eventproxy()
   ep.after('getHtml', prop.length, (htmlArr) => {

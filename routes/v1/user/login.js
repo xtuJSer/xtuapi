@@ -19,10 +19,10 @@ const postUrl = loginUrl + userUrl.path.login
 const imgUrl = loginUrl + userUrl.path.verification
 
 module.exports = function (req, res) {
-  let username = req.body.username
-  let password = req.body.password
-  let revoke = req.body.revoke || 0
-  let cookie = req.session.xtu || ''
+  let username = req.body.username.trim(),       // 输入的学号
+      password = req.body.password.trim(),       // 输入的密码
+      revoke = req.body.revoke || 0,             // 是否撤销 session 并重新登录，默认为否
+      cookie = req.session.xtu || ''             // 查看是否已登录
 
   const getCookie = () => {
     return new Promise((resolve, reject) => {
@@ -93,8 +93,8 @@ module.exports = function (req, res) {
         })
         .end((err, sres) => {
           if (err) { reject(err) }
-          if (sres.text.indexOf('学号或密码错误') > -1) {
-            reject('学号或密码错误')
+          if (sres.text.indexOf('用户名或密码错误') > -1) {
+            reject('用户名或密码错误')
           } else if (sres.text.indexOf('验证码错误') > -1) {
             reject(`验证码错误`)
           } else {
@@ -109,26 +109,26 @@ module.exports = function (req, res) {
     console.log('=== 成功登录 ===')
     res.status(200).json({
       msg: 'success',
+      detail: '成功登录'
       // cookie
     })
     return true
   }
 
   ;(async () => {
-    let isSuccess = false,
-        isWrong = false,
-        loopTime = 0,
-        isFormat = true
+    let isSuccess = false,    // 是否成功登录
+        isWrong = false,      // 用户的账号密码不正确
+        isFormat = true,      // 用户输入不规范，提前判定，不进入登录逻辑
+        loopTime = 0          // 登录失败后进入循环的统计
+
     req.session.xtu && !revoke && (isSuccess = successLogin())
 
     if (username === undefined || (!password && password === undefined)) {
-      isFormat = false
-      res.status(500).json({ detail: '账号或密码不能为空', msg: 'wrong' })
+      isFormat = false && res.status(500).json({ detail: '账号或密码不能为空', msg: 'wrong' })
     } else if (username.length !== 10) {
-      isFormat = false
-      res.status(500).json({ detail: '请输入正确的学号', msg: 'wrong' })
+      isFormat = false && res.status(500).json({ detail: '请输入正确的学号', msg: 'wrong' })
     } else if (password.length < 6) {
-      res.status(500).json({ detail: '请输入正确的密码', msg: 'wrong' })
+      isFormat = false && res.status(500).json({ detail: '请输入正确的密码', msg: 'wrong' })
     }
 
     console.log('--- 正在登录 ---')
@@ -141,6 +141,7 @@ module.exports = function (req, res) {
         isSuccess = successLogin()
       } catch (err) {
         loopTime++
+        console.log(err)
         if (err.indexOf('用户名或密码错误') > -1) { isWrong = true }
         console.log(`登录失败: ${err}`)
       }

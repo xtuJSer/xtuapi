@@ -95,7 +95,7 @@ config/*
 !config/default.*
 
 # public/images
-./public/images/*
+public
 
 # sftp-config
 sftp-config.json
