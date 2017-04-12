@@ -30,8 +30,6 @@ module.exports = {
   },
   spotImgOptions: {
     l: 'lu',
-    // binary: '/usr/bin/tesseract' // centos
-    // binary: '/usr/local/bin/tesseract' // mac
     binary: process.env.USER === 'weiwu'
       ? '/usr/local/bin/tesseract'
       : '/usr/bin/tesseract'

@@ -21,25 +21,16 @@ module.exports = (req, res) => {
     return curYear + '-' + nextYear + '-' + half
   }
 
-  // 2014-1
-  // 2014-1&2014-2&2015-1
-
   let fullYear = req.body.fullYear || '2016-1'
   let year
 
-  // 若 & 存在，则开始处理
   if (fullYear.indexOf('&') > -1) {
     fullYear = fullYear.split('&').map(el => formatYear(el.split('-')[0], el.split('-')[1]))
-    console.log(fullYear)
     year = fullYear.reduce((a, b) => a + '&kksj=' + b)
-    console.log(year)
-    // year = fullYear.replace(/&/g, '&kksj=')
   } else {
     let temp = fullYear.split('-')
     year = formatYear(temp[0], temp[1])
   }
-
-  // let fullYear = req.body.fullYear || '2016-2017-1'
 
   let ep = new eventproxy()
   ep.after('getHtml', prop.length, (htmlArr) => {
@@ -64,7 +55,7 @@ module.exports = (req, res) => {
       obj.table = table
       result.push(obj)
     })
-    // result.sort((a, b) => a.year > b.year ? 1 : -1)
+
     console.log('=== 成功获取排名 ===')
     res.status(200).json(result)
   })
