@@ -93,8 +93,8 @@ module.exports = function (req, res) {
         })
         .end((err, sres) => {
           if (err) { reject(err) }
-          if (sres.text.indexOf('用户名或密码错误') > -1) {
-            reject('用户名或密码错误')
+          if (sres.text.indexOf('学号或密码错误') > -1) {
+            reject('学号或密码错误')
           } else if (sres.text.indexOf('验证码错误') > -1) {
             reject(`验证码错误`)
           } else {
@@ -127,6 +127,8 @@ module.exports = function (req, res) {
     } else if (username.length !== 10) {
       isFormat = false
       res.status(500).json({ detail: '请输入正确的学号', msg: 'wrong' })
+    } else if (password.length < 6) {
+      res.status(500).json({ detail: '请输入正确的密码', msg: 'wrong' })
     }
 
     console.log('--- 正在登录 ---')
@@ -145,7 +147,7 @@ module.exports = function (req, res) {
     }
 
     if (isWrong && isFormat) {
-      res.status(500).json({ detail: '用户名或密码错误', msg: 'wrong' })
+      res.status(500).json({ detail: '学号或密码错误', msg: 'wrong' })
     } else if ((!isSuccess || loopTime === 6) && isFormat) {
       res.status(500).json({ detail: '教务系统可能崩了', msg: 'error' })
     }
