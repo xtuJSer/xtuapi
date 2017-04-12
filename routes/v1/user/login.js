@@ -124,11 +124,14 @@ module.exports = function (req, res) {
     req.session.xtu && !revoke && (isSuccess = successLogin())
 
     if (username === undefined || (!password && password === undefined)) {
-      isFormat = false && res.status(500).json({ detail: '账号或密码不能为空', msg: 'wrong' })
+      isFormat = false
+      res.status(500).json({ detail: '账号或密码不能为空', msg: 'wrong' })
     } else if (username.length !== 10) {
-      isFormat = false && res.status(500).json({ detail: '请输入正确的学号', msg: 'wrong' })
+      isFormat = false
+      res.status(500).json({ detail: '请输入正确的学号', msg: 'wrong' })
     } else if (password.length < 6) {
-      isFormat = false && res.status(500).json({ detail: '请输入正确的密码', msg: 'wrong' })
+      isFormat = false
+      res.status(500).json({ detail: '请输入正确的密码', msg: 'wrong' })
     }
 
     console.log('--- 正在登录 ---')
