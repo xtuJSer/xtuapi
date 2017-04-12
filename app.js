@@ -36,15 +36,8 @@ app.all('*', (req, res, next) => {
   res.header("Access-Control-Allow-Credentials", config.cors.credentials)
   res.header("Access-Control-Allow-Methods", config.cors.methods)
   res.header("Access-Control-Max-Age", config.session.cookie.maxAge);
+  res.header("Content-Type", config.cors.contentType)
 
-  res.header("Content-Type", "application/json;charset=utf-8")
-
-  // if (req.method == 'OPTIONS') {
-  //   res.status(200)
-  // }
-  // else {
-  //   next()
-  // }
   next()
 })
 

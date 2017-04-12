@@ -13,7 +13,8 @@ module.exports = {
     origin: 'http://localhost:8000',
     headers: 'Origin, X-Requested-With, Content-Type, Accept, Set-Cookie, Cookie',
     credentials: true,
-    methods: '*'
+    methods: '*',
+    'contentType': 'application/json;charset=utf-8'
   },
   mongodb: 'mongodb://localhost:27017/xtuApiLu',
   header: {
@@ -31,7 +32,9 @@ module.exports = {
     l: 'lu',
     // binary: '/usr/bin/tesseract' // centos
     // binary: '/usr/local/bin/tesseract' // mac
-    binary: process.env.USER === 'weiwu' ? '/usr/local/bin/tesseract' : '/usr/bin/tesseract'
+    binary: process.env.USER === 'weiwu'
+      ? '/usr/local/bin/tesseract'
+      : '/usr/bin/tesseract'
   },
   xtuUrl: {
     trend: {
