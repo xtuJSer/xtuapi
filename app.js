@@ -31,7 +31,12 @@ app.use(session({
 app.use(compress())
 
 app.all('*', (req, res, next) => {
-  res.header("Access-Control-Allow-Origin", config.cors.origin)
+  for (let el of config.cors.origin) {
+    if (el === req.headers.origin) {
+      res.header("Access-Control-Allow-Origin", req.headers.origin)
+      break
+    }
+  }
   res.header("Access-Control-Allow-Headers", config.cors.headers)
   res.header("Access-Control-Allow-Credentials", config.cors.credentials)
   res.header("Access-Control-Allow-Methods", config.cors.methods)
