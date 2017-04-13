@@ -114,11 +114,13 @@ POST http://xtuapi.magicallu.cn/v1/user/classroom
 ```
 
 #### 获取排名
-POST 格式：{ fullYear: 学期的完整时间（如：'2016-2017-1'） }
+POST 格式：{ fullYear: 学期的完整时间（如：'2016-1'） }
+返回 2016-2017-1 的排名
 
-POST 格式：{ fullYear: 连续几个学期的综合排名，使用 & 连接（如：'2015-2016-2&2016-2017-1'）}
+POST 格式：{ fullYear: 连续几个学期的综合排名，使用 & 连接（如：'2015-1&2015-2'）}
+返回 2015-2016-1 至 2015-2016-2 的排名
 
-默认返回 2016-2017-1 的排名
+GET 默认返回 2016-2017-1 的排名
 ```
 GET http://xtuapi.magicallu.cn/v1/user/rank
 POST http://xtuapi.magicallu.cn/v1/user/rank
