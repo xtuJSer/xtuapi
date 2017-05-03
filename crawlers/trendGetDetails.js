@@ -75,7 +75,8 @@ module.exports = (req, res, target, html) => {
       // console.log(mongo.getFullkey(target))
       return temp
     })
-    details = require('./trendSort')(details)
+    // 排序并获取咨询的来源
+    details = require('../filters/index').trendSource(require('./trendSort')(details))
     console.log('=== 成功获取动态 ===')
     res.status(200).send(details)
   })
