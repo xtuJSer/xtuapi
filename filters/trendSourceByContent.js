@@ -6,6 +6,11 @@ module.exports = detail => {
     if (content[i].includes('年')) {
       detail.source = content[i - 1]
       isFound = true
+    } else if (content[i].includes('来源：')) {
+      content[i].replace(/：(.*)）/g, (match, g1) => {
+        detail.source = g1
+      })
+      isFound = true
     }
   }
   return detail
