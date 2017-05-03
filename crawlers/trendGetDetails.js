@@ -65,7 +65,7 @@ module.exports = (req, res, target, html) => {
 
       temp.content = require('./trendFormatConent')($content.text().split(/[\r\n\t]/))
       // 若是新闻，则需在内容中添加来源
-      // target === 'news' && (temp.content = $())
+      target === 'news' && (temp.source = $($content[0].nextSibling.next).text())
 
       // let model = new mongo[mongo.getFullkey(target)]({
       //   title: temp.title,

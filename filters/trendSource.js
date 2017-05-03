@@ -1,7 +1,10 @@
 const trendSourceByTitle = require('./trendSourceByTitle')
 const trendSourceByContent = require('./trendSourceByContent')
 
-const trendNewsSource = detail => detail
+const trendNewsSource = detail => {
+  // detail.source = detail.content[detail.content.length - 1]
+  return detail
+}
 
 const trendNoticeSource = detail => trendSourceByContent(detail)
 
