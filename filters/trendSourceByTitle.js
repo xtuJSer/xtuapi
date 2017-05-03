@@ -1,4 +1,4 @@
-module.exports = (detail, id) => {
+module.exports = detail => {
   // const END = detail.title.indexOf('】')
   // detail.source = detail.title.substring(1, END)
   let section = detail.title.split('】')
