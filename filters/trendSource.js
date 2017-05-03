@@ -1,25 +1,15 @@
 const trendSourceByTitle = require('./trendSourceByTitle')
 const trendSourceByContent = require('./trendSourceByContent')
 
-const trendNewsSource = (detail, id) => {
+const trendNewsSource = (detail, id) => {}
 
-}
-
-const trendNoticeSource = (detail, id) => {
-
-}
+const trendNoticeSource = (detail, id) => {}
 
 // 获取媒体的作者
-const trendMediaSource = (detail, id) => {
-
-}
+const trendMediaSource = (detail, id) => trendSourceByTitle(detail, id)
 
 // 获取讲座的来源
-const trendCathedraSource = (detail, id) => {
-  const END = el.title.indexOf('】')
-  details.source = el.title.subString(0, END)
-  return details
-}
+const trendCathedraSource = (detail, id) => trendSourceByTitle(detail, id)
 
 const main = {
   news: trendNewsSource,
@@ -28,10 +18,8 @@ const main = {
   cathedra: trendCathedraSource
 }
 
-const trendSource = (type, details) => {
-  let func = main[type]
+module.exports = (target, details) => {
+  let func = main[target]
+  console.log(details)
   return details.map((detail, id) => func(detail, id))
-}
-
-module.exports = {
 }

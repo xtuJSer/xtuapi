@@ -76,7 +76,8 @@ module.exports = (req, res, target, html) => {
       return temp
     })
     // 排序并获取咨询的来源
-    details = require('../filters/index').trendSource(require('./trendSort')(details))
+    details = require('./trendSort')(details)
+    details = require('../filters/index').trendSource(target, details)
     console.log('=== 成功获取动态 ===')
     res.status(200).send(details)
   })

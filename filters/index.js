@@ -1,5 +1,5 @@
-// const trendSource = require('./trendSource')
+const trendSource = require('./trendSource')
 
-// module.exports = {
-//   trendSource
-// }
+module.exports = {
+  trendSource
+}
