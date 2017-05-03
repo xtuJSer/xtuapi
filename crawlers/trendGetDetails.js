@@ -58,12 +58,14 @@ module.exports = (req, res, target, html) => {
 
       let $content
       if (target === 'news' || target === 'media') {
-        $content = $('.content')
+        $content = $('div.content')
       } else if (target === 'notice' || target === 'cathedra') {
         $content = $('.con-tent-box')
       }
 
       temp.content = require('./trendFormatConent')($content.text().split(/[\r\n\t]/))
+      // 若是新闻，则需在内容中添加来源
+      // target === 'news' && (temp.content = $())
 
       // let model = new mongo[mongo.getFullkey(target)]({
       //   title: temp.title,

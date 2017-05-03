@@ -1,10 +1,7 @@
 const trendSourceByTitle = require('./trendSourceByTitle')
 const trendSourceByContent = require('./trendSourceByContent')
 
-const trendNewsSource = detail => {
-  detail.source = detail.content[detail.content.length - 1]
-  return detail
-}
+const trendNewsSource = detail => detail
 
 const trendNoticeSource = detail => trendSourceByContent(detail)
 
@@ -23,7 +20,6 @@ const main = {
 
 module.exports = (target, details) => {
   let func = main[target]
-  console.log(details)
   // 获取来源
   return details.map(detail => func(detail))
 }
