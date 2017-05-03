@@ -1,9 +1,9 @@
 const trendSourceByTitle = require('./trendSourceByTitle')
 const trendSourceByContent = require('./trendSourceByContent')
 
-const trendNewsSource = (detail, id) => {}
+const trendNewsSource = (detail, id) => detail
 
-const trendNoticeSource = (detail, id) => {}
+const trendNoticeSource = (detail, id) => detail
 
 // 获取媒体的作者
 const trendMediaSource = (detail, id) => trendSourceByTitle(detail, id)
@@ -20,6 +20,5 @@ const main = {
 
 module.exports = (target, details) => {
   let func = main[target]
-  console.log(details)
   return details.map((detail, id) => func(detail, id))
 }
