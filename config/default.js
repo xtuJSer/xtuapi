@@ -10,7 +10,11 @@ module.exports = {
     resave: true
   },
   cors: {
-    origin: ['http://localhost:8000', 'http://free.magicallu.cn'],
+    origin: [
+      'http://localhost:8000',
+      'http://free.magicallu.cn',
+      'http://trend.magicallu.cn'
+    ],
     headers: 'Origin, X-Requested-With, Content-Type, Accept, Set-Cookie, Cookie',
     credentials: true,
     methods: '*',
