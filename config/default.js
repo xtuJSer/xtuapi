@@ -12,6 +12,7 @@ module.exports = {
   cors: {
     origin: [
       'http://localhost:8000',
+      'http://localhost:8888',
       'http://free.magicallu.cn',
       'http://trend.magicallu.cn'
     ],

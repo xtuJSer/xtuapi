@@ -10,6 +10,7 @@ module.exports = detail => {
       content[i].replace(/：(.*)）/g, (match, g1) => {
         detail.source = g1
       })
+      content.splice(i, 1)
       isFound = true
     }
   }
