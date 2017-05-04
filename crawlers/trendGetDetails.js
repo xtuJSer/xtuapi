@@ -66,6 +66,10 @@ module.exports = (req, res, target, html) => {
       temp.content = require('./trendFormatConent')($content.text().split(/[\r\n\t]/))
       // 若是新闻，则需在内容中添加来源
       target === 'news' && (temp.content.push($($content[0].nextSibling.next).text()))
+      // 若是媒体，则需除去最后一行的链接
+      target === 'media' && temp.content.length !== 1 && temp.content.pop()
+      // 若是讲座、公告，则需除去第一行的标题
+      ;(target === 'cathedra' || target === 'notice') && temp.content.shift()
 
       // let model = new mongo[mongo.getFullkey(target)]({
       //   title: temp.title,
