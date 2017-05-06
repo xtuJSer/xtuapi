@@ -5,19 +5,18 @@ module.exports = (req, res, isUser = true) => new Promise((resolve, reject) => {
   let username = isUser ? req.body.username.trim() : user.username,       // 输入的学号
       password = isUser ? req.body.password.trim() : user.password,       // 输入的密码
       revoke = req.body.revoke || 0,                                      // 是否撤销 session 并重新登录，默认为否
-      cookie = req.session.xtu || ''                                      // 查看是否已登录
+      cookie = req.session.xtu || '',                                     // 查看是否已登录
+      isSuccess = false,                                                  // 是否成功登录
+      isWrong = false,                                                    // 用户的账号密码不正确
+      loopTime = 0,                                                       // 登录失败后进入循环的统计
+      { isFormat, errorMsg } = checkFormat(username, password)            // 判定用户输入值是否规范
+
+  isUser && cookie && !revoke && (isSuccess = successLogin(res, isUser))  // 若是用户登录，则判断是否存在 session
+  !isFormat && res.status(500).json(errorMsg)                             // 用户输入不规范，提前返回错误值，不进入登录逻辑
 
   ;(async () => {
-    let isSuccess = false,    // 是否成功登录
-        isWrong = false,      // 用户的账号密码不正确
-        loopTime = 0          // 登录失败后进入循环的统计
-
-    isUser && cookie && !revoke && (isSuccess = successLogin(res, isUser))  // 若是用户登录，则判断是否存在 session
-
-    let { isFormat, errorMsg } = checkFormat(username, password)          // 用户输入不规范，提前判定，不进入登录逻辑
-    !isFormat && res.status(500).json(errorMsg)
-
     !isSuccess && console.log('--- 正在登录 ---')
+
     const MAX_LOOP_TIME = 6
     while (!isSuccess && loopTime <= MAX_LOOP_TIME && !isWrong && isFormat) {
       try {
@@ -29,8 +28,8 @@ module.exports = (req, res, isUser = true) => new Promise((resolve, reject) => {
         !isUser && resolve(cookie)                                                              // 若不是用户操作，则返回 Promise
       } catch (err) {
         loopTime++
-        if (err.indexOf('用户名或密码错误') > -1) { isWrong = true }         // 若用户的账号密码错误，则跳出循环
         console.error(`登录失败: ${err}`)
+        if (err.indexOf('用户名或密码错误') > -1) { isWrong = true }                               // 若用户的账号密码错误，则跳出循环
       }
     }
 
