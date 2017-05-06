@@ -18,7 +18,7 @@ const loginUrl = userUrl.host
 const postUrl = loginUrl + userUrl.path.login
 const imgUrl = loginUrl + userUrl.path.verification
 
-module.exports = async (req, res, isUser = true) => {
+module.exports = (req, res, isUser = true) => {
   let username = isUser ? req.body.username.trim() : user.username,       // 输入的学号
       password = isUser ? req.body.password.trim() : user.password,       // 输入的密码
       revoke = req.body.revoke || 0,                                      // 是否撤销 session 并重新登录，默认为否
@@ -87,7 +87,7 @@ module.exports = async (req, res, isUser = true) => {
         } else if (sres.text.indexOf('验证码错误') > -1) {
           reject(`验证码错误`)
         } else {
-          req.session.xtu = cookie
+          isUser && (req.session.xtu = cookie)
           resolve()
         }
       })
@@ -103,13 +103,13 @@ module.exports = async (req, res, isUser = true) => {
     return true
   }
 
-  await(async () => {
+  (async () => {
     let isSuccess = false,    // 是否成功登录
         isWrong = false,      // 用户的账号密码不正确
         isFormat = true,      // 用户输入不规范，提前判定，不进入登录逻辑
         loopTime = 0          // 登录失败后进入循环的统计
 
-    req.session.xtu && !revoke && (isSuccess = successLogin())
+    isUser && req.session.xtu && !revoke && (isSuccess = successLogin())
 
     if (username === undefined || (!password && password === undefined)) {
       isFormat = false
@@ -143,7 +143,5 @@ module.exports = async (req, res, isUser = true) => {
     } else if ((!isSuccess || loopTime === 6) && isFormat) {
       res.status(500).json({ detail: '教务系统可能崩了', msg: 'error' })
     }
-
-    return new Promise(resolve => resolve())
   })()
 }

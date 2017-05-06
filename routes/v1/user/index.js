@@ -7,7 +7,7 @@ router.get('/user', (req, res) => {
 })
 
 // 教务系统登录
-router.post('/user/login', require('./login'))
+router.post('/user/login', require('./login-Alpha'))
 router.get('/user/login', (req, res, next) => {
   return res.status(500).send('登录需要 POST 请求')
 })

@@ -7,7 +7,7 @@ const fs = require('fs')
 const header = require('../config/default').header
 const user = require('../config/default').xtuUrl.user
 
-module.exports = (req, res) => {
+module.exports = (req, res, session) => {
   let day = req.body.day || 0
   ;(day < 0 || day > 1) && (day = 0)
   const classroomUrl = user.host + user.path.classroom
@@ -17,7 +17,7 @@ module.exports = (req, res) => {
       xzlx: day
     })
     .set(header)
-    .set('Cookie', req.session.xtu)
+    .set('Cookie', session)
     .charset('utf-8')
     .end((err, sres) => {
       if (err) { throw new Error('获取空闲教室失败') }
