@@ -18,14 +18,15 @@ module.exports = (req, res, isUser = true) => new Promise((resolve, reject) => {
     !isFormat && res.status(500).json(errorMsg)
 
     !isSuccess && console.log('--- 正在登录 ---')
-    while (!isSuccess && loopTime <= 6 && !isWrong && isFormat) {
+    const MAX_LOOP_TIME = 6
+    while (!isSuccess && loopTime <= MAX_LOOP_TIME && !isWrong && isFormat) {
       try {
-        cookie = await getCookie()
-        await saveImg(await getImg(cookie), username)
-        await editImg(username)
-        await loginToJWXT(await spotImg(username), req, username, password, cookie, isUser)
-        isSuccess = successLogin(res, isUser)
-        isSuccess && resolve(cookie)
+        cookie = await getCookie()                                                              // 获取当前会话的 sessionId
+        await saveImg(await getImg(cookie), username)                                           // 获取验证码，并保存到相应路径
+        await editImg(username)                                                                 // 对验证码做处理，便于识别
+        await loginToJWXT(await spotImg(username), req, username, password, cookie, isUser)     // 识别验证码并尝试登录教务系统
+        isSuccess = successLogin(res, isUser)                                                   // 若无错误抛出则表示成功，返回数据
+        !isUser && resolve(cookie)                                                              // 若不是用户操作，则返回 Promise
       } catch (err) {
         loopTime++
         if (err.indexOf('用户名或密码错误') > -1) { isWrong = true }         // 若用户的账号密码错误，则跳出循环
@@ -35,7 +36,7 @@ module.exports = (req, res, isUser = true) => new Promise((resolve, reject) => {
 
     if (isWrong && isFormat) {
       res.status(500).json({ detail: '学号或密码错误', msg: 'wrong' })
-    } else if ((!isSuccess || loopTime === 6) && isFormat) {
+    } else if ((!isSuccess || loopTime > MAX_LOOP_TIME) && isFormat) {
       res.status(500).json({ detail: '教务系统可能崩了', msg: 'error' })
     }
   })()
