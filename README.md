@@ -58,35 +58,35 @@ DELETE
 #### 校内新闻
 参数 count: 数据数量（≤25）
 ```
-GET http://xtuapi.magicallu.cn/v1/trend/news
-GET http://xtuapi.magicallu.cn/v1/trend/news/:count
+GET https://xtuapi.magicallu.cn/v1/trend/news
+GET https://xtuapi.magicallu.cn/v1/trend/news/:count
 ```
 
 #### 通知公告
 参数 count: 数据数量（≤25）
 ```
-GET http://xtuapi.magicallu.cn/v1/trend/notice
-GET http://xtuapi.magicallu.cn/v1/trend/notice/:count
+GET https://xtuapi.magicallu.cn/v1/trend/notice
+GET https://xtuapi.magicallu.cn/v1/trend/notice/:count
 ```
 
 #### 媒体湘大
 参数 count: 数据数量（≤25）
 ```
-GET http://xtuapi.magicallu.cn/v1/trend/media
-GET http://xtuapi.magicallu.cn/v1/trend/media/:count
+GET https://xtuapi.magicallu.cn/v1/trend/media
+GET https://xtuapi.magicallu.cn/v1/trend/media/:count
 ```
 #### 学术活动
 参数 count: 数据数量（≤25）
 ```
-GET http://xtuapi.magicallu.cn/v1/trend/cathedra
-GET http://xtuapi.magicallu.cn/v1/trend/cathedra/:count
+GET https://xtuapi.magicallu.cn/v1/trend/cathedra
+GET https://xtuapi.magicallu.cn/v1/trend/cathedra/:count
 ```
 
 ### 获取教务系统相关信息 - 需要登录
 #### 登录教务系统
 POST 格式：{ username: 学号, password: 密码 }
 ```
-POST http://xtuapi.magicallu.cn/v1/user/login
+POST https://xtuapi.magicallu.cn/v1/user/login
 ```
 
 #### 获取成绩
@@ -94,14 +94,14 @@ POST 格式：{ year: 学年（如：2016）, half: 学期（如：1或2）}
 
 默认返回 2016-2017-1 的成绩
 ```
-GET http://xtuapi.magicallu.cn/v1/user/course
-POST http://xtuapi.magicallu.cn/v1/user/course
+GET https://xtuapi.magicallu.cn/v1/user/course
+POST https://xtuapi.magicallu.cn/v1/user/course
 ```
 
 #### 获取课程表
 默认返回当前学期的课程表
 ```
-GET http://xtuapi.magicallu.cn/v1/user/class
+GET https://xtuapi.magicallu.cn/v1/user/class
 ```
 
 #### 获取空闲教室
@@ -109,8 +109,8 @@ POST 格式：{ day: 今/明（0/1）}
 
 默认返回今天的空闲教室
 ```
-GET http://xtuapi.magicallu.cn/v1/user/classroom
-POST http://xtuapi.magicallu.cn/v1/user/classroom
+GET https://xtuapi.magicallu.cn/v1/user/classroom
+POST https://xtuapi.magicallu.cn/v1/user/classroom
 ```
 
 #### 获取排名
@@ -122,8 +122,8 @@ POST 格式：{ fullYear: 连续几个学期的综合排名，使用 & 连接（
 
 GET 默认返回 2016-2017-1 的排名
 ```
-GET http://xtuapi.magicallu.cn/v1/user/rank
-POST http://xtuapi.magicallu.cn/v1/user/rank
+GET https://xtuapi.magicallu.cn/v1/user/rank
+POST https://xtuapi.magicallu.cn/v1/user/rank
 ```
 
 ## 建议
