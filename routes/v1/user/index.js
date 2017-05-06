@@ -20,12 +20,12 @@ router.post('/user/course', checkLogin, require('./course'))
 // 获取课程表
 router.get('/user/class', checkLogin, require('./class'))
 
-// 空闲教室
-router.get('/user/classroom', checkLogin, require('./classroom'))
-router.post('/user/classroom', checkLogin, require('./classroom'))
-
 // 获取排名
 router.get('/user/rank', checkLogin, require('./rank'))
 router.post('/user/rank', checkLogin, require('./rank'))
+
+// 空闲教室
+router.get('/user/classroom', require('./classroom'))
+router.post('/user/classroom', require('./classroom'))
 
 module.exports = router

@@ -2,14 +2,14 @@ const fs = require('fs')
 const path = require('path')
 
 const cheerio = require('cheerio')
-const charset = require('superagent-charset')
 const request = require('superagent')
-charset(request)
+require('superagent-charset')(request)
 
 const tesseract = require('node-tesseract')
 const gm = require('gm')
 
 const config = require('../../../config/default')
+const { user } = require('../../../config/prod')
 const imgDir = path.join(__dirname, '../../../public/images')
 
 const header = config.header
@@ -18,96 +18,84 @@ const loginUrl = userUrl.host
 const postUrl = loginUrl + userUrl.path.login
 const imgUrl = loginUrl + userUrl.path.verification
 
-module.exports = function (req, res) {
-  let username = req.body.username.trim(),       // 输入的学号
-      password = req.body.password.trim(),       // 输入的密码
-      revoke = req.body.revoke || 0,             // 是否撤销 session 并重新登录，默认为否
-      cookie = req.session.xtu || ''             // 查看是否已登录
+module.exports = async (req, res, isUser = true) => {
+  let username = isUser ? req.body.username.trim() : user.username,       // 输入的学号
+      password = isUser ? req.body.password.trim() : user.password,       // 输入的密码
+      revoke = req.body.revoke || 0,                                      // 是否撤销 session 并重新登录，默认为否
+      cookie = req.session.xtu || ''                                      // 查看是否已登录
 
-  const getCookie = () => {
-    return new Promise((resolve, reject) => {
-      request.get(loginUrl)
-        .end((err, sres) => {
-          if (err) { reject('获取登录Cookie失败') }
-          cookie = sres.headers['set-cookie'].pop().split(';')[0]
-          resolve(cookie)
-        })
-    })
-  }
-
-  const getImg = () => {
-    return new Promise((resolve, reject) => {
-      request.get(imgUrl)
-        .set(header)
-        .set('Cookie', cookie)
-        .end((err, sres) => {
-          if (err) { reject('获取验证码失败') }
-          resolve(sres.body)
-        })
-    })
-  }
-
-  const saveImg = (img) => {
-    return new Promise((resolve) => {
-      fs.writeFileSync(imgDir + `/${username}.jpg`, img)
-      resolve()
-    })
-  }
-
-  const editImg = () => {
-    return new Promise((resolve, reject) => {
-      gm(imgDir + `/${username}.jpg`)
-        .despeckle() //去斑
-        .contrast(-2000) //对比度调整
-        .write(imgDir + `/${username}_gm.jpg`, err => {
-          if (err) { reject(`图片处理中出错`) }
-          resolve()
-        })
-    })
-  }
-
-  const spotImg = () => {
-    return new Promise((resolve, reject) => {
-      tesseract.process(imgDir + `/${username}_gm.jpg`, config.spotImgOptions, (err, ret) => {
-        if (err) { reject(err) }
-        ret = ret.replace(/\s*/gm, '').substr(0, 4).toLowerCase()
-        if (ret.length !== 4 || ret.match(/\W/g) !== null) {
-          reject(`验证码不合法`)
-        }
-        resolve(ret)
+  const getCookie = () => new Promise((resolve, reject) => {
+    request.get(loginUrl)
+      .end((err, sres) => {
+        if (err) { reject('获取登录Cookie失败') }
+        cookie = sres.headers['set-cookie'].pop().split(';')[0]
+        resolve(cookie)
       })
-    })
-  }
+  })
 
-  const loginToJWXT = (ret) => {
-    return new Promise ((resolve, reject) => {
-      request.post(postUrl)
-        .type('form')
-        .set(header)
-        .set('Cookie', cookie)
-        .charset('gbk')
-        .send({
-          USERNAME: username,
-          PASSWORD: password,
-          RANDOMCODE: ret
-        })
-        .end((err, sres) => {
-          if (err) { reject(err) }
-          if (sres.text.indexOf('用户名或密码错误') > -1) {
-            reject('用户名或密码错误')
-          } else if (sres.text.indexOf('验证码错误') > -1) {
-            reject(`验证码错误`)
-          } else {
-            req.session.xtu = cookie
-            resolve()
-          }
-        })
+  const getImg = () => new Promise((resolve, reject) => {
+    request.get(imgUrl)
+      .set(header)
+      .set('Cookie', cookie)
+      .end((err, sres) => {
+        if (err) { reject('获取验证码失败') }
+        resolve(sres.body)
+      })
+  })
+
+  const saveImg = (img) => new Promise((resolve) => {
+    fs.writeFileSync(imgDir + `/${username}.jpg`, img)
+    resolve()
+  })
+
+  const editImg = () => new Promise((resolve, reject) => {
+    gm(imgDir + `/${username}.jpg`)
+      .despeckle() //去斑
+      .contrast(-2000) //对比度调整
+      .write(imgDir + `/${username}_gm.jpg`, err => {
+        if (err) { reject(`图片处理中出错`) }
+        resolve()
+      })
+  })
+
+  const spotImg = () => new Promise((resolve, reject) => {
+    tesseract.process(imgDir + `/${username}_gm.jpg`, config.spotImgOptions, (err, ret) => {
+      if (err) { reject(err) }
+      ret = ret.replace(/\s*/gm, '').substr(0, 4).toLowerCase()
+      if (ret.length !== 4 || ret.match(/\W/g) !== null) {
+        reject(`验证码不合法`)
+      }
+      resolve(ret)
     })
-  }
+  })
+
+  const loginToJWXT = (ret) => new Promise ((resolve, reject) => {
+    request.post(postUrl)
+      .type('form')
+      .set(header)
+      .set('Cookie', cookie)
+      .charset('gbk')
+      .send({
+        USERNAME: username,
+        PASSWORD: password,
+        RANDOMCODE: ret
+      })
+      .end((err, sres) => {
+        if (err) { reject(err) }
+        if (sres.text.indexOf('用户名或密码错误') > -1) {
+          reject('用户名或密码错误')
+        } else if (sres.text.indexOf('验证码错误') > -1) {
+          reject(`验证码错误`)
+        } else {
+          req.session.xtu = cookie
+          resolve()
+        }
+      })
+  })
 
   const successLogin = () => {
     console.log('=== 成功登录 ===')
-    res.status(200).json({
+    isUser && res.status(200).json({
       msg: 'success',
       detail: '成功登录'
       // cookie
@@ -115,7 +103,7 @@ module.exports = function (req, res) {
     return true
   }
 
-  ;(async () => {
+  await(async () => {
     let isSuccess = false,    // 是否成功登录
         isWrong = false,      // 用户的账号密码不正确
         isFormat = true,      // 用户输入不规范，提前判定，不进入登录逻辑
@@ -144,9 +132,9 @@ module.exports = function (req, res) {
         isSuccess = successLogin()
       } catch (err) {
         loopTime++
-        console.log(err)
+        console.error(err)
         if (err.indexOf('用户名或密码错误') > -1) { isWrong = true }
-        console.log(`登录失败: ${err}`)
+        console.error(`登录失败: ${err}`)
       }
     }
 
@@ -156,5 +144,6 @@ module.exports = function (req, res) {
       res.status(500).json({ detail: '教务系统可能崩了', msg: 'error' })
     }
 
+    return new Promise(resolve => resolve())
   })()
 }

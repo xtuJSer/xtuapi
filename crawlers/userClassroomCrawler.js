@@ -86,7 +86,7 @@ module.exports = (req, res) => {
         })
       })
 
-      console.log('=== 成功获取空闲教室 ===')
+      console.log(`=== 成功获取空闲教室 ===`)
       res.status(200).send(Time)
     })
 }
