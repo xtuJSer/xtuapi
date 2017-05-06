@@ -4,32 +4,31 @@ const cheerio = require('cheerio')
 const request = require('superagent')
 require('superagent-charset')(request)
 
+const tesseract = require('node-tesseract')
+const gm = require('gm')
+
 const config = require('../config/default')
 const imgDir = path.join(__dirname, '../public/images')
 const header = config.header
 const userUrl = config.xtuUrl.user
 const loginUrl = userUrl.host
-
-const tesseract = require('node-tesseract')
-const gm = require('gm')
-
 const postUrl = loginUrl + userUrl.path.login
 const imgUrl = loginUrl + userUrl.path.verification
 
 const checkFormat = (username, password) => {
-    let errorMsg = null
+  let errorMsg = null
 
-    if (username === undefined || (!password && password === undefined)) {
-      errorMsg = { detail: '账号或密码不能为空', msg: 'wrong' }
-    } else if (username.length !== 10) {
-      errorMsg = { detail: '请输入正确的学号', msg: 'wrong' }
-    } else if (password.length < 6) {
-      errorMsg = { detail: '请输入正确的密码', msg: 'wrong' }
-    }
-    return {
-      isFormat: !errorMsg,
-      errorMsg
-    }
+  if (username === undefined || (!password && password === undefined)) {
+    errorMsg = { detail: '账号或密码不能为空', msg: 'wrong' }
+  } else if (username.length !== 10) {
+    errorMsg = { detail: '请输入正确的学号', msg: 'wrong' }
+  } else if (password.length < 6) {
+    errorMsg = { detail: '请输入正确的密码', msg: 'wrong' }
+  }
+  return {
+    isFormat: !errorMsg,
+    errorMsg
+  }
 
 }
 
@@ -42,7 +41,7 @@ const getCookie = () => new Promise((resolve, reject) => {
     })
 })
 
-const getImg = (cookie) => new Promise((resolve, reject) => {
+const getImg = cookie => new Promise((resolve, reject) => {
   request.get(imgUrl)
     .set(header)
     .set('Cookie', cookie)
@@ -57,7 +56,7 @@ const saveImg = (img, username) => new Promise((resolve) => {
   resolve()
 })
 
-const editImg = (username) => new Promise((resolve, reject) => {
+const editImg = username => new Promise((resolve, reject) => {
   gm(imgDir + `/${username}.jpg`)
     .despeckle() //去斑
     .contrast(-2000) //对比度调整
@@ -67,7 +66,7 @@ const editImg = (username) => new Promise((resolve, reject) => {
     })
 })
 
-const spotImg = (username) => new Promise((resolve, reject) => {
+const spotImg = username => new Promise((resolve, reject) => {
   tesseract.process(imgDir + `/${username}_gm.jpg`, config.spotImgOptions, (err, ret) => {
     if (err) { reject(err) }
     ret = ret.replace(/\s*/gm, '').substr(0, 4).toLowerCase()
