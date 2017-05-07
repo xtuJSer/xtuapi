@@ -1,6 +1,6 @@
 const list = {
   classroomList: [
-    '经管',
+    '经管楼',
     '逸夫楼'
   ],
   northOrSouthList: [
@@ -9,25 +9,11 @@ const list = {
   ]
 }
 
-// const checkClassroomList = name => {
-//   for (let el of classroomList) {
-//     if (name.indexOf(el) > -1 && name.indexOf('阶') > -1) { return true }
-//   }
-//   return false
-// }
-
-// const checkNorthOrSouthList = name => {
-//   for (let el of northOrSouthList) {
-//     if (name.indexOf(el) > -1 && name.indexOf('阶') > -1) { return true }
-//   }
-//   return false
-// }
-
 const checkList = listName => name => {
   for (let el of list[listName]) {
-    if (name.indexOf(el) > -1 && name.indexOf('阶') > -1) { return true }
+    if (name.indexOf(el.substring(0, 2)) > -1 && name.indexOf('阶') > -1) { return el }
   }
-  return false
+  return null
 }
 
 module.exports = {

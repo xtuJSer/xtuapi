@@ -67,9 +67,14 @@ module.exports = (req, res, session) => {
                 curName = name.slice(0, pos)
                 nextName = name.slice(pos)
               } else {
+                if (isNorthOrSouth) {
+                  curName = name.substring(0, 2)
+                } else if (isClassroom) {
+                  curName = isClassroom
+                }
+                // console.log(name)
                 // 如下皆为不含具体教室的数据
-                console.log(name, isClassroom)
-                console.log(name, isNorthOrSouth)
+                // console.log(name, isNorthOrSouth)
               }
 
               for (let i = 0, len = curTime.length; i < len; i ++) {
