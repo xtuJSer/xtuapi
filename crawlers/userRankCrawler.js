@@ -7,13 +7,13 @@ const user = require('../config/default').xtuUrl.user
 
 module.exports = (req, res) => {
   const rankUrl = user.host + user.path.rank
-  const YEAR = [
-    '2014-2015-1',
-    '2014-2015-2',
-    '2015-2016-1',
-    '2015-2016-2',
-    '2016-2017-1'
-  ]
+  // const YEAR = [
+  //   '2014-2015-1',
+  //   '2014-2015-2',
+  //   '2015-2016-1',
+  //   '2015-2016-2',
+  //   '2016-2017-1'
+  // ]
   const prop = ['all', '7', '1']
 
   const formatYear = (curYear, half) => {

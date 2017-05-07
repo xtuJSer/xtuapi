@@ -13,8 +13,8 @@ module.exports = {
     origin: [
       'http://localhost:8000',
       'http://localhost:8888',
-      'http://free.magicallu.cn',
-      'http://trend.magicallu.cn'
+      'https://free.magicallu.cn',
+      'https://trend.magicallu.cn'
     ],
     headers: 'Origin, X-Requested-With, Content-Type, Accept, Set-Cookie, Cookie',
     credentials: true,

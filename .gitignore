@@ -99,3 +99,5 @@ public/images/
 
 # sftp-config
 sftp-config.json
+
+.idea/
