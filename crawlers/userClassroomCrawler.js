@@ -4,6 +4,7 @@ charset(request)
 const cheerio = require('cheerio')
 const fs = require('fs')
 
+const { checkList } = require('../filters/userClassroom')
 const header = require('../config/default').header
 const user = require('../config/default').xtuUrl.user
 
@@ -56,6 +57,8 @@ module.exports = (req, res, session) => {
               let curName = name,
                   nextName = name,
                   pos = name.search(/\w/g)
+                  isClassroom = checkList('classroomList')(name),
+                  isNorthOrSouth = checkList('northOrSouthList')(name)
 
               if (/\-/g.test(name)) {
                 curName = name.split('-')[0]
@@ -63,6 +66,10 @@ module.exports = (req, res, session) => {
               } else if (pos !== -1){
                 curName = name.slice(0, pos)
                 nextName = name.slice(pos)
+              } else {
+                // 如下皆为不含具体教室的数据
+                console.log(name, isClassroom)
+                console.log(name, isNorthOrSouth)
               }
 
               for (let i = 0, len = curTime.length; i < len; i ++) {
