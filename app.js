@@ -25,7 +25,7 @@ app.use(session({
   }
 
   // store: new MongoStore({
-  //   url: config.mongodb
+  //   url: config.db
   // })
 }))
 app.use(compress())

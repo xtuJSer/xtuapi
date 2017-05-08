@@ -16,6 +16,12 @@ const checkList = listName => name => {
   return null
 }
 
+const judgeDay = (day) => {
+  let today = new Date().getDay()
+  return (day ? today + 1 : today) % 7
+}
+
 module.exports = {
-  checkList
+  checkList,
+  judgeDay
 }
