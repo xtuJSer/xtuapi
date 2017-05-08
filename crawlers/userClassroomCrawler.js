@@ -101,7 +101,10 @@ module.exports = (req, res, session) => {
       })
 
       console.log(`=== 成功获取空闲教室 ===`)
-      fs.writeFileSync(classroomDataDir + '/classroom_' + day + '.json', Time)
-      res.status(200).send(Time)
+      let today = new Date().getDay()
+      let dataDay = (day ? today + 1 : today) % 7
+
+      fs.writeFileSync(classroomDataDir + '/classroom_' + dataDay + '.json', JSON.stringify(Time, null, 2))
+      res.status(200).json(Time)
     })
 }
