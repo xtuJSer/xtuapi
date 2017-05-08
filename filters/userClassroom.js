@@ -39,6 +39,50 @@ const getNameAndRoom = name => {
   return { curName, nextName }
 }
 
+const formatByTime = data => {
+  let Time = []
+
+  data.map((el, idx) => {
+    let name = el.classroomName,
+        time = el.classroomTime
+
+    time.map((t, i) => {
+      if (t === '空') {
+        Time[i] || (Time[i] = [])
+        let curTime = Time[i]
+
+        let { curIdx, nextName } = (function (name, curTime) {
+          let { curName, nextName } = getNameAndRoom(name)
+
+          for (let i = 0, len = curTime.length; i < len; i ++) {
+            if (curTime[i].name.indexOf(curName) === 0) {
+              return { nextName, curIdx: i }
+            }
+          }
+          curTime.push({ name: curName, room: [] })
+          return { nextName, curIdx: curTime.length - 1 }
+        })(name, curTime)
+
+        curTime[curIdx].room = [...curTime[curIdx].room, nextName]
+      }
+    })
+  })
+  return Time
+}
+
+const formatByName = data => {
+  let Name = {}
+  data.map((el, idx) => {
+    let name = el.classroomName,
+        time = el.classroomTime,
+        { curName, nextName } = getNameAndRoom(name)
+
+    Name[curName] || (Name[curName] = [])
+    Name[curName].push({ room: nextName, time })
+  })
+  return Name
+}
+
 const judgeDay = (day) => {
   let today = new Date().getDay()
   return (day ? today + 1 : today) % 7
@@ -47,5 +91,7 @@ const judgeDay = (day) => {
 module.exports = {
   checkList,
   judgeDay,
-  getNameAndRoom
+  getNameAndRoom,
+  formatByName,
+  formatByTime
 }

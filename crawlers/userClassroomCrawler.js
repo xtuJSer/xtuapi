@@ -5,7 +5,7 @@ const cheerio = require('cheerio')
 const fs = require('fs')
 const path = require('path')
 
-const { checkList, judgeDay, getNameAndRoom } = require('../filters/userClassroom')
+const { checkList, judgeDay, getNameAndRoom, formatByTime, formatByName } = require('../filters/userClassroom')
 
 const header = require('../config/default').header
 const user = require('../config/default').xtuUrl.user
@@ -30,50 +30,6 @@ const init = html => {
     table.push(item)
   })
   return table
-}
-
-const formatByTime = data => {
-  let Time = []
-
-  data.map((el, idx) => {
-    let name = el.classroomName,
-        time = el.classroomTime
-
-    time.map((t, i) => {
-      if (t === '空') {
-        Time[i] || (Time[i] = [])
-        let curTime = Time[i]
-
-        let { curIdx, nextName } = (function (name, curTime) {
-          let { curName, nextName } = getNameAndRoom(name)
-
-          for (let i = 0, len = curTime.length; i < len; i ++) {
-            if (curTime[i].name.indexOf(curName) === 0) {
-              return { nextName, curIdx: i }
-            }
-          }
-          curTime.push({ name: curName, room: [] })
-          return { nextName, curIdx: curTime.length - 1 }
-        })(name, curTime)
-
-        curTime[curIdx].room = [...curTime[curIdx].room, nextName]
-      }
-    })
-  })
-  return Time
-}
-
-const formatByName = data => {
-  let Name = {}
-  data.map((el, idx) => {
-    let name = el.classroomName,
-        time = el.classroomTime,
-        { curName, nextName } = getNameAndRoom(name)
-
-    Name[curName] || (Name[curName] = [])
-    Name[curName].push({ room: nextName, time })
-  })
-  return Name
 }
 
 module.exports = (req, res, session) => {
