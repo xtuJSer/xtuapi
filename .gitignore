@@ -93,6 +93,7 @@ typings/
 # configuration
 config/*
 !config/default.*
+!config/userAgent.*
 
 # public/images
 public/images/
