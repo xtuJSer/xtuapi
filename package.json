@@ -25,6 +25,7 @@
     "express-session": "^1.15.2",
     "gm": "^1.23.0",
     "mongoose": "^4.9.3",
+    "node-schedule": "^1.2.1",
     "node-tesseract": "^0.2.7",
     "superagent": "^3.5.2",
     "superagent-charset": "^1.1.1"
