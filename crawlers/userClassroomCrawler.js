@@ -3,10 +3,12 @@ const charset = require('superagent-charset')
 charset(request)
 const cheerio = require('cheerio')
 const fs = require('fs')
+const path = require('path')
 
 const { checkList } = require('../filters/userClassroom')
 const header = require('../config/default').header
 const user = require('../config/default').xtuUrl.user
+const classroomDataDir = path.join(__dirname, '../store')
 
 module.exports = (req, res, session) => {
   let day = req.body.day || 0
@@ -99,6 +101,7 @@ module.exports = (req, res, session) => {
       })
 
       console.log(`=== 成功获取空闲教室 ===`)
+      fs.writeFileSync(classroomDataDir + '/classroom_' + day + '.json', Time)
       res.status(200).send(Time)
     })
 }
