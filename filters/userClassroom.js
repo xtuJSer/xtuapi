@@ -1,3 +1,6 @@
+const fs = require('fs')
+const path = require('path')
+
 const list = {
   classroomList: [
     '经管',
@@ -39,7 +42,12 @@ const getNameAndRoom = name => {
   return { curName, nextName }
 }
 
-const formatByTime = data => {
+const saveData = (type, data, day) => {
+  const classroomDataDir = path.join(__dirname, '../store')
+  fs.writeFileSync(classroomDataDir + '/classroom_' + type + '_' + judgeDay(day) + '.json', JSON.stringify(data, null, 2))
+}
+
+const formatByTime = (data, day) => {
   let Time = []
 
   data.map((el, idx) => {
@@ -67,10 +75,11 @@ const formatByTime = data => {
       }
     })
   })
+  saveData('time', Time, day)
   return Time
 }
 
-const formatByName = data => {
+const formatByName = (data, day) => {
   let Name = {}
   data.map((el, idx) => {
     let name = el.classroomName,
@@ -80,6 +89,7 @@ const formatByName = data => {
     Name[curName] || (Name[curName] = [])
     Name[curName].push({ room: nextName, time })
   })
+  saveData('name', Name, day)
   return Name
 }
 

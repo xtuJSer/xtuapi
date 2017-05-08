@@ -2,14 +2,12 @@ const request = require('superagent')
 const charset = require('superagent-charset')
 charset(request)
 const cheerio = require('cheerio')
-const fs = require('fs')
-const path = require('path')
 
-const { checkList, judgeDay, getNameAndRoom, formatByTime, formatByName } = require('../filters/userClassroom')
+const { checkList, getNameAndRoom, formatByTime, formatByName } = require('../filters/userClassroom')
 
 const header = require('../config/default').header
 const user = require('../config/default').xtuUrl.user
-const classroomDataDir = path.join(__dirname, '../store')
+
 
 const init = html => {
   let $ = cheerio.load(html)
@@ -48,12 +46,11 @@ module.exports = (req, res, session) => {
       let table = init(sres.text)
 
       table = +req.body.byName === 1
-        ? formatByName(table)
-        : formatByTime(table)
+        ? formatByName(table, day)
+        : formatByTime(table, day)
 
       console.log(`=== 成功获取空闲教室 ===`)
 
-      fs.writeFileSync(classroomDataDir + '/classroom_' + judgeDay(day) + '.json', JSON.stringify(table, null, 2))
       res.status(200).json(table)
     })
 }
