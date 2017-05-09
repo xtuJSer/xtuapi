@@ -1,7 +1,9 @@
 const { user } = require('../../../config/prod')
 const { checkFormat, getCookie, getImg, saveImg, editImg, spotImg, loginToJWXT, successLogin } = require('../../../crawlers/userLoginCrawler')
 
-module.exports = (req, res, isUser = true) => new Promise((resolve, reject) => {
+module.exports = (req, res) => new Promise((resolve, reject) => {
+  let isRobot = req.body.isRobot || 0
+  let isUser = !+isRobot
   // let isUser = (req.body.isRobot || false) ? false : true
   let username = isUser ? req.body.username.trim() : user.username,       // 输入的学号
       password = isUser ? req.body.password.trim() : user.password,       // 输入的密码

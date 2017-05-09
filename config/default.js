@@ -1,7 +1,9 @@
 module.exports = {
   port: 3000,
+
   session: {
     secret: '2017 magicalLu',
+    secure: true,
     key: 'xtu',
     cookie: {
       maxAge: 1000 * 60 * 60 * 1
@@ -9,6 +11,7 @@ module.exports = {
     saveUninitialized: false,
     resave: true
   },
+
   cors: {
     origin: [
       'http://localhost:8000',
@@ -22,18 +25,22 @@ module.exports = {
     methods: '*',
     'contentType': 'application/json; charset=utf-8'
   },
+
   db: 'mongodb://localhost:27017/xtuApiLu',
+
   header: {
     'User-Agent': require('./userAgent'),
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     'Accept-Language': 'zh-CN,zh;q=0.8,en;q=0.6,zh-TW;q=0.4,de;q=0.2,la;q=0.2'
   },
+
   spotImgOptions: {
     l: 'lu',
     binary: process.env.USER === 'weiwu'
       ? '/usr/local/bin/tesseract'
       : '/usr/bin/tesseract'
   },
+
   xtuUrl: {
     trend: {
       host: 'http://www.xtu.edu.cn/',

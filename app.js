@@ -20,6 +20,7 @@ app.use(session({
   secret: config.session.secret,
   resave: config.session.resave,
   saveUninitialized: config.session.saveUninitialized,
+  secure: config.session.secure,
   cookie: {
     maxAge: config.session.maxAge
   }
