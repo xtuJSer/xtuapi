@@ -4,7 +4,7 @@ const { checkFormat, getCookie, getImg, saveImg, editImg, spotImg, loginToJWXT, 
 module.exports = (req, res) => new Promise((resolve, reject) => {
   let isRobot = req.body.isRobot || 0
   let isUser = !+isRobot
-  // let isUser = (req.body.isRobot || false) ? false : true
+
   let username = isUser ? req.body.username.trim() : user.username,       // 输入的学号
       password = isUser ? req.body.password.trim() : user.password,       // 输入的密码
       revoke = req.body.revoke || 0,                                      // 是否撤销 session 并重新登录，默认为否

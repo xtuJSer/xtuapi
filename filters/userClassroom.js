@@ -89,8 +89,14 @@ const formatByName = (data, day) => {
     Name[curName] || (Name[curName] = [])
     Name[curName].push({ room: nextName, time })
   })
-  saveData('name', Name, day)
-  return Name
+
+  let ret = []
+  Object.keys(Name).forEach(key => {
+    ret.push({ name: key, details: Name[key] })
+  })
+
+  saveData('name', ret, day)
+  return ret
 }
 
 const judgeDay = (day) => {
