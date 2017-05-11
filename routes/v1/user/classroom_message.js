@@ -11,4 +11,5 @@ module.exports = async (req, res) => {
       return res.status(200).json({ message: messageData[i][messageIdx] })
     }
   }
+  return res.status(200).json({ message: '广告：词条征集中，出门右转“关于”页，查看详情' })
 }

@@ -64,5 +64,5 @@ module.exports = {
     }
   },
 
-  messageRange: [0, 1, 3, 6, 9, 12]
+  messageRange: [0, 1, 6, 12, 18, 24, 30]
 }
