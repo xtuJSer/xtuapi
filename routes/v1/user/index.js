@@ -27,5 +27,6 @@ router.post('/user/rank', checkLogin, require('./rank'))
 // 空闲教室
 router.get('/user/classroom', require('./classroom'))
 router.post('/user/classroom', require('./classroom'))
+router.post('/user/classroom/message', require('./classroom_message'))
 
 module.exports = router
