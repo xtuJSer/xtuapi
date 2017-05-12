@@ -62,7 +62,5 @@ module.exports = {
         rank: 'kscj/cjjd_list'                  // 排名
       }
     }
-  },
-
-  // messageRange: [0, 1, 10, 20, 40, 60]
+  }
 }
