@@ -101,12 +101,12 @@ const loginToJWXT = (ret, req, username, password, cookie, isUser) => new Promis
     })
 })
 
-const successLogin = (res, isUser) => {
+const successLogin = (res, cookie, isUser) => {
   console.log('=== 成功登录 ===')
   isUser && res.status(200).json({
     msg: 'success',
-    detail: '成功登录'
-    // cookie
+    detail: '成功登录',
+    cookie
   })
   return true
 }

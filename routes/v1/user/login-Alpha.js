@@ -14,7 +14,7 @@ module.exports = (req, res) => new Promise((resolve, reject) => {
       loopTime = 0,                                                       // 登录失败后进入循环的统计
       { isFormat, errorMsg } = checkFormat(username, password)            // 判定用户输入值是否规范
 
-  isUser && cookie && !revoke && (isSuccess = successLogin(res, isUser))  // 若是用户登录，则判断是否存在 session
+  isUser && cookie && !revoke && (isSuccess = successLogin(res, cookie, isUser)) // 若是用户登录，则判断是否存在 session
   !isFormat && res.status(500).json(errorMsg)                             // 用户输入不规范，提前返回错误值，不进入登录逻辑
 
   ;(async () => {
@@ -27,7 +27,7 @@ module.exports = (req, res) => new Promise((resolve, reject) => {
         await saveImg(await getImg(cookie), username)                                           // 获取验证码，并保存到相应路径
         await editImg(username)                                                                 // 对验证码做处理，便于识别
         await loginToJWXT(await spotImg(username), req, username, password, cookie, isUser)     // 识别验证码并尝试登录教务系统
-        isSuccess = successLogin(res, isUser)                                                   // 若无错误抛出则表示成功，返回数据
+        isSuccess = successLogin(res, cookie, isUser)                                                   // 若无错误抛出则表示成功，返回数据
         !isUser && resolve(cookie)                                                              // 若不是用户操作，则返回 Promise
       } catch (err) {
         loopTime++
