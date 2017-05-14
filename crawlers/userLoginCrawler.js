@@ -10,10 +10,10 @@ const gm = require('gm')
 const config = require('../config/default')
 const imgDir = path.join(__dirname, '../public/images')
 const header = config.header
-const userUrl = config.xtuUrl.user
-const loginUrl = userUrl.host
-const postUrl = loginUrl + userUrl.path.login
-const imgUrl = loginUrl + userUrl.path.verification
+const userURL = config.xtuURL.user
+const loginURL = userURL.host
+const postURL = loginURL + userURL.path.login
+const imgURL = loginURL + userURL.path.verification
 
 const checkFormat = (username, password) => {
   let errorMsg = null
@@ -33,7 +33,7 @@ const checkFormat = (username, password) => {
 }
 
 const getCookie = () => new Promise((resolve, reject) => {
-  request.get(loginUrl)
+  request.get(loginURL)
     .end((err, sres) => {
       if (err) { reject('获取登录Cookie失败') }
       let cookie = sres.headers['set-cookie'].pop().split(';')[0]
@@ -42,7 +42,7 @@ const getCookie = () => new Promise((resolve, reject) => {
 })
 
 const getImg = cookie => new Promise((resolve, reject) => {
-  request.get(imgUrl)
+  request.get(imgURL)
     .set(header)
     .set('Cookie', cookie)
     .end((err, sres) => {
@@ -78,7 +78,7 @@ const spotImg = username => new Promise((resolve, reject) => {
 })
 
 const loginToJWXT = (ret, req, username, password, cookie, isUser) => new Promise ((resolve, reject) => {
-  request.post(postUrl)
+  request.post(postURL)
     .type('form')
     .set(header)
     .set('Cookie', cookie)

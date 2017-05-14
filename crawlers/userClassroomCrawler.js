@@ -6,7 +6,7 @@ const cheerio = require('cheerio')
 const { checkList, getNameAndRoom, formatByTime, formatByName } = require('../filters/userClassroom')
 
 const header = require('../config/default').header
-const user = require('../config/default').xtuUrl.user
+const user = require('../config/default').xtuURL.user
 
 
 const init = html => {
@@ -33,9 +33,9 @@ const init = html => {
 module.exports = (req, res, session) => {
   let day = req.body.day || 0
   ;(day < 0 || day > 1) && (day = 0)
-  const classroomUrl = user.host + user.path.classroom
+  const classroomURL = user.host + user.path.classroom
 
-  request.post(classroomUrl)
+  request.post(classroomURL)
     .send({ xzlx: day })
     .set(header)
     .set('Cookie', session)

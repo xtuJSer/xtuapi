@@ -1,6 +1,6 @@
 const router = require('express').Router()
-const url = require('../../config/default').xtuUrl
+const URL = require('../../config/default').xtuURL
 
 module.exports = router.get('/', (req, res) => {
-  res.status(200).send(Object.keys(url))
+  res.status(200).send(Object.keys(URL))
 })

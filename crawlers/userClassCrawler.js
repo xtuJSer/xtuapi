@@ -4,15 +4,15 @@ charset(request)
 const cheerio = require('cheerio')
 
 const header = require('../config/default').header
-const user = require('../config/default').xtuUrl.user
+const user = require('../config/default').xtuURL.user
 
 module.exports = (req, res) => {
   const year = 2016
   const half = 2
   const data = `cj0701id=&zc=&demo=&xnxq01id=${year}-${year + 1}-${half}&sfFD=1`
-  const classUrl = user.host + user.path.class
+  const classURL = user.host + user.path.class
 
-  request.post(classUrl)
+  request.post(classURL)
     .set(header)
     .set('Cookie', req.session.xtu)
     .send(data)

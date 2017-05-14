@@ -3,10 +3,10 @@ const cheerio = require('cheerio')
 const eventproxy = require('eventproxy')
 
 const header = require('../config/default').header
-const user = require('../config/default').xtuUrl.user
+const user = require('../config/default').xtuURL.user
 
 module.exports = (req, res) => {
-  const rankUrl = user.host + user.path.rank
+  const rankURL = user.host + user.path.rank
   // const YEAR = [
   //   '2014-2015-1',
   //   '2014-2015-2',
@@ -61,7 +61,7 @@ module.exports = (req, res) => {
   })
 
   prop.map((propEl, pid) => {
-    request.post(rankUrl)
+    request.post(rankURL)
       .set(header)
       .set('Cookie', req.session.xtu)
       .send(`kksj=${ year }&kclb=${ propEl = propEl !== 'all' ? propEl : '1&kclb=7' }&zsb=0`)

@@ -13,10 +13,10 @@ const { user } = require('../../../config/prod')
 const imgDir = path.join(__dirname, '../../../public/images')
 
 const header = config.header
-const userUrl = config.xtuUrl.user
-const loginUrl = userUrl.host
-const postUrl = loginUrl + userUrl.path.login
-const imgUrl = loginUrl + userUrl.path.verification
+const userURL = config.xtuURL.user
+const loginURL = userURL.host
+const postURL = loginURL + userURL.path.login
+const imgURL = loginURL + userURL.path.verification
 
 module.exports = (req, res, isUser = true) => {
   let username = isUser ? req.body.username.trim() : user.username,       // 输入的学号
@@ -25,7 +25,7 @@ module.exports = (req, res, isUser = true) => {
       cookie = req.session.xtu || ''                                      // 查看是否已登录
 
   const getCookie = () => new Promise((resolve, reject) => {
-    request.get(loginUrl)
+    request.get(loginURL)
       .end((err, sres) => {
         if (err) { reject('获取登录Cookie失败') }
         cookie = sres.headers['set-cookie'].pop().split(';')[0]
@@ -34,7 +34,7 @@ module.exports = (req, res, isUser = true) => {
   })
 
   const getImg = () => new Promise((resolve, reject) => {
-    request.get(imgUrl)
+    request.get(imgURL)
       .set(header)
       .set('Cookie', cookie)
       .end((err, sres) => {
@@ -70,7 +70,7 @@ module.exports = (req, res, isUser = true) => {
   })
 
   const loginToJWXT = (ret) => new Promise ((resolve, reject) => {
-    request.post(postUrl)
+    request.post(postURL)
       .type('form')
       .set(header)
       .set('Cookie', cookie)

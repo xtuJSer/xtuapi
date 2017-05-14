@@ -4,7 +4,7 @@ charset(request)
 const cheerio = require('cheerio')
 
 const header = require('../config/default').header
-const user = require('../config/default').xtuUrl.user
+const user = require('../config/default').xtuURL.user
 
 module.exports = (req, res) => {
   const year = req.body.year || 2016
@@ -12,13 +12,13 @@ module.exports = (req, res) => {
   const half = req.body.half || 1
   const time = year + '-' + nextYear + '-' + half
 
-  const url = user.host + user.path.course + time
+  const URL = user.host + user.path.course + time
   const table = {
     time,
     course: []
   }
 
-  request.get(url)
+  request.get(URL)
     .set(header)
     .set('Cookie', req.session.xtu)
     .charset('utf8')

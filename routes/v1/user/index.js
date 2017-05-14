@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const user = require('../../../config/default').xtuUrl.user.path
+const user = require('../../../config/default').xtuURL.user.path
 const checkLogin = require('../../../middlewares/checkLogin')
 
 router.get('/user', (req, res) => {

@@ -41,7 +41,7 @@ module.exports = {
       : '/usr/bin/tesseract'
   },
 
-  xtuUrl: {
+  xtuURL: {
     trend: {
       host: 'http://www.xtu.edu.cn/',
       path: {

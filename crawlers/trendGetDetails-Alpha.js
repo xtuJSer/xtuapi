@@ -69,7 +69,7 @@ module.exports = async (req, res, target, html) => {
 
     temp.href = $a.attr('href').indexOf('http') > -1
       ? $a.attr('href')
-      : config.xtuUrl.trend.host + $a.attr('href')
+      : config.xtuURL.trend.host + $a.attr('href')
     temp.title = $a.attr('title')
     temp.time = $a.find('span').text()
 
