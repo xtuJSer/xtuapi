@@ -5,9 +5,13 @@ module.exports = (req, res) => new Promise((resolve, reject) => {
   let isRobot = req.body.isRobot || 0
   let isUser = !+isRobot
 
-  let username = isUser ? req.body.username.trim() : user.username,       // 输入的学号
-      password = isUser ? req.body.password.trim() : user.password,       // 输入的密码
-      revoke = req.body.revoke || 0,                                      // 是否撤销 session 并重新登录，默认为否
+  let username = isUser ? req.body.username : user.username,       // 输入的学号
+      password = isUser ? req.body.password : user.password        // 输入的密码
+
+  username === '' && (username = username.trim())
+  password === '' && (password = password.trim())
+
+  let revoke = req.body.revoke || 0,                                      // 是否撤销 session 并重新登录，默认为否
       cookie = req.session.xtu || '',                                     // 查看是否已登录
       isSuccess = false,                                                  // 是否成功登录
       isWrong = false,                                                    // 用户的账号密码不正确
