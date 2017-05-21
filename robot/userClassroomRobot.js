@@ -1,8 +1,7 @@
 const schedule = require('node-schedule')
 const request = require('superagent')
 
-const baseURL = require('../config/default').xtuURL.user
-const URL = baseURL.host + baseURL.path.classroom
+const URL = 'https://xtuapi.magicallu.cn/v1/user/classroom'
 const updateTime = ['11 0 0 * * *', '11 11 0 * * *', '22 22 0 * * *', '5 5 5 * * *', '6 6 6 * * *']
 
 const fetchData = (day, byName) => new Promise((resolve, reject) => {
@@ -16,7 +15,7 @@ const fetchData = (day, byName) => new Promise((resolve, reject) => {
       if (err) { reject(err) }
 
       console.log(`${new Date()} userClassroomRobot 更新数据 byName: ${byName}, day: ${day}`)
-      resolve()
+      resolve(data.text)
     })
 })
 
