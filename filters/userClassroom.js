@@ -43,7 +43,7 @@ const getNameAndRoom = name => {
 }
 
 const saveData = (type, data, day) => {
-  const classroomDataDir = path.join(__dirname, '../store')
+  const classroomDataDir = path.join(__dirname, '../store/classroom')
   fs.writeFileSync(classroomDataDir + '/classroom_' + type + '_' + judgeDay(day) + '.json', JSON.stringify(data, null, 2))
 }
 

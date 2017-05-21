@@ -13,6 +13,6 @@ module.exports = async (req, res) => {
     ;(day < 0 || day > 1) && (day = 0)
     ;(byName < 0 || byName > 1) && (byName = 0)
 
-    res.status(200).json(require('../../../store/classroom_' + (byName ? 'name' : 'time') + '_' + judgeDay(day) + '.json'))
+    res.status(200).json(require('../../../store/classroom/classroom_' + (byName ? 'name' : 'time') + '_' + judgeDay(day) + '.json'))
   }
 }
