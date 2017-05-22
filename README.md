@@ -113,7 +113,7 @@ POST https://xtuapi.magicallu.cn/v1/user/login
 #### 获取成绩
 POST 格式：{ year: 学年（如：2016）, half: 学期（如：1或2）}
 
-默认返回 2016-2017-1 的成绩
+默认返回 2016-2017-2 的成绩
 ```
 GET https://xtuapi.magicallu.cn/v1/user/course
 POST https://xtuapi.magicallu.cn/v1/user/course

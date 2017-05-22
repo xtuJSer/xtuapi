@@ -9,7 +9,7 @@ const user = require('../config/default').xtuURL.user
 module.exports = (req, res) => {
   const year = req.body.year || 2016
   const nextYear = parseInt(year) + 1
-  const half = req.body.half || 1
+  const half = req.body.half || 2
   const time = year + '-' + nextYear + '-' + half
 
   const URL = user.host + user.path.course + time
