@@ -7,7 +7,8 @@ module.exports = function (app) {
       name,
       version,
       author,
-      description
+      description,
+      '使用文档': 'https://github.com/ww522413622/xtuApiLu'
     })
   })
 
