@@ -44,7 +44,7 @@ const fetchDetails = (el, charset) => new Promise((resolve, reject) => {
     .get(el.href)
     .charset(charset)
     .end((err, sres) => {
-      if (err) { reject(`获取 ${target} 详情失败`)}
+      if (err) { reject(`获取详情失败`)}
       console.log(`正在爬取 ${el.href}`)
       resolve({ html: sres.text, el })
     })
@@ -88,6 +88,7 @@ module.exports = async (req, res, target, html) => {
 
   let details = []
   for (let i = 0; i < count; i++) {
+    if (list[i].href.indexOf('pdf') > -1) { continue; }
     details.push(await fetchDetails(list[i], charset))
   }
   details = formatDetails(details, target)
