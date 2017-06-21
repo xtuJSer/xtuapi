@@ -1,5 +1,5 @@
 const { user } = require('../../config/prod')
-const { checkFormat, getCookie, getImg, saveImg, editImg, spotImg, loginToJWXT, successLogin } = require('../../components/loginComponents')
+const { checkFormat, getCookie, getImg, saveImg, editImg, spotImg, loginToJWXT, successLogin } = require('../../components/loginComponent')
 
 module.exports = (req, res) => new Promise((resolve, reject) => {
   let isRobot = req.body.isRobot || 0
@@ -12,7 +12,7 @@ module.exports = (req, res) => new Promise((resolve, reject) => {
   password === '' && (password = password.trim())
 
   let revoke = req.body.revoke || 0,                                      // 是否撤销 session 并重新登录，默认为否
-      cookie = req.session.xtuUser || '',                                     // 查看是否已登录
+      cookie = req.session.xtuUser || '',                                 // 查看是否已登录
       isSuccess = false,                                                  // 是否成功登录
       isWrong = false,                                                    // 用户的账号密码不正确
       loopTime = 0,                                                       // 登录失败后进入循环的统计
@@ -31,7 +31,7 @@ module.exports = (req, res) => new Promise((resolve, reject) => {
         await saveImg(await getImg(cookie), username)                                           // 获取验证码，并保存到相应路径
         await editImg(username)                                                                 // 对验证码做处理，便于识别
         await loginToJWXT(await spotImg(username), req, username, password, cookie, isUser)     // 识别验证码并尝试登录教务系统
-        isSuccess = successLogin(res, cookie, isUser)                                                   // 若无错误抛出则表示成功，返回数据
+        isSuccess = successLogin(res, cookie, isUser)                                           // 若无错误抛出则表示成功，返回数据
         !isUser && resolve(cookie)                                                              // 若不是用户操作，则返回 Promise
       } catch (err) {
         loopTime++

@@ -8,7 +8,6 @@ const library = require('../../config/default').xtuURL.library,
 
 module.exports = (req, res) => {
   const cookie = req.session.xtuLibrary
-  // const cookie = 'JSESSIONID=C298AB8BF19C61EACBD4A6E4652D799B; ASP.NET_SessionId=mfpy121l2ixqtq1wdbyrw1us'
   let ret = []
 
   request
@@ -33,5 +32,3 @@ module.exports = (req, res) => {
       res.status(200).send(ret)
     })
 }
-
-// 请注意续借天数是从续借当天开始计算，而不是从图书到期日期开始计算。确实要续借吗
