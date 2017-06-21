@@ -1,32 +1,32 @@
-const router = require('express').Router()
-const user = require('../../config/default').xtuURL.user.path
-const checkLogin = require('../../middlewares/checkLogin')
+const router = require('express').Router(),
+      path = require('../../config/default').xtuURL.user.path,
+      checkLogin = require('../../middlewares/checkLogin')
 
-router.get('/user', (req, res) => {
-  res.status(200).send(Object.keys(user))
+router.get('/', (req, res) => {
+  res.status(200).send(Object.keys(path))
 })
 
 // 教务系统登录
-router.post('/user/login', require('./login'))
-router.get('/user/login', (req, res, next) => {
+router.post('/login', require('./login'))
+router.get('/login', (req, res, next) => {
   return res.status(500).send('登录需要 POST 请求')
 })
 
 // 获取成绩
-router.get('/user/course', checkLogin, require('./course'))
-router.post('/user/course', checkLogin, require('./course'))
+router.get('/course', checkLogin, require('./course'))
+router.post('/course', checkLogin, require('./course'))
 
 // 获取课程表
-router.get('/user/class', checkLogin, require('./class'))
+router.get('/class', checkLogin, require('./class'))
 
 // 获取排名
-router.get('/user/rank', checkLogin, require('./rank'))
-router.post('/user/rank', checkLogin, require('./rank'))
+router.get('/rank', checkLogin, require('./rank'))
+router.post('/rank', checkLogin, require('./rank'))
 
 // 空闲教室
-router.get('/user/classroom', require('./classroom'))
-router.post('/user/classroom', require('./classroom'))
+router.get('/classroom', require('./classroom'))
+router.post('/classroom', require('./classroom'))
 // 空闲课程词条
-router.post('/user/classroom/message', require('./classroom_message'))
+router.post('/classroom/message', require('./classroom_message'))
 
 module.exports = router

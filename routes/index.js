@@ -12,13 +12,8 @@ module.exports = function (app) {
     })
   })
 
-  // v1 路径下返回功能信息
-  // app.use('/v1', require('./v1/index'))
-  // app.use('/v1', require('./v1/trend'))
-  // app.use('/v1', require('./v1/user'))
-
-  app.use('/', require('./trend'))
-  app.use('/', require('./user'))
+  app.use('/trend', require('./trend'))
+  app.use('/user', require('./user'))
 
   app.get('*', (req, res) => {
     res.status(404).send('您所访问的资源不存在, 请查阅相关文档')
