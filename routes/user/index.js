@@ -1,6 +1,6 @@
 const router = require('express').Router(),
       path = require('../../config/default').xtuURL.user.path,
-      checkLogin = require('../../middlewares/checkLogin')('xtu')
+      checkLogin = require('../../middlewares/checkLogin')('xtuUser')
 
 router.get('/', (req, res) => {
   res.status(200).send(Object.keys(path))
@@ -8,9 +8,6 @@ router.get('/', (req, res) => {
 
 // 教务系统登录
 router.post('/login', require('./login'))
-router.get('/login', (req, res, next) => {
-  return res.status(500).send('登录需要 POST 请求')
-})
 
 // 获取成绩
 router.get('/course', checkLogin, require('./course'))

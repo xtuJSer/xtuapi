@@ -12,7 +12,7 @@ module.exports = (req, res) => new Promise((resolve, reject) => {
   password === '' && (password = password.trim())
 
   let revoke = req.body.revoke || 0,                                      // 是否撤销 session 并重新登录，默认为否
-      cookie = req.session.xtu || '',                                     // 查看是否已登录
+      cookie = req.session.xtuUser || '',                                     // 查看是否已登录
       isSuccess = false,                                                  // 是否成功登录
       isWrong = false,                                                    // 用户的账号密码不正确
       loopTime = 0,                                                       // 登录失败后进入循环的统计

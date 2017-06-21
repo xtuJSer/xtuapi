@@ -20,11 +20,11 @@ const checkFormat = (username, password) => {
   let errorMsg = null
 
   if (username === undefined || (!password && password === undefined)) {
-    errorMsg = { detail: '账号或密码不能为空', msg: 'wrong' }
+    errorMsg = { message: '账号或密码不能为空', status: 'wrong' }
   } else if (username.length !== 10) {
-    errorMsg = { detail: '请输入正确的学号', msg: 'wrong' }
+    errorMsg = { message: '请输入正确的学号', status: 'wrong' }
   } else if (password.length < 6) {
-    errorMsg = { detail: '请输入正确的密码', msg: 'wrong' }
+    errorMsg = { message: '请输入正确的密码', status: 'wrong' }
   }
   return {
     isFormat: !errorMsg,
@@ -95,7 +95,7 @@ const loginToJWXT = (ret, req, username, password, cookie, isUser) => new Promis
       } else if (sres.text.indexOf('验证码错误') > -1) {
         reject(`验证码错误`)
       } else {
-        isUser && (req.session.xtu = cookie)
+        isUser && (req.session.xtuUser = cookie)
         resolve()
       }
     })
@@ -104,8 +104,8 @@ const loginToJWXT = (ret, req, username, password, cookie, isUser) => new Promis
 const successLogin = (res, cookie, isUser) => {
   console.log('=== 成功登录 ===')
   isUser && res.status(200).json({
-    msg: 'success',
-    detail: '成功登录',
+    status: 'success',
+    message: '成功登录',
     cookie
   })
   return true

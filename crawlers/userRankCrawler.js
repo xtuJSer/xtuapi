@@ -63,7 +63,7 @@ module.exports = (req, res) => {
   prop.map((propEl, pid) => {
     request.post(rankURL)
       .set(header)
-      .set('Cookie', req.session.xtu)
+      .set('Cookie', req.session.xtuUser)
       .send(`kksj=${ year }&kclb=${ propEl = propEl !== 'all' ? propEl : '1&kclb=7' }&zsb=0`)
       .end((err, sres) => {
         if (err) { throw new Error(`获取排名失败 ${err}`) }

@@ -20,7 +20,7 @@ module.exports = (req, res) => {
 
   request.get(URL)
     .set(header)
-    .set('Cookie', req.session.xtu)
+    .set('Cookie', req.session.xtuUser)
     .charset('utf8')
     .end((err, sres) => {
       if (err) { throw new Error('获取成绩失败') }

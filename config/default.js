@@ -4,7 +4,7 @@ module.exports = {
   session: {
     secret: '2017 magicalLu',
     secure: true,
-    key: 'xtu',
+    key: 'xtuUser',
     cookie: {
       maxAge: 1000 * 60 * 60 * 1
     },
@@ -63,7 +63,7 @@ module.exports = {
       }
     },
     library: {
-      host: 'http://202.197.232.4:8081/opac_two',
+      host: 'http://202.197.232.4:8081/opac_two/',
       path: {
         login: 'include/login_app.jsp',
         book: 'reader/jieshuxinxi.jsp'

@@ -13,7 +13,7 @@ module.exports = (req, res) => {
 
   request.post(classURL)
     .set(header)
-    .set('Cookie', req.session.xtu)
+    .set('Cookie', req.session.xtuUser)
     .send(data)
     .end((err, sres) => {
       if (err) { throw new Error(`获取课程失败: ${err}`) }
