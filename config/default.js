@@ -61,6 +61,12 @@ module.exports = {
         classroom: 'kbxx/kxjs_query',           // 空教室
         rank: 'kscj/cjjd_list'                  // 排名
       }
+    },
+    library: {
+      host: 'http://202.197.232.4:8081/',
+      path: {
+        login: 'opac_two/include/login_app.jsp'
+      }
     }
   }
 }

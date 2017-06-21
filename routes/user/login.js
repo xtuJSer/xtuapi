@@ -1,5 +1,5 @@
-const { user } = require('../../../config/prod')
-const { checkFormat, getCookie, getImg, saveImg, editImg, spotImg, loginToJWXT, successLogin } = require('../../../crawlers/userLoginCrawler')
+const { user } = require('../../config/prod')
+const { checkFormat, getCookie, getImg, saveImg, editImg, spotImg, loginToJWXT, successLogin } = require('../../components/loginComponents')
 
 module.exports = (req, res) => new Promise((resolve, reject) => {
   let isRobot = req.body.isRobot || 0

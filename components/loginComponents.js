@@ -1,19 +1,20 @@
-const fs = require('fs')
-const path = require('path')
-const cheerio = require('cheerio')
-const request = require('superagent')
+const fs = require('fs'),
+      path = require('path'),
+      cheerio = require('cheerio'),
+      request = require('superagent')
+
 require('superagent-charset')(request)
 
-const tesseract = require('node-tesseract')
-const gm = require('gm')
+const tesseract = require('node-tesseract'),
+      gm = require('gm')
 
-const config = require('../config/default')
-const imgDir = path.join(__dirname, '../public/images')
-const header = config.header
-const userURL = config.xtuURL.user
-const loginURL = userURL.host
-const postURL = loginURL + userURL.path.login
-const imgURL = loginURL + userURL.path.verification
+const config = require('../config/default'),
+      imgDir = path.join(__dirname, '../public/images'),
+      header = config.header,
+      userURL = config.xtuURL.user,
+      loginURL = userURL.host,
+      postURL = loginURL + userURL.path.login,
+      imgURL = loginURL + userURL.path.verification
 
 const checkFormat = (username, password) => {
   let errorMsg = null
@@ -29,7 +30,6 @@ const checkFormat = (username, password) => {
     isFormat: !errorMsg,
     errorMsg
   }
-
 }
 
 const getCookie = () => new Promise((resolve, reject) => {

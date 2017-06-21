@@ -9,9 +9,5 @@ module.exports = content => {
     el.length !== 0 && ret.push(el)
     return true
   })
-  // 若最后一项不是时间，也不是记者，那么就除去
-  // while (!ret[ret.length - 1].includes('年') || !ret[ret.length - 1].includes('《湘潭大学报》记者')) {
-  //   ret.pop()
-  // }
   return ret
 }

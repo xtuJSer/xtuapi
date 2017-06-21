@@ -1,29 +1,69 @@
-const fs = require('fs')
-const path = require('path')
-const request = require('superagent')
-const charset = require('superagent-charset')
-charset(request)
-const cheerio = require('cheerio')
-const eventproxy = require('eventproxy')
-const config = require('../config/default')
-// const mongo = require('../store/mongo')
+const fs = require('fs'),
+      path = require('path'),
+      request = require('superagent'),
+      cheerio = require('cheerio'),
+      config = require('../config/default')
 
-module.exports = (req, res, target, html) => {
+require('superagent-charset')(request)
+
+const formatDetails = (details, target) => {
+  details = details.map(detail => {
+    $ = cheerio.load(detail.html)
+    let temp = {}
+    temp.title = detail.el.title
+    temp.time = detail.el.time
+    temp.href = detail.el.href
+
+    let $content
+    if (target === 'news' || target === 'media') {
+      $content = $('div.content')
+    } else if (target === 'notice' || target === 'cathedra') {
+      $content = $('.con-tent-box')
+    }
+
+    // 按照换行符、制表符对内容进行拆分
+    temp.content = require('./trendFormatConent')($content.text().split(/[\r\n\t]/))
+    // 若是新闻，则需在内容中添加来源
+    target === 'news' && (temp.content.push($($content[0].nextSibling.next).text()))
+    // 若是媒体，则需除去最后一行的链接
+    target === 'media' && temp.content.length !== 1 && temp.content.pop()
+    // 若是讲座、公告，则需除去第一行的标题
+    ;(target === 'cathedra' || target === 'notice') && temp.content.shift()
+
+    return temp
+  })
+
+  details = require('../filters/index').trendSource(target, details)
+  console.log('=== 成功获取动态 ===')
+  return details
+}
+
+// 并发获取所有详情页的信息
+const fetchDetails = (el, charset) => new Promise((resolve, reject) => {
+  request
+    .get(el.href)
+    .charset(charset)
+    .end((err, sres) => {
+      if (err) { reject(`获取详情失败`)}
+      console.log(`正在爬取 ${el.href}`)
+      resolve({ html: sres.text, el })
+    })
+  })
+
+module.exports = async (req, res, target, html) => {
   console.log(`正在获取 ${target} 下的数据`)
   let $ = cheerio.load(html),
       list = [],
       $cur = $('.list a'),
       charset = 'utf8'
 
-  if (target === 'news' || target === 'media') {
-    charset = 'gbk'
-  }
-
+  // “新闻”和“媒体”下的编码格式为 gbk
+  ;(target === 'news' || target === 'media') && (charset = 'gbk')
   // 处理在“媒体湘大”列表类名不统一的问题
   target === 'media' && ($cur = $('.newsgridlist a'))
 
   // 获取 list 下的数据
-  for (let i = 0, len = $cur.length; i < len; i++) {
+  $cur.each(i => {
     let temp = {},
         $a = $($cur[i])
 
@@ -41,63 +81,16 @@ module.exports = (req, res, target, html) => {
       })
     }
     list.push(temp)
-  }
-
-  let ep = new eventproxy(),
-      count = req.params.count || list.length
-  count > list.length && (count = list.length)
-
-  // 并发获取所有详情页的信息
-  ep.after('getDetail', count, function (details) {
-    details = details.map(detail => {
-      $ = cheerio.load(detail.html)
-      let temp = {}
-      temp.title = detail.el.title
-      temp.time = detail.el.time
-      temp.href = detail.el.href
-
-      let $content
-      if (target === 'news' || target === 'media') {
-        $content = $('div.content')
-      } else if (target === 'notice' || target === 'cathedra') {
-        $content = $('.con-tent-box')
-      }
-
-      temp.content = require('./trendFormatConent')($content.text().split(/[\r\n\t]/))
-      // 若是新闻，则需在内容中添加来源
-      target === 'news' && (temp.content.push($($content[0].nextSibling.next).text()))
-      // 若是媒体，则需除去最后一行的链接
-      target === 'media' && temp.content.length !== 1 && temp.content.pop()
-      // 若是讲座、公告，则需除去第一行的标题
-      ;(target === 'cathedra' || target === 'notice') && temp.content.shift()
-
-      // let model = new mongo[mongo.getFullkey(target)]({
-      //   title: temp.title,
-      //   time: temp.time,
-      //   href: temp.href,
-      //   content: temp.content
-      // })
-      // model.save()
-      // console.log(mongo.getFullkey(target))
-      return temp
-    })
-    // 排序并获取咨询的来源
-    details = require('./trendSort')(details)
-    details = require('../filters/index').trendSource(target, details)
-    console.log('=== 成功获取动态 ===')
-    res.status(200).send(details)
   })
 
-  for (let i in list) {
-    let el = list[i]
-    if (parseInt(i) === count) { break }
-    request
-      .get(el.href)
-      .charset(charset)
-      .end((err, sres) => {
-        if (err) { throw new Error(`获取 ${target} 详情失败`)}
-        console.log(`正在爬取 ${el.href}`)
-        ep.emit('getDetail', { html: sres.text, el })
-      })
+  let count = req.params.count || list.length
+  count > list.length && (count = list.length)
+
+  let details = []
+  for (let i = 0; i < count; i++) {
+    if (list[i].href.indexOf('pdf') > -1) { continue; }
+    details.push(await fetchDetails(list[i], charset))
   }
+  details = formatDetails(details, target)
+  res.status(200).send(details)
 }

@@ -1,4 +1,4 @@
-const messageData = require('../../../store/message.json')
+const messageData = require('../../store/message.json')
 // const messageRange = require('../../../config/default').messageRange
 
 module.exports = async (req, res) => {

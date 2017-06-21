@@ -1,9 +1,8 @@
 const request = require('superagent')
-const charset = require('superagent-charset')
-charset(request)
+require('superagent-charset')(request)
 
-const trendGetDetails = require('./trendGetDetails-Alpha')
-const trend = require('../config/default').xtuURL.trend
+const trendGetDetails = require('./trendGetDetails'),
+      trend = require('../config/default').xtuURL.trend
 
 module.exports = (req, res, target) => {
   let URL = trend.host + trend.path[target],
