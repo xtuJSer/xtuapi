@@ -14,6 +14,7 @@ module.exports = function (app) {
 
   app.use('/trend', require('./trend'))
   app.use('/user', require('./user'))
+  app.use('/library', require('./library'))
 
   app.get('*', (req, res) => {
     res.status(404).send('您所访问的资源不存在, 请查阅相关文档')

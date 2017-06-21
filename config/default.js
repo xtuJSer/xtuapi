@@ -63,9 +63,10 @@ module.exports = {
       }
     },
     library: {
-      host: 'http://202.197.232.4:8081/',
+      host: 'http://202.197.232.4:8081/opac_two',
       path: {
-        login: 'opac_two/include/login_app.jsp'
+        login: 'include/login_app.jsp',
+        book: 'reader/jieshuxinxi.jsp'
       }
     }
   }

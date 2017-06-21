@@ -1,8 +1,8 @@
-const router = require('express').Router()
-const trend = require('../../config/default').xtuURL.trend.path
+const router = require('express').Router(),
+      path = require('../../config/default').xtuURL.trend.path
 
 router.get('/', (req, res) => {
-  res.status(200).send(Object.keys(trend))
+  res.status(200).send(Object.keys(path))
 })
 
 // 校内新闻
