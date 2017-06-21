@@ -1,8 +1,8 @@
 const request = require('superagent')
 
 const library = require('../../config/default').xtuURL.library,
-      header = require('../../config/default').header
-      URL = library.host + library.path.login,
+      header = require('../../config/default').header,
+      URL = library.host + library.path.login
 
 module.exports = (req, res) => {
   const username = req.body.username,
@@ -14,11 +14,12 @@ module.exports = (req, res) => {
     .set(header)
     .send({
       barcode: username,
-      password
+      password,
+      login_type: '',
+      _: ''
     })
     .end((err, sres) => {
       if (err) { throw new Error('登录失败') }
-      // console.log(sres.text)
       let cookie = sres.headers['set-cookie'].pop().split(';')[0]
       req.session.xtuLibrary = cookie
       res.status(200).json({

@@ -8,9 +8,8 @@ router.get('/', (req, res) => {
 
 router.post('/login', require('./login'))
 
-router.get('book', (req, res) => {
-
-})
+router.get('/book', checkLogin, require('./book'))
+// router.get('/book', require('./book'))
 
 // router.get('')
 
