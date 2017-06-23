@@ -19,7 +19,7 @@ module.exports = (req, res) => new Promise((resolve, reject) => {
       { isFormat, errorMsg } = checkFormat(username, password)            // 判定用户输入值是否规范
 
   isUser && cookie && !revoke && (isSuccess = successLogin(res, cookie, isUser)) // 若是用户登录，则判断是否存在 session
-  !isFormat && res.status(500).json(errorMsg)                             // 用户输入不规范，提前返回错误值，不进入登录逻辑
+  !isFormat && res.status(200).json(errorMsg)                             // 用户输入不规范，提前返回错误值，不进入登录逻辑
 
   ;(async () => {
     !isSuccess && console.log('--- 正在登录 ---')
@@ -41,9 +41,11 @@ module.exports = (req, res) => new Promise((resolve, reject) => {
     }
 
     if (isWrong && isFormat) {
-      res.status(500).json({ detail: '学号或密码错误', msg: 'wrong' })
+      errorMsg.message = '学号或密码错误'
+      res.status(200).json(errorMsg)
     } else if ((!isSuccess || loopTime > MAX_LOOP_TIME) && isFormat) {
-      res.status(500).json({ detail: '教务系统可能崩了', msg: 'error' })
+      errorMsg.message = '教务系统可能崩了'
+      res.status(200).json(errorMsg)
     }
   })()
 })

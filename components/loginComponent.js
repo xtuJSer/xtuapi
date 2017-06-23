@@ -17,17 +17,17 @@ const config = require('../config/default'),
       imgURL = loginURL + userURL.path.verification
 
 const checkFormat = (username, password) => {
-  let errorMsg = null
+  let errorMsg = { message: '', status: 'wrong' }
 
   if (username === undefined || (!password && password === undefined)) {
-    errorMsg = { message: '账号或密码不能为空', status: 'wrong' }
+    errorMsg.message = '账号或密码不能为空'
   } else if (username.length !== 10) {
-    errorMsg = { message: '请输入正确的学号', status: 'wrong' }
+    errorMsg.message = '请输入正确的学号'
   } else if (password.length < 6) {
-    errorMsg = { message: '请输入正确的密码', status: 'wrong' }
+    errorMsg.message = '请输入正确的密码'
   }
   return {
-    isFormat: !errorMsg,
+    isFormat: !errorMsg.message.length,
     errorMsg
   }
 }
@@ -105,7 +105,7 @@ const successLogin = (res, cookie, isUser) => {
   console.log('=== 成功登录 ===')
   isUser && res.status(200).json({
     status: 'success',
-    message: '成功登录',
+    message: '登录成功',
     cookie
   })
   return true

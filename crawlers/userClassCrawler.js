@@ -42,29 +42,16 @@ module.exports = (req, res) => {
             let $detail = $(td).find('.kbcontent1 font')
             let time = $detail.eq(0).text().split('(')[0]
             let place = $detail.eq(1).text()
-            details.push({
-              time,
-              place
-            })
+            details.push({ time, place })
 
             // 存在两个时间地点
             if ($class.text().indexOf('----') !== -1) {
               time = $detail.eq(2).text().split('(')[0]
               place = $detail.eq(3).text()
-              details.push({
-                time,
-                place
-              })
+              details.push({ time, place })
             }
 
-            if (name) {
-              ret[i][j] = {
-                name,
-                details
-              }
-            } else {
-              ret[i][j] = null
-            }
+            ret[i][j] = name ? { name, details } : null
           })
         })
 
