@@ -70,28 +70,28 @@ POST
 #### 校内新闻
 参数 count: 数据数量（≤25）
 ```
-GET https://xtuapi.magicallu.cn/v1/trend/news
-GET https://xtuapi.magicallu.cn/v1/trend/news/:count
+GET https://xtuapi.magicallu.cn/trend/news
+GET https://xtuapi.magicallu.cn/trend/news/:count
 ```
 
 #### 通知公告
 参数 count: 数据数量（≤25）
 ```
-GET https://xtuapi.magicallu.cn/v1/trend/notice
-GET https://xtuapi.magicallu.cn/v1/trend/notice/:count
+GET https://xtuapi.magicallu.cn/trend/notice
+GET https://xtuapi.magicallu.cn/trend/notice/:count
 ```
 
 #### 媒体湘大
 参数 count: 数据数量（≤25）
 ```
-GET https://xtuapi.magicallu.cn/v1/trend/media
-GET https://xtuapi.magicallu.cn/v1/trend/media/:count
+GET https://xtuapi.magicallu.cn/trend/media
+GET https://xtuapi.magicallu.cn/trend/media/:count
 ```
 #### 学术活动
 参数 count: 数据数量（≤25）
 ```
-GET https://xtuapi.magicallu.cn/v1/trend/cathedra
-GET https://xtuapi.magicallu.cn/v1/trend/cathedra/:count
+GET https://xtuapi.magicallu.cn/trend/cathedra
+GET https://xtuapi.magicallu.cn/trend/cathedra/:count
 ```
 
 #### 获取空闲教室
@@ -99,15 +99,15 @@ POST 格式：{ day: 今/明（如：0或1), byName: 时间为集合/教学楼�
 
 默认返回以时间为集合的今天空闲教室
 ```
-GET https://xtuapi.magicallu.cn/v1/user/classroom
-POST https://xtuapi.magicallu.cn/v1/user/classroom
+GET https://xtuapi.magicallu.cn/user/classroom
+POST https://xtuapi.magicallu.cn/user/classroom
 ```
 
 ### 获取教务系统相关信息 - 需要登录
 #### 登录教务系统
 POST 格式：{ username: 学号, password: 密码, revoke: 是否撤销 session 重新二次登陆，默认为 0，即否 (如：0或1) }
 ```
-POST https://xtuapi.magicallu.cn/v1/user/login
+POST https://xtuapi.magicallu.cn/user/login
 ```
 
 #### 获取成绩
@@ -115,14 +115,14 @@ POST 格式：{ year: 学年（如：2016）, half: 学期（如：1或2）}
 
 默认返回 2016-2017-2 的成绩
 ```
-GET https://xtuapi.magicallu.cn/v1/user/course
-POST https://xtuapi.magicallu.cn/v1/user/course
+GET https://xtuapi.magicallu.cn/user/course
+POST https://xtuapi.magicallu.cn/user/course
 ```
 
 #### 获取课程表
 默认返回当前学期的课程表
 ```
-GET https://xtuapi.magicallu.cn/v1/user/class
+GET https://xtuapi.magicallu.cn/user/class
 ```
 
 #### 获取排名
@@ -134,8 +134,8 @@ POST 格式：{ fullYear: 连续几个学期的综合排名，使用 & 连接（
 
 GET 默认返回 2016-2017-1 的排名
 ```
-GET https://xtuapi.magicallu.cn/v1/user/rank
-POST https://xtuapi.magicallu.cn/v1/user/rank
+GET https://xtuapi.magicallu.cn/user/rank
+POST https://xtuapi.magicallu.cn/user/rank
 ```
 
 ## 建议
