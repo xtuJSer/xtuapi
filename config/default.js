@@ -16,6 +16,7 @@ module.exports = {
     origin: [
       'http://localhost:8000',
       'http://localhost:8888',
+      'http://localhost:8080',
       'https://free.magicallu.cn',
       'https://trend.magicallu.cn',
       'https://classroom.magicallu.cn'
@@ -59,7 +60,8 @@ module.exports = {
         course: 'kscj/cjcx_list?xq=',           // 成绩
         class: 'xskb/xskb_list.do',             // 课程表
         classroom: 'kbxx/kxjs_query',           // 空教室
-        rank: 'kscj/cjjd_list'                  // 排名
+        rank: 'kscj/cjjd_list',                 // 排名
+        info: 'grxx/xsxx'                   // 用户信息（仅抓取姓名拼音和性别）
       }
     },
     library: {

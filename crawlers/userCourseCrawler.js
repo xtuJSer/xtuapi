@@ -30,11 +30,11 @@ module.exports = (req, res) => {
         let $td = $(tr).find('td'),
             item = {}
 
-        item.courseName = $td.eq(2).text()
-        item.courseScore = $td.eq(3).text()
-        item.courseCredit = $td.eq(4).text()
-        item.courseTotalTime = $td.eq(5).text()
-        item.courseProperty = $td.eq(7).text()
+        item.name = $td.eq(2).text()
+        item.score = $td.eq(3).text()
+        item.credit = $td.eq(4).text()
+        item.time = $td.eq(5).text()
+        item.property = $td.eq(7).text()
 
         table.course.push(item)
       })

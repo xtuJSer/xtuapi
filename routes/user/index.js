@@ -26,4 +26,6 @@ router.post('/classroom', require('./classroom'))
 // 空闲课程词条
 router.post('/classroom/message', require('./classroom_message'))
 
+router.get('/info', require('./info'))
+
 module.exports = router
