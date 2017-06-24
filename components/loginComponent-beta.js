@@ -73,7 +73,7 @@ const successLogin = (res, cookie) => {
   console.log('=== 成功登录 ===')
   res.status(200).json({
     status: 'success',
-    message: '成功登录',
+    message: '登录成功',
     cookie
   })
   return true

@@ -19,7 +19,7 @@ module.exports = (req, res) => {
       let sex = $td.eq(3).text().indexOf('男') > -1 ? 'boy' : 'girl'
       let name = $td.eq(5).text()
 
-      let id = $('.Nsb_layout_r tr').eq(-4).find('td').eq(3).text().trim()
+      let id = $('.Nsb_layout_r tr').eq(-4).find('td').eq(3).text().trim().slice(-6)
       res.status(200).json({ name, sex, id })
     })
 }
