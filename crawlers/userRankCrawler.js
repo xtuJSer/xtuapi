@@ -34,14 +34,16 @@ module.exports = (req, res) => {
 
   let ep = new eventproxy()
   ep.after('getHtml', prop.length, (htmlArr) => {
-    let result = []
+    let result = {}
+    result.rank = []
+    result.year = fullYear
     htmlArr.map((htmlObj) => {
       let { html, propEl } = htmlObj,
           $ = cheerio.load(html),
           obj = {},
           table = []
 
-      obj.year = fullYear
+      // obj.year = fullYear
       if (propEl.length === 1) { obj.prop = propEl === '1' ? '必修' : '选修' }
       else { obj.prop = '综合' }
 
@@ -50,10 +52,10 @@ module.exports = (req, res) => {
         table[i].title = $(th).text()
       })
       $('#dataList tr').find('td').each((i, td) => {
-        table[i].num = $(td).text()
+        table[i].number = $(td).text()
       })
       obj.table = table
-      result.push(obj)
+      result.rank.push(obj)
     })
 
     console.log('=== 成功获取排名 ===')
