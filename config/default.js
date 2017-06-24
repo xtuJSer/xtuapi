@@ -6,7 +6,10 @@ module.exports = {
     secure: true,
     key: 'xtuUser',
     cookie: {
-      maxAge: 1000 * 60 * 60 * 1
+      maxAge: 1000 * 60 * 60 * 1,
+      httpOnly: false,
+      domain: 'magicallu.cn',
+      path: '/'
     },
     saveUninitialized: false,
     resave: true
@@ -17,6 +20,8 @@ module.exports = {
       'http://localhost:8000',
       'http://localhost:8888',
       'http://localhost:8080',
+      'http://localhost:8808',
+      'http://xtutx.magicallu.cn',
       'https://free.magicallu.cn',
       'https://trend.magicallu.cn',
       'https://classroom.magicallu.cn'
