@@ -16,15 +16,15 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 app.use(bodyParser.json({ limit: '1mb' }))
 app.use(session({
-  name: config.session.key,
+  name: config.session.name,
   secret: config.session.secret,
   resave: config.session.resave,
   saveUninitialized: config.session.saveUninitialized,
   secure: config.session.secure,
   cookie: {
-    maxAge: config.session.maxAge
+    maxAge: config.session.cookie.maxAge,
+    httpOnly: config.session.cookie.httpOnly
   }
-
   // store: new MongoStore({
   //   url: config.db
   // })

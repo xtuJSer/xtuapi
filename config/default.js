@@ -2,17 +2,17 @@ module.exports = {
   port: 3000,
 
   session: {
+    name: 'xtuUser',
     secret: '2017 magicalLu',
+    saveUninitialized: false,
+    resave: true,
     secure: true,
-    key: 'xtuUser',
     cookie: {
       maxAge: 1000 * 60 * 60 * 1,
       httpOnly: false,
-      domain: 'magicallu.cn',
-      path: '/'
-    },
-    saveUninitialized: false,
-    resave: true
+      // domain: 'magicallu.cn',
+      // path: '/'，
+    }
   },
 
   cors: {
