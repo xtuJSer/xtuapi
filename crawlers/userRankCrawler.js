@@ -21,7 +21,7 @@ module.exports = (req, res) => {
     return curYear + '-' + nextYear + '-' + half
   }
 
-  let fullYear = req.body.fullYear || '2016-1'
+  let fullYear = req.body.fullYear || '2016-2'
   let year
 
   if (fullYear.indexOf('&') > -1) {
@@ -29,21 +29,20 @@ module.exports = (req, res) => {
     year = fullYear.reduce((a, b) => a + '&kksj=' + b)
   } else {
     let temp = fullYear.split('-')
-    year = formatYear(temp[0], temp[1])
+    year = fullYear = formatYear(temp[0], temp[1])
   }
 
   let ep = new eventproxy()
   ep.after('getHtml', prop.length, (htmlArr) => {
     let result = {}
     result.rank = []
-    result.year = fullYear
+    result.time = fullYear
     htmlArr.map((htmlObj) => {
       let { html, propEl } = htmlObj,
           $ = cheerio.load(html),
           obj = {},
           table = []
 
-      // obj.year = fullYear
       if (propEl.length === 1) { obj.prop = propEl === '1' ? '必修' : '选修' }
       else { obj.prop = '综合' }
 
