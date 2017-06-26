@@ -28,4 +28,6 @@ router.post('/classroom/message', require('./classroom_message'))
 
 router.get('/info', require('./info'))
 
+router.get('/exam', require('./exam'))
+
 module.exports = router
