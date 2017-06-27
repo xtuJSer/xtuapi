@@ -2,14 +2,17 @@ const request = require('superagent'),
       cheerio = require('cheerio'),
       eventproxy = require('eventproxy')
 
-const header = require('../config/default').header,
-      user = require('../config/default').xtuURL.user,
-      URL = user.host + user.path.exam
+const config = require('../config/default')
+      defaultTime = config.defaultTime,
+      header = config.header,
+      user = config.xtuURL.user,
+      URL = user.host + user.path.exam,
+
 
 module.exports = (req, res) => {
   request
     .post(URL)
-    .send('xqlbmc=&xnxqid=2016-2017-2&xqlb=')
+    .send('xqlbmc=&xnxqid=' + defaultTime + '&xqlb=')
     .set(header)
     .set('Cookie', req.session.xtuUser)
     .charset('utf-8')
