@@ -9,9 +9,9 @@ module.exports = (req, res) => {
   const year = 2016,
         half = 2,
         data = `cj0701id=&zc=&demo=&xnxq01id=${year}-${year + 1}-${half}&sfFD=1`,
-        classURL = user.host + user.path.class
+        klassURL = user.host + user.path.klass
 
-  request.post(classURL)
+  request.post(klassURL)
     .set(header)
     .set('Cookie', req.session.xtuUser)
     .send(data)
@@ -35,8 +35,8 @@ module.exports = (req, res) => {
         row.map((tr, i) => {
           ret[i] = []
           $(tr).find('td').each((j, td) => {
-            let $class = $(td).find('.kbcontent1')
-            let name = $class.text().split(/\d/)[0].trim()
+            let $klass = $(td).find('.kbcontent1')
+            let name = $klass.text().split(/\d/)[0].trim()
 
             let details = []
             let $detail = $(td).find('.kbcontent1 font')
@@ -45,7 +45,7 @@ module.exports = (req, res) => {
             details.push({ time, place })
 
             // 存在两个时间地点
-            if ($class.text().indexOf('----') !== -1) {
+            if ($klass.text().indexOf('----') !== -1) {
               time = $detail.eq(2).text().split('(')[0]
               place = $detail.eq(3).text()
               details.push({ time, place })

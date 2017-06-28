@@ -14,7 +14,7 @@ router.get('/course', checkLogin, require('./course'))
 router.post('/course', checkLogin, require('./course'))
 
 // 获取课程表
-router.get('/class', checkLogin, require('./class'))
+router.get('/class', checkLogin, require('./klass'))
 
 // 获取排名
 router.get('/rank', checkLogin, require('./rank'))
