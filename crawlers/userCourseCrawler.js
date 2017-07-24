@@ -3,13 +3,14 @@ const charset = require('superagent-charset')
 charset(request)
 const cheerio = require('cheerio')
 
-const header = require('../config/default').header
-const user = require('../config/default').xtuURL.user
+const config = require('../config/default')
+const header = config.header
+const user = config.xtuURL.user
 
 module.exports = (req, res) => {
-  const year = req.body.year || 2016
+  const year = req.body.year || config.defaultYear
   const nextYear = parseInt(year) + 1
-  const half = req.body.half || 2
+  const half = req.body.half || config.defaultHalf
   const time = year + '-' + nextYear + '-' + half
 
   const URL = user.host + user.path.course + time

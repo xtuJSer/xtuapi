@@ -2,8 +2,9 @@ const request = require('superagent')
 const cheerio = require('cheerio')
 const eventproxy = require('eventproxy')
 
-const header = require('../config/default').header
-const user = require('../config/default').xtuURL.user
+const config = require('../config/default')
+const header = config.header
+const user = config.xtuURL.user
 
 module.exports = (req, res) => {
   const rankURL = user.host + user.path.rank
@@ -21,7 +22,7 @@ module.exports = (req, res) => {
     return curYear + '-' + nextYear + '-' + half
   }
 
-  let fullYear = req.body.fullYear || '2016-2'
+  let fullYear = req.body.fullYear || config.defaultYear + '-' + config.defaultHalf
   let year
 
   if (fullYear.indexOf('&') > -1) {

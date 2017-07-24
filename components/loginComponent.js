@@ -1,6 +1,5 @@
 const fs = require('fs'),
       path = require('path'),
-      cheerio = require('cheerio'),
       request = require('superagent')
 
 require('superagent-charset')(request)

@@ -1,5 +1,5 @@
 const { user } = require('../../config/prod')
-const { checkFormat, getCookie, getImg, saveImg, editImg, spotImg, loginToJWXT, successLogin } = require('../../components/loginComponent-beta')
+const { checkFormat, getCookie, getImg, saveImg, editImg, spotImg, loginToJWXT, successLogin } = require('../../components/loginComponent')
 
 module.exports = (req, res) => {
   let username = req.body.username        // 输入的学号

@@ -1,7 +1,8 @@
 module.exports = {
   port: 3000,
 
-  defaultTime: '2016-2017-2',
+  defaultYear: '2016',
+  defaultHalf: '2',
 
   session: {
     name: 'xtuUser',

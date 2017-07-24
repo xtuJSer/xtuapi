@@ -1,13 +1,13 @@
 const request = require('superagent'),
-      cheerio = require('cheerio'),
-      eventproxy = require('eventproxy')
+      cheerio = require('cheerio')
 
-const config = require('../config/default')
-      defaultTime = config.defaultTime,
+const config = require('../config/default'),
+      YEAR = config.defaultYear,
+      HLAF = config.defaultHalf,
       header = config.header,
       user = config.xtuURL.user,
       URL = user.host + user.path.exam,
-
+      defaultTime = YEAR + '-' + HLAF
 
 module.exports = (req, res) => {
   request
