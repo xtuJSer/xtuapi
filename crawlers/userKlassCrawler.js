@@ -20,7 +20,8 @@ module.exports = (req, res) => {
       // if (err) { throw new Error(`获取课程失败: ${err}`) }
       if (err) {
         res.status(500).send('暂无数据')
-        throw new Error(`获取课程失败: ${err}`)
+        // throw new Error(`获取课程失败: ${err}`)
+        return
       }
 
       ;(function () {
