@@ -17,9 +17,13 @@ module.exports = (req, res) => {
     .set('Cookie', req.session.xtuUser)
     .send(data)
     .end((err, sres) => {
-      if (err) { throw new Error(`获取课程失败: ${err}`) }
+      // if (err) { throw new Error(`获取课程失败: ${err}`) }
+      if (err) {
+        res.status(500).send('暂无数据')
+        throw new Error(`获取课程失败: ${err}`)
+      }
 
-      (function () {
+      ;(function () {
         let $ = cheerio.load(sres.text),
             $tr = $('#kbtable tr'), // 获取所有 tr
             row = [],
