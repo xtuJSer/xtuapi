@@ -11,7 +11,7 @@ module.exports = {
     resave: true,
     secure: true,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 1,
+      maxAge: 60 * 60,
       httpOnly: false,
       // domain: 'magicallu.cn',
       // path: '/'，
@@ -32,7 +32,8 @@ module.exports = {
     headers: 'Origin, X-Requested-With, Content-Type, Accept, Set-Cookie, Cookie',
     credentials: true,
     methods: '*',
-    'contentType': 'application/json; charset=utf-8'
+    maxAge: 60,
+    contentType: 'application/json; charset=utf-8'
   },
 
   db: 'mongodb://localhost:27017/xtuApiLu',

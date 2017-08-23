@@ -41,7 +41,7 @@ app.all('*', (req, res, next) => {
   res.header("Access-Control-Allow-Headers", config.cors.headers)
   res.header("Access-Control-Allow-Credentials", config.cors.credentials)
   res.header("Access-Control-Allow-Methods", config.cors.methods)
-  res.header("Access-Control-Max-Age", config.session.cookie.maxAge);
+  res.header("Access-Control-Max-Age", config.cors.maxAge);
   res.header("Content-Type", config.cors.contentType)
 
   next()
