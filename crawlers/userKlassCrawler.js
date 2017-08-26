@@ -7,15 +7,15 @@ const request = require('superagent'),
 require('superagent-charset')(request)
 
 module.exports = (req, res) => {
-  const year = config.defaultYear,
-        half = config.defaultHalf,
-        data = `cj0701id=&zc=&demo=&xnxq01id=${year}-${year + 1}-${half}&sfFD=1`,
-        klassURL = user.host + user.path.klass
+  // const year = config.defaultYear,
+        // half = config.defaultHalf,
+        // data = `cj0701id=&zc=&demo=&xnxq01id=${year}-${year + 1}-${half}&sfFD=1`,
+  const klassURL = user.host + user.path.klass
 
-  request.post(klassURL)
+  request.get(klassURL)
     .set(header)
     .set('Cookie', req.session.xtuUser)
-    .send(data)
+    // .send(data)
     .end((err, sres) => {
       // if (err) { throw new Error(`获取课程失败: ${err}`) }
       if (err) {
