@@ -101,7 +101,7 @@ const formatByName = (data, day) => {
 
 const judgeDay = (day) => {
   let today = new Date().getDay()
-  return (day ? today + 1 : today) % 7
+  return (+day ? today + 1 : today) % 7
 }
 
 module.exports = {

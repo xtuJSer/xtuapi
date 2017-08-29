@@ -2,7 +2,7 @@ const fs = require('fs')
 const schedule = require('node-schedule')
 const request = require('superagent')
 
-const URL = 'https://xtuapi.magicallu.cn/v1/user/classroom'
+const URL = 'https://xtuapi.magicallu.cn/user/classroom'
 const updateTime = ['10 0 0 * * *', '10 10 0 * * *', '21 21 0 * * *', '5 5 5 * * *', '6 6 6 * * *']
 const confirmTime = ['30 0 0 * * *', '11 11 0 * * *', '22 22 0 * * *', '50 5 5 * * *', '50 6 6 * * *']
 
