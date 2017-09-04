@@ -7,22 +7,11 @@ const request = require('superagent'),
 require('superagent-charset')(request)
 
 module.exports = (req, res) => {
-<<<<<<< HEAD
     const klassURL = user.host + user.path.klass
-=======
-  // const year = config.defaultYear,
-        // half = config.defaultHalf,
-        // data = `cj0701id=&zc=&demo=&xnxq01id=${year}-${year + 1}-${half}&sfFD=1`,
-  const klassURL = user.host + user.path.klass
->>>>>>> 2177d8fec09b2f775ebdea4e00d27231a4067241
 
   request.get(klassURL)
     .set(header)
     .set('Cookie', req.session.xtuUser)
-<<<<<<< HEAD
-=======
-    // .send(data)
->>>>>>> 2177d8fec09b2f775ebdea4e00d27231a4067241
     .end((err, sres) => {
       if (err) {
         res.status(500).send('暂无数据')

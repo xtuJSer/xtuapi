@@ -32,6 +32,8 @@ app.all('*', (req, res, next) => {
 
 routes(app)
 
+module.exports = app
+
 const port = process.env.PORT || config.port
 app.listen(port, () => {
   console.log(`Server is listening at port ${port}...`)
