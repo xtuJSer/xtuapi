@@ -18,7 +18,7 @@ module.exports = (req, res) => {
   const prop = ['all', '7', '1']
 
   const formatYear = (curYear, half) => {
-    let nextYear = +curYear+1
+    let nextYear = +curYear + 1
     return curYear + '-' + nextYear + '-' + half
   }
 
@@ -40,12 +40,11 @@ module.exports = (req, res) => {
     result.time = fullYear
     htmlArr.map((htmlObj) => {
       let { html, propEl } = htmlObj,
-          $ = cheerio.load(html),
-          obj = {},
-          table = []
+        $ = cheerio.load(html),
+        obj = {},
+        table = []
 
-      if (propEl.length === 1) { obj.prop = propEl === '1' ? '必修' : '选修' }
-      else { obj.prop = '综合' }
+      if (propEl.length === 1) { obj.prop = propEl === '1' ? '必修' : '选修' } else { obj.prop = '综合' }
 
       $('#dataList tr').find('th').each((i, th) => {
         table[i] = {}
@@ -66,7 +65,7 @@ module.exports = (req, res) => {
     request.post(rankURL)
       .set(header)
       .set('Cookie', req.session.xtuUser)
-      .send(`kksj=${ year }&kclb=${ propEl = propEl !== 'all' ? propEl : '1&kclb=7' }&zsb=0`)
+      .send(`kksj=${year}&kclb=${propEl = propEl !== 'all' ? propEl : '1&kclb=7'}&zsb=0`)
       .end((err, sres) => {
         if (err) { throw new Error(`获取排名失败 ${err}`) }
         ep.emit('getHtml', { html: sres.text, propEl })

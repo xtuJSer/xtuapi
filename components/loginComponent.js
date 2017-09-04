@@ -1,19 +1,19 @@
 const fs = require('fs'),
-      path = require('path'),
-      request = require('superagent')
+  path = require('path'),
+  request = require('superagent')
 
 require('superagent-charset')(request)
 
 const tesseract = require('node-tesseract'),
-      gm = require('gm')
+  gm = require('gm')
 
 const config = require('../config/default'),
-      imgDir = path.join(__dirname, '../public/images'),
-      header = config.header,
-      userURL = config.xtuURL.user,
-      loginURL = userURL.host,
-      postURL = loginURL + userURL.path.login,
-      imgURL = loginURL + userURL.path.verification
+  imgDir = path.join(__dirname, '../public/images'),
+  header = config.header,
+  userURL = config.xtuURL.user,
+  loginURL = userURL.host,
+  postURL = loginURL + userURL.path.login,
+  imgURL = loginURL + userURL.path.verification
 
 const checkFormat = (username, password) => {
   let errorMsg = { message: '', status: 'wrong' }
@@ -57,8 +57,8 @@ const saveImg = (img, username) => new Promise((resolve) => {
 
 const editImg = username => new Promise((resolve, reject) => {
   gm(imgDir + `/${username}.jpg`)
-    .despeckle() //去斑
-    .contrast(-2000) //对比度调整
+    .despeckle() // 去斑
+    .contrast(-2000) // 对比度调整
     .write(imgDir + `/${username}_gm.jpg`, err => {
       if (err) { reject(`图片处理中出错`) }
       resolve()
@@ -76,7 +76,7 @@ const spotImg = username => new Promise((resolve, reject) => {
   })
 })
 
-const loginToJWXT = (ret, req, username, password, cookie, isUser) => new Promise ((resolve, reject) => {
+const loginToJWXT = (ret, req, username, password, cookie, isUser) => new Promise((resolve, reject) => {
   request.post(postURL)
     .type('form')
     .set(header)

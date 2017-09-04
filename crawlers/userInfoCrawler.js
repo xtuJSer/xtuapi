@@ -1,10 +1,10 @@
 const request = require('superagent'),
-      cheerio = require('cheerio'),
-      eventproxy = require('eventproxy')
+  cheerio = require('cheerio'),
+  eventproxy = require('eventproxy')
 
 const header = require('../config/default').header,
-      user = require('../config/default').xtuURL.user,
-      URL = user.host + user.path.info
+  user = require('../config/default').xtuURL.user,
+  URL = user.host + user.path.info
 
 module.exports = (req, res) => {
   request

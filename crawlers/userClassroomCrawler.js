@@ -8,7 +8,6 @@ const { checkList, getNameAndRoom, formatByTime, formatByName } = require('../fi
 const header = require('../config/default').header
 const user = require('../config/default').xtuURL.user
 
-
 const init = html => {
   let $ = cheerio.load(html)
   let table = []
@@ -16,13 +15,13 @@ const init = html => {
   $('#dataList').find('tr').each((idx, tr) => {
     if (idx <= 1) return
     let $tr = $(tr),
-        item = {},
-        tdArr = $tr.find('td')
+      item = {},
+      tdArr = $tr.find('td')
 
     item.classroomName = $(tdArr[0]).text().trim()
     item.classroomTime = []
 
-    for (let i = 1; i < 6; i ++) {
+    for (let i = 1; i < 6; i++) {
       item.classroomTime.push($(tdArr[i]).text().trim())
     }
     table.push(item)

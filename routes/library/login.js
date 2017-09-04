@@ -1,12 +1,12 @@
 const request = require('superagent')
 
 const library = require('../../config/default').xtuURL.library,
-      header = require('../../config/default').header,
-      URL = library.host + library.path.login
+  header = require('../../config/default').header,
+  URL = library.host + library.path.login
 
 module.exports = (req, res) => {
   const username = req.body.username,
-        password = req.body.password
+    password = req.body.password
 
   request
     .post(URL)
