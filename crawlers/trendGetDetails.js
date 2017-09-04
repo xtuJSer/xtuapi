@@ -1,8 +1,8 @@
 const fs = require('fs'),
-      path = require('path'),
-      request = require('superagent'),
-      cheerio = require('cheerio'),
-      config = require('../config/default')
+  path = require('path'),
+  request = require('superagent'),
+  cheerio = require('cheerio'),
+  config = require('../config/default')
 
 require('superagent-charset')(request)
 
@@ -44,28 +44,28 @@ const fetchDetails = (el, charset) => new Promise((resolve, reject) => {
     .get(el.href)
     .charset(charset)
     .end((err, sres) => {
-      if (err) { reject(`获取详情失败`)}
+      if (err) { reject(`获取详情失败`) }
       console.log(`正在爬取 ${el.href}`)
       resolve({ html: sres.text, el })
     })
-  })
+})
 
 module.exports = async (req, res, target, html) => {
   console.log(`正在获取 ${target} 下的数据`)
   let $ = cheerio.load(html),
-      list = [],
-      $cur = $('.list a'),
-      charset = 'utf8'
+    list = [],
+    $cur = $('.list a'),
+    charset = 'utf8'
 
   // “新闻”和“媒体”下的编码格式为 gbk
-  ;(target === 'news' || target === 'media') && (charset = 'gbk')
+    ;(target === 'news' || target === 'media') && (charset = 'gbk')
   // 处理在“媒体湘大”列表类名不统一的问题
   target === 'media' && ($cur = $('.newsgridlist a'))
 
   // 获取 list 下的数据
   $cur.each(i => {
     let temp = {},
-        $a = $($cur[i])
+      $a = $($cur[i])
 
     temp.href = $a.attr('href').indexOf('http') > -1
       ? $a.attr('href')
@@ -88,7 +88,7 @@ module.exports = async (req, res, target, html) => {
 
   let details = []
   for (let i = 0; i < count; i++) {
-    if (list[i].href.indexOf('pdf') > -1) { continue; }
+    if (list[i].href.indexOf('pdf') > -1) { continue }
     details.push(await fetchDetails(list[i], charset))
   }
   details = formatDetails(details, target)

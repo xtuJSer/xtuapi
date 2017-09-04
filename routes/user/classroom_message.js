@@ -3,7 +3,7 @@ const messageData = require('../../store/message.json')
 
 module.exports = async (req, res) => {
   let itemLength = parseInt(req.body.itemLength)
-  let notZero = Math.max(0, itemLength) ? true : false
+  let notZero = !!Math.max(0, itemLength)
   let messageRandomIndex = ~~(Math.random() * messageData[+notZero].length)
 
   res.status(200).json({ message: messageData[+notZero][messageRandomIndex] })

@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     await userClassroomCrawler(req, res, session)
   } else {
     let day = +req.body.day || 0,
-        byName = +req.body.byName || 0
+      byName = +req.body.byName || 0
 
     ;(day < 0 || day > 1) && (day = 0)
     ;(byName < 0 || byName > 1) && (byName = 0)

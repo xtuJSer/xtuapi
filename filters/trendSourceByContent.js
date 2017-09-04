@@ -1,6 +1,6 @@
 module.exports = detail => {
   let { content } = detail,
-      isFound = false
+    isFound = false
 
   for (let i = content.length - 1; i >= 0 && !isFound; i--) {
     if (content[i].includes('年')) {

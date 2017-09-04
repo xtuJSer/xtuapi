@@ -1,13 +1,13 @@
 const request = require('superagent'),
-      cheerio = require('cheerio')
+  cheerio = require('cheerio')
 
 const config = require('../config/default'),
-      YEAR = config.defaultYear,
-      HLAF = config.defaultHalf,
-      header = config.header,
-      user = config.xtuURL.user,
-      URL = user.host + user.path.exam,
-      defaultTime = YEAR + '-' + HLAF
+  YEAR = config.defaultYear,
+  HLAF = config.defaultHalf,
+  header = config.header,
+  user = config.xtuURL.user,
+  URL = user.host + user.path.exam,
+  defaultTime = YEAR + '-' + HLAF
 
 module.exports = (req, res) => {
   request
@@ -24,7 +24,7 @@ module.exports = (req, res) => {
       $tr.each((i, tr) => {
         if (i === 0) return
         let $td = $(tr).find('td'),
-            temp = {}
+          temp = {}
         temp.name = $td.eq(2).text()
         temp.date = $td.eq(3).text().split(' ')[0]
         temp.time = $td.eq(3).text().split(' ')[1]

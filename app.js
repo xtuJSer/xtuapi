@@ -16,33 +16,28 @@ app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 app.use(bodyParser.json({ limit: '1mb' }))
 app.use(session({
-  name: config.session.name,
-  secret: config.session.secret,
-  resave: config.session.resave,
-  saveUninitialized: config.session.saveUninitialized,
-  secure: config.session.secure,
-  cookie: {
-    maxAge: config.session.cookie.maxAge,
-    httpOnly: config.session.cookie.httpOnly
-  }
+  ...config.session
   // store: new MongoStore({
   //   url: config.db
   // })
 }))
+// console.log({
+//   ...config.session,
+// })
 app.use(compress())
 
 app.all('*', (req, res, next) => {
   for (let el of config.cors.origin) {
     if (el === req.headers.origin) {
-      res.header("Access-Control-Allow-Origin", req.headers.origin)
+      res.header('Access-Control-Allow-Origin', req.headers.origin)
       break
     }
   }
-  res.header("Access-Control-Allow-Headers", config.cors.headers)
-  res.header("Access-Control-Allow-Credentials", config.cors.credentials)
-  res.header("Access-Control-Allow-Methods", config.cors.methods)
-  res.header("Access-Control-Max-Age", config.cors.maxAge);
-  res.header("Content-Type", config.cors.contentType)
+  res.header('Access-Control-Allow-Headers', config.cors.headers)
+  res.header('Access-Control-Allow-Credentials', config.cors.credentials)
+  res.header('Access-Control-Allow-Methods', config.cors.methods)
+  res.header('Access-Control-Max-Age', config.cors.maxAge)
+  res.header('Content-Type', config.cors.contentType)
 
   next()
 })

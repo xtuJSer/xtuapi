@@ -21,15 +21,15 @@ const checkList = listName => name => {
 
 const getNameAndRoom = name => {
   let curName = name,
-      nextName = name,
-      pos = name.search(/\w/g),
-      isClassroom = checkList('classroomList')(name),
-      isNorthOrSouth = checkList('northOrSouthList')(name)
+    nextName = name,
+    pos = name.search(/\w/g),
+    isClassroom = checkList('classroomList')(name),
+    isNorthOrSouth = checkList('northOrSouthList')(name)
 
   if (/\-/g.test(name)) {
     curName = name.split('-')[0]
     nextName = name.split('-')[1]
-  } else if (pos !== -1){
+  } else if (pos !== -1) {
     curName = name.slice(0, pos)
     nextName = name.slice(pos)
   } else {
@@ -52,7 +52,7 @@ const formatByTime = (data, day) => {
 
   data.map((el, idx) => {
     let name = el.classroomName,
-        time = el.classroomTime
+      time = el.classroomTime
 
     time.map((t, i) => {
       if (t === '空') {
@@ -62,7 +62,7 @@ const formatByTime = (data, day) => {
         let { curIdx, nextName } = (function (name, curTime) {
           let { curName, nextName } = getNameAndRoom(name)
 
-          for (let i = 0, len = curTime.length; i < len; i ++) {
+          for (let i = 0, len = curTime.length; i < len; i++) {
             if (curTime[i].name.indexOf(curName) === 0) {
               return { nextName, curIdx: i }
             }
@@ -83,8 +83,8 @@ const formatByName = (data, day) => {
   let Name = {}
   data.map((el, idx) => {
     let name = el.classroomName,
-        time = el.classroomTime,
-        { curName, nextName } = getNameAndRoom(name)
+      time = el.classroomTime,
+      { curName, nextName } = getNameAndRoom(name)
 
     Name[curName] || (Name[curName] = [])
     Name[curName].push({ room: nextName, time })

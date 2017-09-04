@@ -1,6 +1,6 @@
 const router = require('express').Router(),
-      path = require('../../config/default').xtuURL.user.path,
-      checkLogin = require('../../middlewares/checkLogin')('xtuUser')
+  path = require('../../config/default').xtuURL.user.path,
+  checkLogin = require('../../middlewares/checkLogin')('xtuUser')
 
 router.get('/', (req, res) => {
   res.status(200).send(Object.keys(path))

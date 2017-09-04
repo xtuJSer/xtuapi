@@ -1,16 +1,16 @@
 const request = require('superagent'),
-      cheerio = require('cheerio'),
-      config = require('../config/default'),
-      header = config.header,
-      user = config.xtuURL.user
+  cheerio = require('cheerio'),
+  config = require('../config/default'),
+  header = config.header,
+  user = config.xtuURL.user
 
 require('superagent-charset')(request)
 
 module.exports = (req, res) => {
   const year = config.defaultYear,
-        half = config.defaultHalf,
-        data = `cj0701id=&zc=&demo=&xnxq01id=${year}-${year + 1}-${half}&sfFD=1`,
-        klassURL = user.host + user.path.klass
+    half = config.defaultHalf,
+    data = `cj0701id=&zc=&demo=&xnxq01id=${year}-${year + 1}-${half}&sfFD=1`,
+    klassURL = user.host + user.path.klass
 
   request.post(klassURL)
     .set(header)
@@ -26,9 +26,9 @@ module.exports = (req, res) => {
 
       ;(function () {
         let $ = cheerio.load(sres.text),
-            $tr = $('#kbtable tr'), // 获取所有 tr
-            row = [],
-            ret = []
+          $tr = $('#kbtable tr'), // 获取所有 tr
+          row = [],
+          ret = []
 
         // 将每一行都存入 row
         $tr.each((i, tr) => {
