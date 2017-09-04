@@ -11,15 +11,8 @@ module.exports = {
     resave: true,
     secure: true,
     cookie: {
-<<<<<<< HEAD
       maxAge: 60 * 60 * 1000,
       httpOnly: true
-=======
-      maxAge: 60 * 60 * 1000 * 1,
-      httpOnly: false,
-      // domain: 'magicallu.cn',
-      // path: '/'，
->>>>>>> 2177d8fec09b2f775ebdea4e00d27231a4067241
     }
   },
 
