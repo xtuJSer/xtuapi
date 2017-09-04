@@ -7,7 +7,6 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const compress = require('compression')
-// const MongoStore = require('connect-mongo')(session)
 
 const express = require('express')
 const app = express()
@@ -15,29 +14,18 @@ const app = express()
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true, limit: '1mb' }))
 app.use(bodyParser.json({ limit: '1mb' }))
-app.use(session({
-  ...config.session
-  // store: new MongoStore({
-  //   url: config.db
-  // })
-}))
-// console.log({
-//   ...config.session,
-// })
+app.use(session({ ...config.session }))
 app.use(compress())
 
 app.all('*', (req, res, next) => {
-  for (let el of config.cors.origin) {
-    if (el === req.headers.origin) {
-      res.header('Access-Control-Allow-Origin', req.headers.origin)
-      break
-    }
-  }
-  res.header('Access-Control-Allow-Headers', config.cors.headers)
-  res.header('Access-Control-Allow-Credentials', config.cors.credentials)
-  res.header('Access-Control-Allow-Methods', config.cors.methods)
-  res.header('Access-Control-Max-Age', config.cors.maxAge)
-  res.header('Content-Type', config.cors.contentType)
+  const { headers, credentials, methods, maxAge, contentType } = config.cors
+
+  res.header('Access-Control-Allow-Origin', req.headers.host)
+  res.header('Access-Control-Allow-Headers', headers)
+  res.header('Access-Control-Allow-Credentials', credentials)
+  res.header('Access-Control-Allow-Methods', methods)
+  res.header('Access-Control-Max-Age', maxAge)
+  res.header('Content-Type', contentType)
 
   next()
 })
