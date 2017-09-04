@@ -13,22 +13,10 @@ module.exports = {
     cookie: {
       maxAge: 60 * 60 * 1000,
       httpOnly: true
-      // domain: 'magicallu.cn',
-      // path: '/'，
     }
   },
 
   cors: {
-    origin: [
-      'http://localhost:8000',
-      'http://localhost:8888',
-      'http://localhost:8080',
-      'http://localhost:8808',
-      'http://xtutx.magicallu.cn',
-      'https://free.magicallu.cn',
-      'https://trend.magicallu.cn',
-      'https://classroom.magicallu.cn'
-    ],
     headers: 'Origin, X-Requested-With, Content-Type, Accept, Set-Cookie, Cookie',
     credentials: true,
     methods: '*',
@@ -55,10 +43,10 @@ module.exports = {
     trend: {
       host: 'http://www.xtu.edu.cn/',
       path: {
-        news: 'xdxw/xnxw/',             // 新闻
-        cathedra: 'xysh/xywh/xsjz/',    // 讲座
-        notice: 'gonggao/',             // 公告
-        media: 'html/meitixd/'          // 媒体
+        news: 'xdxw/xnxw/',                     // 新闻
+        cathedra: 'xysh/xywh/xsjz/',            // 讲座
+        notice: 'gonggao/',                     // 公告
+        media: 'html/meitixd/'                  // 媒体
       }
     },
     user: {
