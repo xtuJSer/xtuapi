@@ -1,39 +1,28 @@
 const request = require('superagent'),
-  cheerio = require('cheerio'),
-  config = require('../config/default'),
-  header = config.header,
-  user = config.xtuURL.user
+      cheerio = require('cheerio'),
+      header = require('../config/default').header,
+      user = require('../config/default').xtuURL.user
 
 require('superagent-charset')(request)
 
 module.exports = (req, res) => {
-<<<<<<< HEAD
-    const klassURL = user.host + user.path.klass
-=======
-  // const year = config.defaultYear,
-        // half = config.defaultHalf,
-        // data = `cj0701id=&zc=&demo=&xnxq01id=${year}-${year + 1}-${half}&sfFD=1`,
-  const klassURL = user.host + user.path.klass
->>>>>>> 2177d8fec09b2f775ebdea4e00d27231a4067241
+  const year = 2016,
+        half = 2,
+        data = `cj0701id=&zc=&demo=&xnxq01id=${year}-${year + 1}-${half}&sfFD=1`,
+        classURL = user.host + user.path.class
 
-  request.get(klassURL)
+  request.post(classURL)
     .set(header)
     .set('Cookie', req.session.xtuUser)
-<<<<<<< HEAD
-=======
-    // .send(data)
->>>>>>> 2177d8fec09b2f775ebdea4e00d27231a4067241
+    .send(data)
     .end((err, sres) => {
-      if (err) {
-        res.status(500).send('暂无数据')
-        return
-      }
+      if (err) { throw new Error(`获取课程失败: ${err}`) }
 
-      ;(function () {
+      (function () {
         let $ = cheerio.load(sres.text),
-          $tr = $('#kbtable tr'), // 获取所有 tr
-          row = [],
-          ret = []
+            $tr = $('#kbtable tr'), // 获取所有 tr
+            row = [],
+            ret = []
 
         // 将每一行都存入 row
         $tr.each((i, tr) => {
@@ -46,8 +35,8 @@ module.exports = (req, res) => {
         row.map((tr, i) => {
           ret[i] = []
           $(tr).find('td').each((j, td) => {
-            let $klass = $(td).find('.kbcontent1')
-            let name = $klass.text().split(/\d/)[0].trim()
+            let $class = $(td).find('.kbcontent1')
+            let name = $class.text().split(/\d/)[0].trim()
 
             let details = []
             let $detail = $(td).find('.kbcontent1 font')
@@ -56,7 +45,7 @@ module.exports = (req, res) => {
             details.push({ time, place })
 
             // 存在两个时间地点
-            if ($klass.text().indexOf('----') !== -1) {
+            if ($class.text().indexOf('----') !== -1) {
               time = $detail.eq(2).text().split('(')[0]
               place = $detail.eq(3).text()
               details.push({ time, place })

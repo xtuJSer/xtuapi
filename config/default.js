@@ -1,8 +1,8 @@
 module.exports = {
   port: 3000,
 
-  defaultYear: '2016',
-  defaultHalf: '2',
+  defaultYear: '2017',
+  defaultHalf: '1',
 
   session: {
     name: 'xtuUser',
@@ -11,8 +11,15 @@ module.exports = {
     resave: true,
     secure: true,
     cookie: {
+<<<<<<< HEAD
       maxAge: 60 * 60 * 1000,
       httpOnly: true
+=======
+      maxAge: 60 * 60 * 1000 * 1,
+      httpOnly: false,
+      // domain: 'magicallu.cn',
+      // path: '/'，
+>>>>>>> 2177d8fec09b2f775ebdea4e00d27231a4067241
     }
   },
 
