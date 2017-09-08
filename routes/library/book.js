@@ -2,9 +2,9 @@ const request = require('superagent')
 const cheerio = require('cheerio')
 require('superagent-charset')(request)
 
-const library = require('../../config/default').xtuURL.library,
-  header = require('../../config/default').header,
-  URL = library.host + library.path.book
+const library = require('../../config/default').xtuURL.library
+const header = require('../../config/default').header
+const URL = library.host + library.path.book
 
 module.exports = (req, res) => {
   const cookie = req.session.xtuLibrary
