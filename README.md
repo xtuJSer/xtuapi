@@ -1,6 +1,6 @@
-# xtuApiLu
+# xtuapi
 
-![xtuApi](http://i4.buimg.com/588926/c92b8e5701bf6633.png)
+![xtuapi](http://i4.buimg.com/588926/c92b8e5701bf6633.png)
 
 > “把湘大办得又大又好。” ——毛爷爷
 

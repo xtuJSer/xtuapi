@@ -1,0 +1,35 @@
+{
+  "name": "xtuapi",
+  "version": "2.0.0",
+  "description": "为开发者提供湘大相关的数据支持",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xtuJSer/xtuapi.git"
+  },
+  "keywords": [
+    "xtu"
+  ],
+  "author": "xtuJSer",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xtuJSer/xtuapi/issues"
+  },
+  "homepage": "https://github.com/xtuJSer/xtuapi#readme",
+  "dependencies": {
+    "koa": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.2.1",
+    "koa-session": "^5.5.0",
+    "koa-static": "^4.0.1",
+    "mongoose": "^4.11.11"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^3.5.3",
+    "supertest": "^3.0.0"
+  }
+}
