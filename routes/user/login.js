@@ -5,21 +5,21 @@ module.exports = (req, res) => new Promise((resolve, reject) => {
   let isRobot = req.body.isRobot || 0
   let isUser = !+isRobot
 
-  let username = isUser ? req.body.username : user.username,       // 输入的学号
-    password = isUser ? req.body.password : user.password        // 输入的密码
+  let username = isUser ? req.body.username : user.username       // 输入的学号
+  let password = isUser ? req.body.password : user.password       // 输入的密码
 
-  username === '' && (username = username.trim())
-  password === '' && (password = password.trim())
+  username === '' || (username = username.trim())
+  password === '' || (password = password.trim())
 
-  let revoke = req.body.revoke || 0,                                      // 是否撤销 session 并重新登录，默认为否
-    cookie = req.session.xtuUser || '',                                 // 查看是否已登录
-    isSuccess = false,                                                  // 是否成功登录
-    isWrong = false,                                                    // 用户的账号密码不正确
-    loopTime = 0,                                                       // 登录失败后进入循环的统计
-    { isFormat, errorMsg } = checkFormat(username, password)            // 判定用户输入值是否规范
+  let revoke = req.body.revoke || 0                                      // 是否撤销 session 并重新登录，默认为否
+  let cookie = req.session.xtuUser || ''                                 // 查看是否已登录
+  let isSuccess = false                                                  // 是否成功登录
+  let isWrong = false                                                    // 用户的账号密码不正确
+  let loopTime = 0                                                       // 登录失败后进入循环的统计
+  let { isFormat, errorMsg } = checkFormat(username, password)           // 判定用户输入值是否规范
 
   isUser && cookie && !revoke && (isSuccess = successLogin(res, cookie, isUser)) // 若是用户登录，则判断是否存在 session
-  !isFormat && res.status(200).json(errorMsg)                             // 用户输入不规范，提前返回错误值，不进入登录逻辑
+  !isFormat && res.status(500).json(errorMsg)                             // 用户输入不规范，提前返回错误值，不进入登录逻辑
 
   ;(async () => {
     !isSuccess && console.log('--- 正在登录 ---')
@@ -42,10 +42,10 @@ module.exports = (req, res) => new Promise((resolve, reject) => {
 
     if (isWrong && isFormat) {
       errorMsg.message = '学号或密码错误'
-      res.status(200).json(errorMsg)
+      res.status(500).json(errorMsg)
     } else if ((!isSuccess || loopTime > MAX_LOOP_TIME) && isFormat) {
       errorMsg.message = '教务系统可能崩了'
-      res.status(200).json(errorMsg)
+      res.status(500).json(errorMsg)
     }
   })()
 })
