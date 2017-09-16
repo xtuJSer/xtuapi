@@ -4,7 +4,13 @@ const { info: { scopes } } = require('../config')
 const api = '/:scope/:topic'
 
 router.get('/', async (ctx, next) => {
-  ctx.body = { api, scopes }
+  ctx.body = {
+    api,
+    ...scopes.map(el => ({
+      scope: el[0],
+      topic: Object.keys(el[1]).filter(key => key !== 'host')
+    }))
+  }
 })
 
 router.get(api, async (ctx, next) => {
