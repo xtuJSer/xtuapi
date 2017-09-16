@@ -16,6 +16,8 @@ router.get('/', async (ctx) => {
 
 router.get(api, async (ctx) => {
   const { scope, topic } = ctx.params
+  // TODO: 按需加载
+  const { limit = 10, cursor = '_id' } = ctx.query
   const map = new Map(scopes)
 
   ctx.assert(
@@ -25,11 +27,8 @@ router.get(api, async (ctx) => {
   )
 
   const route = map.get(scope)
-  const ret = await controller({
-    scope,
-    topic,
-    url: route.host + route[topic]
-  })
+  const url = route.host + route[topic]
+  const ret = await controller({ scope, topic, url, limit, cursor })
 
   ctx.body = ret
 })
