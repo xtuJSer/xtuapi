@@ -4,7 +4,7 @@
   "description": "为开发者提供湘大相关的数据支持",
   "main": "app.js",
   "scripts": {
-    "dev": "NODE_ENV=dev supervisor -q app.js",
+    "dev": "NODE_ENV=dev supervisor app.js",
     "start": "NODE_NEV=prod pm2 start app.js --name 'xtuapi'"
   },
   "repository": {
