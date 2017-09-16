@@ -1,9 +1,10 @@
 const router = require('koa-router')()
 
+const controller = require('../controllers/info')
 const { info: { scopes } } = require('../config')
 const api = '/:scope/:topic'
 
-router.get('/', async (ctx, next) => {
+router.get('/', async (ctx) => {
   ctx.body = {
     api,
     ...scopes.map(el => ({
@@ -13,8 +14,8 @@ router.get('/', async (ctx, next) => {
   }
 })
 
-router.get(api, async (ctx, next) => {
-  let { scope, topic } = ctx.params
+router.get(api, async (ctx) => {
+  const { scope, topic } = ctx.params
   const map = new Map(scopes)
 
   ctx.assert(
@@ -23,11 +24,14 @@ router.get(api, async (ctx, next) => {
     '您所访问的资源不存在'
   )
 
-  scope = map.get(scope)
-  ctx.body = {
+  const route = map.get(scope)
+  const ret = await controller({
+    scope,
     topic,
-    url: scope.host + scope[topic]
-  }
+    url: route.host + route[topic]
+  })
+
+  ctx.body = ret
 })
 
 module.exports = router

@@ -2,10 +2,14 @@ const Koa = require('koa')
 const app = new Koa()
 
 const routers = require('./routers')
-app.use(routers.routes())
 
-app.use(async (ctx) => {
-  ctx.body = 'Hello v2.0'
+app.use(async (ctx, next) => {
+  const start = Date.now()
+  await next()
+  const ms = Date.now() - start
+  console.log(`${ctx.method} ${ctx.url} ${ms}ms`)
 })
+
+app.use(routers.routes())
 
 app.listen(3000)
