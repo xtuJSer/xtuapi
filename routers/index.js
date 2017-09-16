@@ -5,13 +5,7 @@ const routes = ['info', 'user', 'book', 'card']
 const api = 'https://github.com/xtuJSer/xtuapi'
 
 router.get('/', (ctx) => {
-  ctx.body = {
-    name,
-    description,
-    version,
-    author,
-    api
-  }
+  ctx.body = { name, description, version, author, api }
 })
 
 routes.map(

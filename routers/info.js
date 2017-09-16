@@ -1,27 +1,26 @@
 const router = require('koa-router')()
 
-const { info: { scopes, topics } } = require('../config')
-const url = '/:scope/:topic'
+const { info: { scopes } } = require('../config')
+const api = '/:scope/:topic'
 
 router.get('/', async (ctx, next) => {
-  ctx.body = {
-    url,
-    scopes,
-    topics
-  }
+  ctx.body = { api, scopes }
 })
 
-router.get(url, async (ctx, next) => {
+router.get(api, async (ctx, next) => {
   let { scope, topic } = ctx.params
+  const map = new Map(scopes)
 
   ctx.assert(
-    scopes.indexOf(scope) > -1 && topics.indexOf(topic) > -1,
+    map.has(scope) && map.get(scope)[topic],
     404,
     '您所访问的资源不存在'
   )
 
+  scope = map.get(scope)
   ctx.body = {
-    topic
+    topic,
+    url: scope.host + scope[topic]
   }
 })
 

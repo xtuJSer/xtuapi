@@ -4,6 +4,7 @@ router.get('/', async (ctx, next) => {
   ctx.body = 'user'
 })
 
+// TODO:
 // "login",
 // "verification",
 // "course",
