@@ -13,4 +13,4 @@ app.use(async (ctx, next) => {
 
 app.use(routers.routes())
 
-app.listen(3000)
+module.exports = app
