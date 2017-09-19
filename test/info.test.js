@@ -1,7 +1,9 @@
 const request = require('supertest')
+
 const app = require('../app')
+const { info: { scopes } } = require('../config')
+
 const index = '/info'
-const { scopes } = require('../config/info')
 
 describe(`\n---- #test ${index} ----`, () => {
   const server = app.listen(3030)
@@ -15,7 +17,7 @@ describe(`\n---- #test ${index} ----`, () => {
       topics.map(topic => {
         const fullPath = `${index}/${scopeName}/${topic}`
 
-        it(fullPath, async () => {
+        it(`get ${fullPath}`, async () => {
           await testRequest
             .get(fullPath)
             .expect('Content-Type', /application\/json/)
