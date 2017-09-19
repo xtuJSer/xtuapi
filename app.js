@@ -1,5 +1,6 @@
 const Koa = require('koa')
 const app = new Koa()
+// const mongoose = require('mongoose')
 
 const routers = require('./routers')
 
@@ -12,4 +13,4 @@ app.use(async (ctx, next) => {
 
 app.use(routers.routes())
 
-app.listen(3000)
+module.exports = app

@@ -91,12 +91,9 @@ typings/
 .env
 
 # configuration
-config/*
-!config/default.*
-!config/userAgent.*
-
-# public/images
-public/images/
+# config/*
+# !config/default.*
+# !config/userAgent.*
 
 # sftp-config
 sftp-config.json
