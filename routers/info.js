@@ -17,7 +17,7 @@ router.get('/', async (ctx, next) => {
 router.get(api, async (ctx, next) => {
   const { scope, topic } = ctx.params
   // TODO: 按需加载，以下 _id 是占位符，未来根据 scope 和 topic 查找数据库，用于返回最新数据的 _id
-  const { limit = 10, cursor = '_id' } = ctx.query
+  const { limit = 10, cursor = '' } = ctx.query
   const map = new Map(scopes)
   const route = map.get(scope)
 

@@ -2,6 +2,7 @@
 
 module.exports = async (options) => {
   const { url, scope, topic, limit, cursor } = options
+  const model = require('../models/info')(scope, topic)
 
   // TODO:
   // 1. 通过 scope 和 topic 取出该数据集中的第一个数据（使用节流，限定时间内不再使用爬虫，1~3 为数据确认和更新）
