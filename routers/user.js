@@ -9,15 +9,15 @@ router.get('/', async (ctx, next) => {
 
 // TODO:
 router.post('/login', async (ctx, next) => {
-  let { name } = ctx.request.body
+  let { username } = ctx.request.body
 
-  const token = jwt.sign({ name }, secret, {
+  const token = jwt.sign({ username }, secret, {
     expiresIn: '1h'
   })
 
   ctx.body = {
     token: 'Bearer ' + token,
-    name
+    username
   }
 })
 
