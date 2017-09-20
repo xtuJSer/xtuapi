@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "NODE_ENV=dev supervisor ./bin/start.js",
-    "test": "mocha -t 6000 -s 1000",
+    "test": "mocha --recursive -t 6000 -s 1000",
     "start": "NODE_NEV=prod pm2 start ./bin/start.js --name 'xtuapi'"
   },
   "repository": {

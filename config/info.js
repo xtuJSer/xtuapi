@@ -6,8 +6,7 @@ module.exports = {
         host: 'http://www.xtu.edu.cn',
         news: '/xdxw/xnxw',
         lecture: '/xysh/xywh/xsjz',
-        notice: '/gonggao',
-        media: '/html/meitixd'
+        notice: '/gonggao'
       }
     ],
     [
@@ -37,5 +36,59 @@ module.exports = {
         lecture: '/moreinfo.aspx?id=97'
       }
     ]
-  ]
+  ],
+
+  rules: {
+    xtu: {
+      news: {
+        el: '.list',
+        parent: 'a',
+        child: 'span'
+      },
+      lecture: {
+        el: '.list',
+        parent: 'a',
+        child: 'span'
+      },
+      notice: {
+        el: '.list',
+        parent: 'a',
+        child: 'span'
+      }
+    },
+    xg: {
+      news: {},
+      lecture: {},
+      notice: {}
+    },
+    s: {
+      news: {
+        charset: 'gbk',
+        el: '#xueyuanxw',
+        parent: 'li',
+        prev: 'a',
+        child: 'span'
+      },
+      lecture: {
+        charset: 'gbk',
+        el: '.jobs-list',
+        parent: '.list_xsr',
+        child: 'a'
+      },
+      notice: {
+        charset: 'gbk',
+        el: '#tongzhigg',
+        parent: 'li',
+        prev: 'a',
+        child: 'span'
+      }
+    },
+    hg: {
+      news: {},
+      lecture: {},
+      notice: {
+        el: '#show-page'
+      }
+    }
+  }
 }
