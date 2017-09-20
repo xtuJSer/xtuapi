@@ -12,7 +12,9 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} ${ms}ms`)
 })
 
-mongoose.connect(mongo_url)
+mongoose.connect(mongo_url, {
+  useMongoClient: true
+})
 app.use(routers.routes())
 
 module.exports = app
