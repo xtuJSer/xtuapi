@@ -12,10 +12,10 @@ module.exports = {
     [
       // 信息工程学院
       'xg', {
-        host: 'http://cie.xtu.edu.cn/ciextu_new',
-        news: '/zxdta',
-        notice: '/zzgga',
-        lecture: '/kxyj/kyxm'
+        host: 'http://cie.xtu.edu.cn',
+        news: '/ciextu_new/zxdta',
+        notice: '/ciextu_new/zzgga',
+        lecture: '/ciextu_new/kxyj/kyxm'
       }
     ],
     [
@@ -57,9 +57,21 @@ module.exports = {
       }
     },
     xg: {
-      news: {},
-      lecture: {},
-      notice: {}
+      news: {
+        el: '#show-page',
+        parent: 'a',
+        child: 'span'
+      },
+      lecture: {
+        el: '#show-page',
+        parent: 'a',
+        child: 'span'
+      },
+      notice: {
+        el: '#show-page',
+        parent: 'a',
+        child: 'span'
+      }
     },
     s: {
       news: {
