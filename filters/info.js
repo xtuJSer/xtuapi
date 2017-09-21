@@ -1,6 +1,6 @@
 const cheerio = require('cheerio')
 
-const filterList = ({ host, html, rule }) => {
+const filterList = ({ host, html, rule, newest }) => {
   const $ = cheerio.load(html)
   const {
     el,
@@ -19,10 +19,11 @@ const filterList = ({ host, html, rule }) => {
 
     href = /http/.test(href) ? href : host + href
 
+    if (title === newest) { return false }
     ret.push({ href, title, time })
   })
 
-  return ret
+  return ret.reverse()
 }
 
 module.exports = {
