@@ -16,7 +16,7 @@ router.get('/', async (ctx, next) => {
 
 router.get(api, async (ctx, next) => {
   const { scope, topic } = ctx.params
-  const { limit = 10, cursor = '' } = ctx.query // cursor 用于指定返回数据的起始 _id
+  const { limit = 10, cursor = null } = ctx.query // cursor 用于指定返回数据的起始 _id
 
   const map = new Map(scopes)
   const route = map.get(scope)
