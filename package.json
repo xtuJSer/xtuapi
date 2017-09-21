@@ -30,6 +30,8 @@
     "koa-session": "^5.5.0",
     "koa-static": "^4.0.1",
     "mongoose": "^4.11.11",
+    "passport": "^0.4.0",
+    "passport-http-bearer": "^1.0.1",
     "superagent": "^3.6.0",
     "superagent-charset": "^1.2.0"
   },
