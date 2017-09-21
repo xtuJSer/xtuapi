@@ -34,6 +34,7 @@ const crawlerList = (ctx, options) => new Promise((resolve, reject) => {
       let ret = filterList({
         host,
         rule,
+        newest,
         html: sres.text
       })
 

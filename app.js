@@ -2,6 +2,7 @@ const Koa = require('koa')
 const app = new Koa()
 const mongoose = require('mongoose')
 const bodyParser = require('koa-bodyparser')
+const passport = require('passport')
 
 const { mongo_url } = require('./config')
 const routers = require('./routers')
@@ -18,6 +19,7 @@ mongoose.connect(mongo_url, {
   useMongoClient: true
 })
 
+// app.use(passport.initialize())
 app.use(bodyParser())
 app.use(routers.routes())
 
