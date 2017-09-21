@@ -24,11 +24,13 @@ module.exports = async (ctx, options) => {
   limit = Math.max(
     Math.min(20, limit), 1
   )
-
   list = await Model.getList({ limit, cursor })
+
+  const { length } = list
   cursor = await Model.getNextId({
-    last: list[list.length - 1]
+    last: list[length - 1]
   })
 
-  return { list, cursor, scope, topic }
+  // url 后续删除
+  return { list, length, cursor, scope, topic, url }
 }

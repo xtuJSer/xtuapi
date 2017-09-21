@@ -1,5 +1,23 @@
 const cheerio = require('cheerio')
 
+const filterTitle = ({ title, parent }) => {
+  if (!parent || title) { return title }
+
+  return parent.trim()
+}
+
+const filterTime = (time) => {
+  return time
+    .replace(/^（\d*次）/, '') // (**次)Date
+    .replace(/\(([\d-]+)\)/, (str, $1) => $1) // (Date)
+}
+
+const filterHref = ({ host, href }) => {
+  return /http/.test(href)
+    ? href
+    : host + href
+}
+
 const filterList = ({ host, html, rule, newest }) => {
   const $ = cheerio.load(html)
   const {
@@ -15,17 +33,28 @@ const filterList = ({ host, html, rule, newest }) => {
     let { href, title } = prev
       ? $(p).find(prev)[0].attribs
       : p.attribs
-    let time = $(p).find(child).text()
-
-    href = /http/.test(href) ? href : host + href
 
     if (title === newest) { return false }
-    ret.push({ href, title, time })
+
+    ret.push({
+      title: filterTitle({
+        title,
+        parent: p.children[1].data
+      }),
+      href: filterHref({
+        host,
+        href
+      }),
+      time: filterTime(
+        $(p).find(child).text()
+      )
+    })
   })
 
   return ret.reverse()
 }
 
 module.exports = {
-  filterList
+  filterList,
+  filterTime
 }
