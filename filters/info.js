@@ -9,7 +9,8 @@ const filterTitle = ({ title, parent }) => {
 const filterTime = (time) => {
   return time
     .replace(/^（\d*次）/, '') // (**次)Date
-    .replace(/\(([\d-]+)\)/, (str, $1) => $1) // (Date)
+    .replace(/^\(([\d-]+)\)$/, (str, $1) => $1) // (Date)
+    .replace(/^.*(\d{4})年(\d+)月(\d+)日.*$/g, (str, $1, $2, $3) => $1 + '-' + $2 + '-' + $3)
 }
 
 const filterHref = ({ host, href }) => {
@@ -24,7 +25,8 @@ const filterList = ({ host, html, rule, newest }) => {
     el,
     parent = 'li',
     prev = null,
-    child = 'span'
+    child = 'span',
+    specialTitle = null
   } = rule
 
   let ret = []
@@ -39,7 +41,8 @@ const filterList = ({ host, html, rule, newest }) => {
     ret.push({
       title: filterTitle({
         title,
-        parent: p.children[1].data
+        parent: p.children[1].data ||
+          (specialTitle && $(p).find(specialTitle)[0].children[0].data)
       }),
       href: filterHref({
         host,
