@@ -30,5 +30,5 @@ module.exports = async (ctx, options) => {
     last: list[list.length - 1]
   })
 
-  return { list, limit, cursor, scope, topic }
+  return { list, cursor, scope, topic }
 }
