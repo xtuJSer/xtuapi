@@ -31,14 +31,14 @@ InfoSchema.statics.getList = async function ({ limit = 10, cursor = null }) {
 InfoSchema.statics.getNextId = async function ({ last }) {
   if (!last) { return '' }
 
-  let { _id: id } = await this.findOne(
+  let id = await this.findOne(
     { _id: { $lt: last._id } },
     { _id: 1 }
   ).sort(
     { _id: -1 }
   ).exec()
 
-  return id || ''
+  return id ? id._id : ''
 }
 
 module.exports = (scope, topic) => mongoose.model(`${scope}-${topic}`, InfoSchema)
