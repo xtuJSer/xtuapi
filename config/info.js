@@ -85,7 +85,9 @@ module.exports = {
         charset: 'gbk',
         el: '.jobs-list',
         parent: '.list_xsr',
-        child: 'a'
+        prev: 'a',
+        child: '.detail',
+        specialTitle: '.hdtitle'
       },
       notice: {
         charset: 'gbk',
