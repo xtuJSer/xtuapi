@@ -1,7 +1,6 @@
 // 引入数据库之后
 const { crawlerList } = require('../crawlers').info
-let start = null
-let prev = null
+const start = {}
 
 module.exports = async (ctx, options) => {
   let { url, host, scope, topic, limit, cursor } = options
@@ -11,9 +10,8 @@ module.exports = async (ctx, options) => {
   const cur = `${scope}-${topic}`
   let list = []
 
-  if (prev !== cur || !start || now - start >= 5 * 1000 * 60) {
-    prev = cur
-    start = now
+  if (!start[cur] || now - start[cur] >= 5 * 1000 * 60) {
+    start[cur] = now
 
     const newest = await Model.getNewest('title')
 
