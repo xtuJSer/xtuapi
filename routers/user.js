@@ -1,22 +1,17 @@
 const router = require('koa-router')()
-const jwt = require('jsonwebtoken')
-const passport = require('passport')
-const { Strategy } = require('passport-http-bearer')
 
-const { secret } = require('../config')
+const { getToken, createToken, verifyToken } = require('../controllers').token
 // const {  } = require('../models').user
 
 router.get('/', async (ctx, next) => {
   ctx.body = 'user'
 })
 
-// TODO:
 router.post('/login', async (ctx, next) => {
   let { username } = ctx.request.body
 
-  const token = jwt.sign({ username }, secret, {
-    expiresIn: '1h'
-  })
+  // TODO: 模拟登陆
+  const token = createToken(username)
 
   ctx.body = {
     token: 'Bearer ' + token,
@@ -25,28 +20,15 @@ router.post('/login', async (ctx, next) => {
 })
 
 router.get('/info', async (ctx, next) => {
-  let { token } = ctx.request.body
+  const token = getToken(ctx)
 
-  let ret = new Strategy(async (token, done) => {
-    await User.findOne(
-      { token },
-      (err, user) => {
-        if (err) {
-          return done(err)
-        }
-        if (!user) {
-          return done(null, false)
-        }
-        return done(null, user)
-      })
-  })
-
-  passport.use(ret)
+  ctx.assert(verifyToken(token), 401, '登录失败')
+  ctx.body = { token }
 })
 
 // "verification",
 // "course",
-// "klass",
+// "klass" -> "schedule",
 // "classroom",
 // "rank",
 // "info",
