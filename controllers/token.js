@@ -12,7 +12,7 @@ const getToken = ({ headers = {} }) => {
 
 const createToken = (username) => prefix + jwt.sign({ username }, secret, { expiresIn })
 
-const verifyToken = (token) => new Promise(async (resolve, reject) => {
+const verifyToken = (token = '') => new Promise(async (resolve, reject) => {
   let decoded = null
   const ret = {
     message: '',
@@ -21,11 +21,11 @@ const verifyToken = (token) => new Promise(async (resolve, reject) => {
 
   try {
     decoded = jwt.verify(token, secret)
-    if (decoded.exp <= Date.now() / 1000) { throw new Error('token 已过期') }
+    if (decoded.exp <= Date.now() / 1000) { throw new Error('token 已过期，请重新登录 🤕') }
 
     let sid = await Model.getSidByToken({ token: prefix + token })
 
-    if (!sid) { throw new Error('token 已更新') }
+    if (!sid) { throw new Error('token 已更新，请重新登录 🤒') }
   } catch (err) {
     ret.message = err
     ret.isSuccess = false
