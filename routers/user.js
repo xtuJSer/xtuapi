@@ -1,37 +1,37 @@
 const router = require('koa-router')()
 
-const { getToken, createToken, verifyToken } = require('../controllers').token
-// const {  } = require('../models').user
+const { getToken, verifyToken } = require('../controllers').token
+const loginController = require('../controllers').login
 
 router.get('/', async (ctx, next) => {
   ctx.body = 'user'
 })
 
 router.post('/login', async (ctx, next) => {
-  let { username } = ctx.request.body
+  let {
+    username = '',
+    password = ''
+  } = ctx.request.body
 
-  // TODO: 模拟登陆
-  const token = createToken(username)
+  let {
+    isSuccess,
+    token = '',
+    message = ''
+  } = await loginController({ username, password })
 
-  ctx.body = {
-    token: 'Bearer ' + token,
-    username
-  }
+  ctx.assert(
+    isSuccess, 401, message
+  )
+  ctx.body = { token }
 })
 
 router.get('/info', async (ctx, next) => {
   const token = getToken(ctx)
 
-  ctx.assert(verifyToken(token), 401, '登录失败')
+  ctx.assert(
+    verifyToken(token), 401, '登录失败'
+  )
   ctx.body = { token }
 })
-
-// "verification",
-// "course",
-// "klass" -> "schedule",
-// "classroom",
-// "rank",
-// "info",
-// "exam"
 
 module.exports = router

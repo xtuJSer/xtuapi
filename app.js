@@ -2,7 +2,6 @@ const Koa = require('koa')
 const app = new Koa()
 const mongoose = require('mongoose')
 const bodyParser = require('koa-bodyparser')
-const passport = require('passport')
 
 const { mongo_url } = require('./config')
 const routers = require('./routers')

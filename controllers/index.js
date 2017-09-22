@@ -1,4 +1,5 @@
 module.exports = {
   info: require('./info'),
-  token: require('./token')
+  token: require('./token'),
+  login: require('./login')
 }

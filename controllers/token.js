@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-const { secret } = require('../config')
+const { secret, expiresIn, prefix } = require('../config').token
 
 const getToken = (ctx) => {
   let { authorization = '' } = ctx.headers
@@ -9,9 +9,7 @@ const getToken = (ctx) => {
   return token
 }
 
-const createToken = (username) => jwt.sign({ username }, secret, {
-  expiresIn: '1h'
-})
+const createToken = (username) => prefix + jwt.sign({ username }, secret, { expiresIn })
 
 const verifyToken = (token) => {
   let decoded = null
