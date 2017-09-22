@@ -2,7 +2,7 @@ const router = require('koa-router')()
 
 const controller = require('../controllers').info
 const { info: { scopes } } = require('../config')
-const api = '/:scope/:topic'
+const api = 'info/:scope/:topic'
 
 router.get('/', async (ctx, next) => {
   ctx.body = {
@@ -21,11 +21,7 @@ router.get(api, async (ctx, next) => {
   const map = new Map(scopes)
   const route = map.get(scope)
 
-  ctx.assert(
-    map.has(scope) && route[topic],
-    404,
-    '您所访问的资源不存在'
-  )
+  ctx.assert(map.has(scope) && route[topic], 404, '您所访问的资源不存在')
 
   const url = route.host + route[topic]
   const ret = await controller(ctx, { scope, topic, url, limit, cursor, host: route.host })

@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "NODE_ENV=dev supervisor ./bin/start.js",
-    "test": "mocha --recursive -t 6000 -s 1000",
+    "test": "NODE_ENV=dev mocha --recursive -t 6000 -s 1000",
     "start": "NODE_NEV=prod pm2 start ./bin/start.js --name 'xtuapi'"
   },
   "repository": {
@@ -23,6 +23,7 @@
   "homepage": "https://github.com/xtuJSer/xtuapi#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "gm": "^1.23.0",
     "jsonwebtoken": "^8.0.1",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
@@ -30,8 +31,7 @@
     "koa-session": "^5.5.0",
     "koa-static": "^4.0.1",
     "mongoose": "^4.11.11",
-    "passport": "^0.4.0",
-    "passport-http-bearer": "^1.0.1",
+    "node-tesseract": "^0.2.7",
     "superagent": "^3.6.0",
     "superagent-charset": "^1.2.0"
   },

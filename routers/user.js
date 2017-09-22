@@ -1,55 +1,34 @@
 const router = require('koa-router')()
-const jwt = require('jsonwebtoken')
-const passport = require('passport')
-const { Strategy } = require('passport-http-bearer')
 
-const { secret } = require('../config')
-// const {  } = require('../models').user
+const { login: { path: routes } } = require('../config').user
 
-router.get('/', async (ctx, next) => {
-  ctx.body = 'user'
+const { getToken, verifyToken } = require('../controllers').token
+const loginController = require('../controllers').login
+
+router.use('/', async (ctx, next) => {
+  const token = getToken(ctx)
+  const { message, isSuccess } = await verifyToken(token)
+
+  ctx.url === '/user/login' || ctx.assert(isSuccess, 401, message)
+  await next()
 })
 
-// TODO:
-router.post('/login', async (ctx, next) => {
-  let { username } = ctx.request.body
-
-  const token = jwt.sign({ username }, secret, {
-    expiresIn: '1h'
-  })
-
+router.get('/', async (ctx, next) => {
   ctx.body = {
-    token: 'Bearer ' + token,
-    username
+    topic: Object.keys(routes).map(key => key).filter(key => key !== 'verification'),
+    api: '/user/:topic'
   }
 })
 
-router.get('/info', async (ctx, next) => {
-  let { token } = ctx.request.body
+router.post('/login', async (ctx, next) => {
+  let { isSuccess, token, message } = await loginController(ctx.request.body)
 
-  let ret = new Strategy(async (token, done) => {
-    await User.findOne(
-      { token },
-      (err, user) => {
-        if (err) {
-          return done(err)
-        }
-        if (!user) {
-          return done(null, false)
-        }
-        return done(null, user)
-      })
-  })
-
-  passport.use(ret)
+  ctx.assert(isSuccess, 401, message)
+  ctx.body = { token }
 })
 
-// "verification",
-// "course",
-// "klass",
-// "classroom",
-// "rank",
-// "info",
-// "exam"
+router.get('/info', async (ctx, next) => {
+  ctx.body = '/info'
+})
 
 module.exports = router

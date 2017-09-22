@@ -1,6 +1,11 @@
 module.exports = {
   port: process.env.PORT || 3000,
-  secret: 'xtuapi',
+  token: {
+    secret: 'xtuapi',
+    expiresIn: '1h',
+    prefix: 'Bearer '
+  },
   mongo_url: 'mongodb://127.0.0.1:27017/xtu',
-  info: require('./info')
+  info: require('./info'),
+  user: require('./user')
 }
