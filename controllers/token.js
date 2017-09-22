@@ -23,7 +23,8 @@ const verifyToken = (token) => new Promise(async (resolve, reject) => {
     decoded = jwt.verify(token, secret)
     if (decoded.exp <= Date.now() / 1000) { throw new Error('token 已过期') }
 
-    let sid = await Model.getSidByToken({ token })
+    let sid = await Model.getSidByToken({ token: prefix + token })
+
     if (!sid) { throw new Error('token 已更新') }
   } catch (err) {
     ret.message = err

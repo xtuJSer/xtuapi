@@ -5,19 +5,21 @@ const { login: { path: routes } } = require('../config').user
 const { getToken, verifyToken } = require('../controllers').token
 const loginController = require('../controllers').login
 
-router.use('/', async (ctx, next) => {
-  const token = getToken(ctx)
-  const { message, isSuccess } = await verifyToken(token)
-
-  ctx.url === '/user/login' || ctx.assert(isSuccess, 401, message)
-  await next()
-})
-
 router.get('/', async (ctx, next) => {
   ctx.body = {
     topic: Object.keys(routes).map(key => key).filter(key => key !== 'verification'),
     api: '/user/:topic'
   }
+})
+
+router.use('/', async (ctx, next) => {
+  if (ctx.url !== '/user/login') {
+    const token = getToken(ctx)
+    const { message, isSuccess } = await verifyToken(token)
+
+    ctx.assert(isSuccess, 401, message)
+  }
+  await next()
 })
 
 router.post('/login', async (ctx, next) => {
