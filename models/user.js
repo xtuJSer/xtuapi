@@ -13,7 +13,11 @@ UserSchema.statics.getSidByToken = async function ({ token = '' }) {
     { sid: 1, username: 1 }
   ).exec()
 
-  return sid
+  return sid || {}
+}
+
+UserSchema.statics.remove = async function ({ username = '' }) {
+  await this.findOneAndRemove({ username })
 }
 
 module.exports = mongoose.model('user', UserSchema)

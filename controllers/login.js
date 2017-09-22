@@ -8,7 +8,6 @@ require('superagent-charset')(request)
 const Model = require('../models').user
 const { createToken } = require('./token')
 
-const imgDir = path.join(__dirname)
 const {
   login: { host: hostURL, path: pathURL },
   headers,
@@ -21,6 +20,8 @@ const loginURL = hostURL + login
 
 const checkFormat = ({ username, password }) => {
   let message = ''
+  username && (username = username.trim())
+  password && (password = password.trim())
 
   if (!username || !password) {
     message = '账号或密码不能为空'
@@ -61,16 +62,16 @@ const getImg = cookie => new Promise((resolve, reject) => {
     })
 })
 
-const saveImg = ({ img, username }) => new Promise((resolve) => {
-  fs.writeFileSync(imgDir + `/${username}.jpg`, img)
+const saveImg = ({ username, img, imgDir }) => new Promise((resolve) => {
+  fs.writeFileSync(imgDir, img)
   resolve()
 })
 
-const editImg = username => new Promise((resolve, reject) => {
-  gm(imgDir + `/${username}.jpg`)
+const editImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
+  gm(imgDir)
     .despeckle() // 去斑
     .contrast(-2000) // 对比度调整
-    .write(imgDir + `/${username}_gm.jpg`, err => {
+    .write(imgDir, err => {
       if (err) {
         reject(err)
       }
@@ -78,7 +79,7 @@ const editImg = username => new Promise((resolve, reject) => {
     })
 })
 
-const spotImg = username => new Promise((resolve, reject) => {
+const spotImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
   // const { promisify } = require('util')
   // const spot = promisify(tesseract.process)
 
@@ -94,8 +95,9 @@ const spotImg = username => new Promise((resolve, reject) => {
   //     resolve(ret)
   //   })
 
-  tesseract.process(imgDir + `/${username}_gm.jpg`, spotImgOptions, (err, ret) => {
+  tesseract.process(imgDir, spotImgOptions, (err, ret) => {
     if (err) { reject(err) }
+    fs.unlinkSync(imgDir)
 
     ret = ret.replace(/\s*/gm, '').substr(0, 4).toLowerCase()
     if (ret.length !== 4 || ret.match(/\W/g) !== null) {
@@ -121,19 +123,21 @@ const loginToJWXT = ({ randomCode, username, password, cookie }) => new Promise(
     .end((err, sres) => {
       if (err) { reject(err) }
       if (sres.text.includes('用户名或密码错误')) {
-        resolve('用户名或密码错误')
+        console.log(randomCode)
+        err = '用户名或密码错误'
+        reject(err)
       } else if (sres.text.includes('验证码错误')) {
-        resolve('验证码错误')
-      } else {
-        // isUser && (req.session.xtuUser = cookie)
-        // 数据库操作
-        resolve()
+        err = '验证码错误'
+        reject(err)
       }
+      resolve()
     })
 })
 
 const successLogin = ({ username, cookie }) => new Promise((resolve, reject) => {
   const token = createToken(username)
+
+  Model.remove({ username })
 
   new Model({
     username,
@@ -147,17 +151,19 @@ const successLogin = ({ username, cookie }) => new Promise((resolve, reject) => 
   })
 })
 
-module.exports = ({ username, password }) => new Promise((resolve, reject) => {
+module.exports = ({ username = '', password = '' }) => new Promise((resolve, reject) => {
   let isSuccess = false
   let isWrong = false
   let loopTime = 0
-  let { isFormat, message } = checkFormat({ username, password })
   let token = ''
+  let { isFormat, message } = checkFormat({ username, password })
 
   if (!isFormat) {
     resolve({ message, isSuccess })
     throw new Error()
   }
+
+  const imgDir = path.join(__dirname) + `/${username}.jpg`
 
   ;(async () => {
     const MAX_LOOP_TIME = 6
@@ -167,13 +173,12 @@ module.exports = ({ username, password }) => new Promise((resolve, reject) => {
         const cookie = await getCookie()
         await saveImg({
           img: await getImg(cookie),
-          username
+          username,
+          imgDir
         })
-        await editImg(username)
+        await editImg({ username, imgDir })
 
-        let randomCode = await spotImg(username)
-        console.log(randomCode)
-
+        let randomCode = await spotImg({ username, imgDir })
         await loginToJWXT({ randomCode, username, password, cookie })
 
         const ret = await successLogin({ username, cookie })

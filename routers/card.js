@@ -1,7 +1,7 @@
 const router = require('koa-router')()
 
-router.get('/', async (ctx, next) => {
-  ctx.body = 'card'
+router.get('/test', async (ctx, next) => {
+  ctx.body = 'test'
 })
 
 // TODO:

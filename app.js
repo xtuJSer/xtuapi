@@ -18,7 +18,6 @@ mongoose.connect(mongo_url, {
   useMongoClient: true
 })
 
-// app.use(passport.initialize())
 app.use(bodyParser())
 app.use(routers.routes())
 

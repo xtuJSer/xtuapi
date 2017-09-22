@@ -1,37 +1,34 @@
 const router = require('koa-router')()
 
+const { login: { path: routes } } = require('../config').user
+
 const { getToken, verifyToken } = require('../controllers').token
 const loginController = require('../controllers').login
 
+router.use('/', async (ctx, next) => {
+  const token = getToken(ctx)
+  const { message, isSuccess } = await verifyToken(token)
+
+  ctx.url === '/user/login' || ctx.assert(isSuccess, 401, message)
+  await next()
+})
+
 router.get('/', async (ctx, next) => {
-  ctx.body = 'user'
+  ctx.body = {
+    topic: Object.keys(routes).map(key => key).filter(key => key !== 'verification'),
+    api: '/user/:topic'
+  }
 })
 
 router.post('/login', async (ctx, next) => {
-  let {
-    username = '',
-    password = ''
-  } = ctx.request.body
+  let { isSuccess, token, message } = await loginController(ctx.request.body)
 
-  let {
-    isSuccess,
-    token = '',
-    message = ''
-  } = await loginController({ username, password })
-
-  ctx.assert(
-    isSuccess, 401, message
-  )
+  ctx.assert(isSuccess, 401, message)
   ctx.body = { token }
 })
 
 router.get('/info', async (ctx, next) => {
-  const token = getToken(ctx)
-
-  ctx.assert(
-    verifyToken(token), 401, '登录失败'
-  )
-  ctx.body = { token }
+  ctx.body = '/info'
 })
 
 module.exports = router
