@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const { promisify } = require('util')
 const tesseract = require('node-tesseract')
 const gm = require('gm')
 const request = require('superagent')
@@ -63,8 +64,9 @@ const getImg = cookie => new Promise((resolve, reject) => {
 })
 
 const saveImg = ({ username, img, imgDir }) => new Promise((resolve) => {
-  fs.writeFileSync(imgDir, img)
-  resolve()
+  const writeFile = promisify(fs.writeFile)
+
+  writeFile(imgDir, img).then(() => resolve())
 })
 
 const editImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
@@ -80,20 +82,20 @@ const editImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
 })
 
 const spotImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
-  // const { promisify } = require('util')
   // const spot = promisify(tesseract.process)
 
-  // console.log(spotImgOptions.binary)
-
-  // spot(imgDir + `/${username}_gm.jpg`, spotImgOptions)
+  // spot(imgDir, spotImgOptions)
   //   .then((ret) => {
   //     ret = ret.replace(/\s*/gm, '').substr(0, 4).toLowerCase()
+  //     fs.unlinkSync(imgDir)
 
   //     if (ret.length !== 4 || ret.match(/\W/g) !== null) {
-  //       throw new Error('验证码不合法')
+  //       const err = '验证码不合法'
+  //       reject(err)
   //     }
   //     resolve(ret)
   //   })
+  //   .catch(err => { reject(err) })
 
   tesseract.process(imgDir, spotImgOptions, (err, ret) => {
     if (err) { reject(err) }
