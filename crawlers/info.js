@@ -29,6 +29,7 @@ const crawlerList = (ctx, options) => new Promise((resolve, reject) => {
     .end((err, sres) => {
       if (err) {
         ctx.status = 500
+        reject(err)
       }
 
       let ret = filterList({
