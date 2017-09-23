@@ -1,5 +1,5 @@
 module.exports = {
-  login: {
+  url: {
     host: 'http://jwxt.xtu.edu.cn/jsxsd',
     path: {
       login: '/xk/LoginToXk',
@@ -12,12 +12,14 @@ module.exports = {
       exam: '/xsks/xsksap_list'
     }
   },
+
   spotImgOptions: {
     l: 'lu',
     binary: process.env.NODE_ENV === 'dev'
       ? '/usr/local/bin/tesseract'
       : '/usr/bin/tesseract'
   },
+
   headers: {
     'User-Agent': require('./userAgent'),
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
