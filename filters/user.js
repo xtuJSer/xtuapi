@@ -35,7 +35,94 @@ const userCourseFilter = ({ time, html }) => {
   return table
 }
 
+const userExamFilter = ({ html }) => {
+  const $ = cheerio.load(html)
+  let $tr = $('#dataList tr')
+  let ret = []
+
+  $tr.each((i, tr) => {
+    if (i === 0) return
+
+    let $td = $(tr).find('td')
+    const temp = {
+      name: $td.eq(2).text(),
+      date: $td.eq(3).text().split(' ')[0],
+      time: $td.eq(3).text().split(' ')[1],
+      place: $td.eq(4).text()
+    }
+
+    ret.push(temp)
+  })
+
+  return ret
+}
+
+const userScheduleFilter = ({ html }) => {
+  const $ = cheerio.load(html)
+  const $tr = $('#kbtable tr')
+  const row = []
+  const ret = []
+
+  $tr.each((i, tr) => { row.push(tr) })
+
+  row.shift()
+  row.pop()
+
+  row.map((tr, i) => {
+    ret[i] = []
+    $(tr).find('td').each((j, td) => {
+      let $klass = $(td).find('.kbcontent1')
+      let name = $klass.text().split(/\d/)[0].trim()
+
+      let details = []
+      let $detail = $(td).find('.kbcontent1 font')
+      let time = $detail.eq(0).text().split('(')[0]
+      let place = $detail.eq(1).text()
+      details.push({ time, place })
+
+      // 存在两个时间地点
+      if ($klass.text().indexOf('----') !== -1) {
+        time = $detail.eq(2).text().split('(')[0]
+        place = $detail.eq(3).text()
+        details.push({ time, place })
+      }
+
+      ret[i][j] = name ? { name, details } : null
+    })
+  })
+
+  if (ret.length === 0) {
+    throw new Error('获取课程失败')
+  }
+
+  return ret
+}
+
+const userRankFilter = ({ html, propEl }) => {
+  const $ = cheerio.load(html)
+  const obj = {}
+  const table = []
+
+  propEl.length === 1
+    ? (obj.prop = propEl === '1' ? '必修' : '选修')
+    : obj.prop = '综合'
+
+  $('#dataList tr').find('th').each((i, th) => {
+    table[i] = {}
+    table[i].title = $(th).text()
+  })
+  $('#dataList tr').find('td').each((i, td) => {
+    table[i].number = $(td).text()
+  })
+  obj.table = table
+
+  return obj
+}
+
 module.exports = {
   userInfoFilter,
-  userCourseFilter
+  userCourseFilter,
+  userExamFilter,
+  userScheduleFilter,
+  userRankFilter
 }
