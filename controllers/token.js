@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 
 const { secret, expiresIn, prefix } = require('../config').token
-const Model = require('../models').user
 
 const getToken = ({ headers = {} }) => {
   let { authorization = '' } = headers
@@ -10,22 +9,25 @@ const getToken = ({ headers = {} }) => {
   return token || ''
 }
 
-const createToken = (username) => prefix + jwt.sign({ username }, secret, { expiresIn })
+const createToken = ({ username, cookie: sid }) => prefix + jwt.sign({ username, sid }, secret, { expiresIn })
+
+const decodeToken = ({ token, secret }) => jwt.verify(token, secret)
 
 const verifyToken = (token = '') => new Promise(async (resolve, reject) => {
   let decoded = null
   const ret = {
     message: '',
-    isSuccess: true
+    isSuccess: true,
+    decoded
   }
 
   try {
-    decoded = jwt.verify(token, secret)
-    if (decoded.exp <= Date.now() / 1000) { throw new Error('token 已过期，请重新登录 🤕') }
+    decoded = decodeToken({ token, secret })
 
-    let sid = await Model.getSidByToken({ token: prefix + token })
-
-    if (!sid) { throw new Error('token 已更新，请重新登录 🤒') }
+    if (decoded.exp <= Date.now() / 1000) {
+      throw new Error('token 已过期，请重新登录 🤕')
+    }
+    ret.decoded = decoded
   } catch (err) {
     ret.message = err
     ret.isSuccess = false
@@ -34,4 +36,9 @@ const verifyToken = (token = '') => new Promise(async (resolve, reject) => {
   resolve(ret)
 })
 
-module.exports = { getToken, createToken, verifyToken }
+module.exports = {
+  getToken,
+  createToken,
+  verifyToken,
+  decodeToken
+}

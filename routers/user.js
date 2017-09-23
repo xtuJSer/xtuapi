@@ -15,9 +15,10 @@ router.get('/', async (ctx, next) => {
 router.use('/', async (ctx, next) => {
   if (ctx.url !== '/user/login') {
     const token = getToken(ctx)
-    const { message, isSuccess } = await verifyToken(token)
+    const { message, isSuccess, decoded } = await verifyToken(token)
 
     ctx.assert(isSuccess, 401, message)
+    ctx.state.decoded = decoded
   }
   await next()
 })
@@ -30,7 +31,9 @@ router.post('/login', async (ctx, next) => {
 })
 
 router.get('/info', async (ctx, next) => {
-  ctx.body = '/info'
+  const { decoded } = ctx.state
+
+  ctx.body = decoded
 })
 
 module.exports = router

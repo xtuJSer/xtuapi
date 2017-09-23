@@ -6,7 +6,6 @@ const gm = require('gm')
 const request = require('superagent')
 require('superagent-charset')(request)
 
-const Model = require('../models').user
 const { createToken } = require('./token')
 
 const {
@@ -121,21 +120,9 @@ const loginToJWXT = ({ randomCode, username, password, cookie }) => new Promise(
     })
 })
 
-const successLogin = ({ username, cookie }) => new Promise(async (resolve, reject) => {
-  const token = createToken(username)
-
-  Model.remove({ username })
-
-  await new Model({
-    username,
-    sid: cookie,
-    token
-  }).save()
-
-  resolve({
-    token,
-    isSuccess: true
-  })
+const successLogin = ({ username, cookie }) => ({
+  token: createToken({ username, cookie }),
+  isSuccess: true
 })
 
 module.exports = ({ username = '', password = '' }) => new Promise((resolve, reject) => {
@@ -168,7 +155,7 @@ module.exports = ({ username = '', password = '' }) => new Promise((resolve, rej
         let randomCode = await spotImg({ username, imgDir })
         await loginToJWXT({ randomCode, username, password, cookie })
 
-        const ret = await successLogin({ username, cookie })
+        const ret = successLogin({ username, cookie })
 
         isSuccess = ret.isSuccess
         token = ret.token
