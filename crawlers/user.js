@@ -3,8 +3,7 @@ require('superagent-charset')(request)
 
 const {
   url: { host, path: routes },
-  defaultTime: { year: defaultYear, half: defaultHalf },
-  headers
+  defaultTime: { year: defaultYear, half: defaultHalf }
 } = require('../config').user
 
 const {
@@ -13,34 +12,40 @@ const {
   userExamFilter
 } = require('../filters').user
 
-// const fetchType = () => {}
+const _fetch = filter => ({ type = 'get', href, sid, data = '' }, options = {}) =>
+  new Promise((resolve, reject) => {
+    const { headers } = require('../config').user
+
+    request[type](href)
+      .set(headers)
+      .set('Cookie', sid)
+      .send(data)
+      .charset('utf-8')
+      .end((err, sres) => {
+        if (err) { reject(err) }
+
+        resolve(
+          filter({ html: sres.text, ...options })
+        )
+      })
+  })
 
 /**
  * 信息
  * @param {Object} param0 userInfo
  */
-const userInfoCrawler = ({ sid }) => new Promise((resolve, reject) => {
+const userInfoCrawler = async ({ sid }) => {
   const href = host + routes.info
+  const ret = await _fetch(userInfoFilter)({ href, sid })
 
-  request
-    .get(href)
-    .set(headers)
-    .set('Cookie', sid)
-    .charset('utf-8')
-    .end((err, sres) => {
-      if (err) { reject(err) }
-
-      resolve(
-        userInfoFilter({ html: sres.text })
-      )
-    })
-})
+  return ret
+}
 
 /**
  * 成绩
  * @param {Object} param0 userCourse
  */
-const userCourseCrawler = ({ sid, body }) => new Promise((resolve, reject) => {
+const userCourseCrawler = async ({ sid, body }) => {
   const {
     year = defaultYear,
     half = defaultHalf
@@ -49,43 +54,30 @@ const userCourseCrawler = ({ sid, body }) => new Promise((resolve, reject) => {
   const time = year + '-' + (+year + 1) + '-' + half
   const href = host + routes.course
 
-  request
-    .get(href + time)
-    .set(headers)
-    .set('Cookie', sid)
-    .charset('utf8')
-    .end((err, sres) => {
-      if (err) { reject(err) }
+  const ret = await _fetch(userCourseFilter)(
+    { href: href + time, sid },
+    { time }
+  )
 
-      resolve(
-        userCourseFilter({ html: sres.text, time })
-      )
-    })
-})
+  return ret
+}
 
 /**
  * 考试信息
  * @param {Object} param0 userCourse
  */
-const userExamCrawler = ({ sid, body }) => new Promise((resolve, reject) => {
+const userExamCrawler = async ({ sid, body }) => {
   const year = defaultYear
   const half = defaultHalf
   const href = host + routes.exam
+  const data = `xqlbmc=&xnxqid=${year}-${half}&xqlb=`
 
-  request
-    .post(href)
-    .send(`xqlbmc=&xnxqid=${year}-${half}&xqlb=`)
-    .set(headers)
-    .set('Cookie', sid)
-    .charset('utf-8')
-    .end((err, sres) => {
-      if (err) { reject(err) }
+  const ret = await _fetch(userExamFilter)(
+    { type: 'post', sid, data, href }
+  )
 
-      resolve(
-        userExamFilter({ html: sres.text })
-      )
-    })
-})
+  return ret
+}
 
 module.exports = {
   info: userInfoCrawler,
