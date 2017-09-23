@@ -1,16 +1,14 @@
-const {
-  userInfoCrawler
-} = require('../crawlers').user
+const crawler = require('../crawlers').user
 
-const getInfo = async (ctx, { sid = '' }) => {
+const getTopic = topic => async ({ sid, body = '' }) => {
   let ret = {
     isSuccess: true,
     message: '',
-    info: null
+    content: null
   }
 
   try {
-    ret.info = await userInfoCrawler({ sid })
+    ret.content = await crawler[topic]({ sid, body })
   } catch (e) {
     ret.isSuccess = false
     ret.message = e
@@ -19,6 +17,10 @@ const getInfo = async (ctx, { sid = '' }) => {
   return ret
 }
 
-module.exports = {
-  getInfo
+module.exports = async (ctx, { topic, user: { sid } }) => {
+  const { body } = /post/i.test(ctx.method) ? ctx.request : {}
+  const { isSuccess, message, content } = await getTopic(topic)({ sid, body })
+
+  ctx.assert(isSuccess, 401, message)
+  return content
 }

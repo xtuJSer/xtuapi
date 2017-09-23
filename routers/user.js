@@ -3,6 +3,10 @@ const router = require('koa-router')()
 const { url: { path: routes } } = require('../config').user
 const { getToken, verifyToken } = require('../utils/token')
 
+const getRules = ['info', 'course', 'schedule', 'classroom', 'rank', 'exam']
+const postRules = ['course', 'classroom', 'rank']
+const notFoundMsg = '您所访问的资源是不存在的 🤔'
+
 const loginController = require('../controllers').login
 const userController = require('../controllers').user
 
@@ -32,12 +36,28 @@ router.post('/login', async (ctx, next) => {
   ctx.body = { token }
 })
 
-router.get('/info', async (ctx, next) => {
-  const { user } = ctx.state
-  const { isSuccess, message, info } = await userController.getInfo(ctx, user)
+router.get('/:topic', async (ctx, next) => {
+  const {
+    params: { topic },
+    state: { user }
+  } = ctx
 
-  ctx.assert(isSuccess, 401, message)
-  ctx.body = info
+  ctx.assert(
+    getRules.includes(topic), 404, notFoundMsg
+  )
+  ctx.body = await userController(ctx, { topic, user })
+})
+
+router.post('/:topic', async (ctx, next) => {
+  const {
+    params: { topic },
+    state: { user }
+  } = ctx
+
+  ctx.assert(
+    postRules.includes(topic), 404, notFoundMsg
+  )
+  ctx.body = await userController(ctx, { topic, user })
 })
 
 module.exports = router

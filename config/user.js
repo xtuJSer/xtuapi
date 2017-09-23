@@ -1,4 +1,9 @@
 module.exports = {
+  defaultTime: {
+    year: 2016,
+    half: 2
+  },
+
   url: {
     host: 'http://jwxt.xtu.edu.cn/jsxsd',
     path: {

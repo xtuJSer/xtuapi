@@ -28,9 +28,10 @@ module.exports = async (ctx, options) => {
     Math.min(20, limit), 1
   )
   list = await Model.getList({ limit, cursor })
-  console.log(`返回数据数量：${list.length}`)
 
   const { length } = list
+
+  console.log(`返回数据数量：${length}`)
   cursor = await Model.getNextId({
     last: list[length - 1]
   })
