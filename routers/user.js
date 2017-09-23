@@ -1,9 +1,10 @@
 const router = require('koa-router')()
 
-const { login: { path: routes } } = require('../config').user
+const { url: { path: routes } } = require('../config').user
+const { getToken, verifyToken } = require('../utils/token')
 
-const { getToken, verifyToken } = require('../controllers').token
 const loginController = require('../controllers').login
+const userController = require('../controllers').user
 
 router.get('/', async (ctx, next) => {
   ctx.body = {
@@ -18,8 +19,9 @@ router.use('/', async (ctx, next) => {
     const { message, isSuccess, decoded } = await verifyToken(token)
 
     ctx.assert(isSuccess, 401, message)
-    ctx.state.decoded = decoded
+    ctx.state.user = decoded
   }
+
   await next()
 })
 
@@ -31,9 +33,11 @@ router.post('/login', async (ctx, next) => {
 })
 
 router.get('/info', async (ctx, next) => {
-  const { decoded } = ctx.state
+  const { user } = ctx.state
+  const { isSuccess, message, info } = await userController.getInfo(ctx, user)
 
-  ctx.body = decoded
+  ctx.assert(isSuccess, 401, message)
+  ctx.body = info
 })
 
 module.exports = router
