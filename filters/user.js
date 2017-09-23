@@ -35,7 +35,30 @@ const userCourseFilter = ({ time, html }) => {
   return table
 }
 
+const userExamFilter = ({ html }) => {
+  const $ = cheerio.load(html)
+  let $tr = $('#dataList tr')
+  let ret = []
+
+  $tr.each((i, tr) => {
+    if (i === 0) return
+
+    let $td = $(tr).find('td')
+    const temp = {
+      name: $td.eq(2).text(),
+      date: $td.eq(3).text().split(' ')[0],
+      time: $td.eq(3).text().split(' ')[1],
+      place: $td.eq(4).text()
+    }
+
+    ret.push(temp)
+  })
+
+  return ret
+}
+
 module.exports = {
   userInfoFilter,
-  userCourseFilter
+  userCourseFilter,
+  userExamFilter
 }

@@ -9,11 +9,14 @@ const {
 
 const {
   userInfoFilter,
-  userCourseFilter
+  userCourseFilter,
+  userExamFilter
 } = require('../filters').user
 
+// const fetchType = () => {}
+
 /**
- * 爬取用户信息
+ * 信息
  * @param {Object} param0 userInfo
  */
 const userInfoCrawler = ({ sid }) => new Promise((resolve, reject) => {
@@ -34,7 +37,7 @@ const userInfoCrawler = ({ sid }) => new Promise((resolve, reject) => {
 })
 
 /**
- * 爬取用户成绩
+ * 成绩
  * @param {Object} param0 userCourse
  */
 const userCourseCrawler = ({ sid, body }) => new Promise((resolve, reject) => {
@@ -60,7 +63,32 @@ const userCourseCrawler = ({ sid, body }) => new Promise((resolve, reject) => {
     })
 })
 
+/**
+ * 考试信息
+ * @param {Object} param0 userCourse
+ */
+const userExamCrawler = ({ sid, body }) => new Promise((resolve, reject) => {
+  const year = defaultYear
+  const half = defaultHalf
+  const href = host + routes.exam
+
+  request
+    .post(href)
+    .send(`xqlbmc=&xnxqid=${year}-${half}&xqlb=`)
+    .set(headers)
+    .set('Cookie', sid)
+    .charset('utf-8')
+    .end((err, sres) => {
+      if (err) { reject(err) }
+
+      resolve(
+        userExamFilter({ html: sres.text })
+      )
+    })
+})
+
 module.exports = {
   info: userInfoCrawler,
-  course: userCourseCrawler
+  course: userCourseCrawler,
+  exam: userExamCrawler
 }
