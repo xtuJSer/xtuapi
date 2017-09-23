@@ -9,7 +9,8 @@ const {
 const {
   userInfoFilter,
   userCourseFilter,
-  userExamFilter
+  userExamFilter,
+  userScheduleFilter
 } = require('../filters').user
 
 const _fetch = filter => ({ type = 'get', href, sid, data = '' }, options = {}) =>
@@ -64,15 +65,28 @@ const userCourseCrawler = async ({ sid, body }) => {
 
 /**
  * 考试信息
- * @param {Object} param0 userCourse
+ * @param {Object} param0 userExam
  */
-const userExamCrawler = async ({ sid, body }) => {
-  const year = defaultYear
-  const half = defaultHalf
+const userExamCrawler = async ({ sid }) => {
   const href = host + routes.exam
-  const data = `xqlbmc=&xnxqid=${year}-${half}&xqlb=`
+  const data = `xqlbmc=&xnxqid=${defaultYear}-${defaultHalf}&xqlb=`
 
   const ret = await _fetch(userExamFilter)(
+    { type: 'post', sid, data, href }
+  )
+
+  return ret
+}
+
+/**
+ * 课程表
+ * @param {Object} param0 userSchedule
+ */
+const userScheduleCrawler = async ({ sid }) => {
+  const href = host + routes.schedule
+  const data = `cj0701id=&zc=&demo=&xnxq01id=${defaultYear}-${defaultYear + 1}-${defaultHalf}&sfFD=1`
+
+  const ret = await _fetch(userScheduleFilter)(
     { type: 'post', sid, data, href }
   )
 
@@ -82,5 +96,6 @@ const userExamCrawler = async ({ sid, body }) => {
 module.exports = {
   info: userInfoCrawler,
   course: userCourseCrawler,
-  exam: userExamCrawler
+  exam: userExamCrawler,
+  schedule: userScheduleCrawler
 }

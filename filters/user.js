@@ -57,8 +57,50 @@ const userExamFilter = ({ html }) => {
   return ret
 }
 
+const userScheduleFilter = ({ html }) => {
+  const $ = cheerio.load(html)
+  const $tr = $('#kbtable tr')
+  const row = []
+  const ret = []
+
+  $tr.each((i, tr) => { row.push(tr) })
+
+  row.shift()
+  row.pop()
+
+  row.map((tr, i) => {
+    ret[i] = []
+    $(tr).find('td').each((j, td) => {
+      let $klass = $(td).find('.kbcontent1')
+      let name = $klass.text().split(/\d/)[0].trim()
+
+      let details = []
+      let $detail = $(td).find('.kbcontent1 font')
+      let time = $detail.eq(0).text().split('(')[0]
+      let place = $detail.eq(1).text()
+      details.push({ time, place })
+
+      // 存在两个时间地点
+      if ($klass.text().indexOf('----') !== -1) {
+        time = $detail.eq(2).text().split('(')[0]
+        place = $detail.eq(3).text()
+        details.push({ time, place })
+      }
+
+      ret[i][j] = name ? { name, details } : null
+    })
+  })
+
+  if (ret.length === 0) {
+    throw new Error('获取课程失败')
+  }
+
+  return ret
+}
+
 module.exports = {
   userInfoFilter,
   userCourseFilter,
-  userExamFilter
+  userExamFilter,
+  userScheduleFilter
 }
