@@ -98,9 +98,31 @@ const userScheduleFilter = ({ html }) => {
   return ret
 }
 
+const userRankFilter = ({ html, propEl }) => {
+  const $ = cheerio.load(html)
+  const obj = {}
+  const table = []
+
+  propEl.length === 1
+    ? (obj.prop = propEl === '1' ? '必修' : '选修')
+    : obj.prop = '综合'
+
+  $('#dataList tr').find('th').each((i, th) => {
+    table[i] = {}
+    table[i].title = $(th).text()
+  })
+  $('#dataList tr').find('td').each((i, td) => {
+    table[i].number = $(td).text()
+  })
+  obj.table = table
+
+  return obj
+}
+
 module.exports = {
   userInfoFilter,
   userCourseFilter,
   userExamFilter,
-  userScheduleFilter
+  userScheduleFilter,
+  userRankFilter
 }

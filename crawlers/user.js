@@ -1,5 +1,6 @@
 const request = require('superagent')
 require('superagent-charset')(request)
+const Eventproxy = require('eventproxy')
 
 const {
   url: { host, path: routes },
@@ -10,7 +11,8 @@ const {
   userInfoFilter,
   userCourseFilter,
   userExamFilter,
-  userScheduleFilter
+  userScheduleFilter,
+  userRankFilter
 } = require('../filters').user
 
 const _fetch = filter => ({ type = 'get', href, sid, data = '' }, options = {}) =>
@@ -93,9 +95,59 @@ const userScheduleCrawler = async ({ sid }) => {
   return ret
 }
 
+/**
+ * 绩点排名
+ * @param {Object} param0 userRank
+ */
+const userRankCrawler = async ({ sid, body }) => new Promise((resolve, reject) => {
+  const href = host + routes.rank
+  const prop = ['all', '7', '1']
+  const defaultTime = defaultYear + '-' + defaultHalf
+  let { time = defaultTime } = body
+  let year = ''
+  const formatYear = (year, half) => year + '-' + (+year + 1) + '-' + half
+
+  if (time.includes('&')) {
+    time = time.split('&').map(el => formatYear(
+      el.split('-')[0],
+      el.split('-')[1])
+    )
+    year = time.reduce((a, b) => a + '&kksj=' + b)
+  } else {
+    let temp = time.split('-')
+    year = time = formatYear(temp[0], temp[1])
+  }
+
+  const ep = new Eventproxy()
+
+  ep.after('getHtml', prop.length, (htmlArr) => {
+    const result = {
+      rank: [],
+      time
+    }
+
+    result.rank = htmlArr.map((htmlObj) => userRankFilter(htmlObj))
+    resolve(result)
+  })
+
+  prop.map((propEl, pid) => {
+    const data = `kksj=${year}&kclb=${propEl = propEl !== 'all' ? propEl : '1&kclb=7'}&zsb=0`
+
+    request
+      .post(href)
+      .set('Cookie', sid)
+      .send(data)
+      .end((err, sres) => {
+        if (err) { throw new Error(`获取排名失败 ${err}`) }
+        ep.emit('getHtml', { html: sres.text, propEl })
+      })
+  })
+})
+
 module.exports = {
   info: userInfoCrawler,
   course: userCourseCrawler,
   exam: userExamCrawler,
-  schedule: userScheduleCrawler
+  schedule: userScheduleCrawler,
+  rank: userRankCrawler
 }
