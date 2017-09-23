@@ -15,6 +15,8 @@ const {
   userRankFilter
 } = require('../filters').user
 
+const _getFullTime = ({ year, half }) => year + '-' + (+year + 1) + '-' + half
+
 const _fetch = filter => ({ type = 'get', href, sid, data = '' }, options = {}) =>
   new Promise((resolve, reject) => {
     const { headers } = require('../config').user
@@ -50,16 +52,19 @@ const userInfoCrawler = async ({ sid }) => {
  */
 const userCourseCrawler = async ({ sid, body }) => {
   const {
-    year = defaultYear,
-    half = defaultHalf
+    time = (defaultYear + '-' + defaultHalf)
   } = body
 
-  const time = year + '-' + (+year + 1) + '-' + half
+  const fullTime = _getFullTime({
+    year: time.split('-')[0],
+    half: time.split('-')[1]
+  })
+
   const href = host + routes.course
 
   const ret = await _fetch(userCourseFilter)(
-    { href: href + time, sid },
-    { time }
+    { href: href + fullTime, sid },
+    { time: fullTime }
   )
 
   return ret
@@ -105,17 +110,18 @@ const userRankCrawler = async ({ sid, body }) => new Promise((resolve, reject) =
   const defaultTime = defaultYear + '-' + defaultHalf
   let { time = defaultTime } = body
   let year = ''
-  const formatYear = (year, half) => year + '-' + (+year + 1) + '-' + half
 
   if (time.includes('&')) {
-    time = time.split('&').map(el => formatYear(
-      el.split('-')[0],
-      el.split('-')[1])
-    )
+    time = time.split('&').map(el => _getFullTime({
+      year: el.split('-')[0],
+      half: el.split('-')[1]
+    }))
     year = time.reduce((a, b) => a + '&kksj=' + b)
   } else {
-    let temp = time.split('-')
-    year = time = formatYear(temp[0], temp[1])
+    year = time = _getFullTime({
+      year: time.split('-')[0],
+      half: time.split('-')[1]
+    })
   }
 
   const ep = new Eventproxy()
@@ -138,7 +144,7 @@ const userRankCrawler = async ({ sid, body }) => new Promise((resolve, reject) =
       .set('Cookie', sid)
       .send(data)
       .end((err, sres) => {
-        if (err) { throw new Error(`获取排名失败 ${err}`) }
+        if (err) { reject(err) }
         ep.emit('getHtml', { html: sres.text, propEl })
       })
   })
