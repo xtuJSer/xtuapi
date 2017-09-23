@@ -121,12 +121,12 @@ const loginToJWXT = ({ randomCode, username, password, cookie }) => new Promise(
     })
 })
 
-const successLogin = ({ username, cookie }) => new Promise((resolve, reject) => {
+const successLogin = ({ username, cookie }) => new Promise(async (resolve, reject) => {
   const token = createToken(username)
 
   Model.remove({ username })
 
-  new Model({
+  await new Model({
     username,
     sid: cookie,
     token
