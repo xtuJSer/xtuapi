@@ -1,4 +1,5 @@
 const { crawlerList } = require('../crawlers').info
+const { throttleTime } = require('../config').info
 const start = {}
 
 module.exports = async (ctx, options) => {
@@ -9,7 +10,7 @@ module.exports = async (ctx, options) => {
   const cur = `${scope}-${topic}`
   let list = []
 
-  if (!start[cur] || now - start[cur] >= 5 * 1000 * 60) {
+  if (!start[cur] || now - start[cur] >= throttleTime) {
     start[cur] = now
 
     const newest = await Model.getNewest('title')
@@ -27,7 +28,7 @@ module.exports = async (ctx, options) => {
     Math.min(20, limit), 1
   )
   list = await Model.getList({ limit, cursor })
-  console.log(list)
+  console.log(`返回数据数量：${list.length}`)
 
   const { length } = list
   cursor = await Model.getNextId({

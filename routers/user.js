@@ -8,7 +8,7 @@ const loginController = require('../controllers').login
 router.get('/', async (ctx, next) => {
   ctx.body = {
     topic: Object.keys(routes).map(key => key).filter(key => key !== 'verification'),
-    api: '/user/:topic'
+    api: '/:topic'
   }
 })
 

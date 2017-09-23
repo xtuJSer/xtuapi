@@ -82,21 +82,6 @@ const editImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
 })
 
 const spotImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
-  // const spot = promisify(tesseract.process)
-
-  // spot(imgDir, spotImgOptions)
-  //   .then((ret) => {
-  //     ret = ret.replace(/\s*/gm, '').substr(0, 4).toLowerCase()
-  //     fs.unlinkSync(imgDir)
-
-  //     if (ret.length !== 4 || ret.match(/\W/g) !== null) {
-  //       const err = '验证码不合法'
-  //       reject(err)
-  //     }
-  //     resolve(ret)
-  //   })
-  //   .catch(err => { reject(err) })
-
   tesseract.process(imgDir, spotImgOptions, (err, ret) => {
     if (err) { reject(err) }
     fs.unlinkSync(imgDir)

@@ -1,4 +1,6 @@
 module.exports = {
+  throttle: 5 * 1000 * 60,
+
   scopes: [
     [
       // 湘潭大学本部
