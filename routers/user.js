@@ -7,7 +7,7 @@ const getRules = ['info', 'course', 'schedule', 'classroom', 'rank', 'exam']
 const postRules = ['course', 'classroom', 'rank']
 const notFoundMsg = '您所访问的资源是不存在的 🤔'
 
-const loginController = require('../controllers').login
+const loginController = require('../controllers').login.user
 const userController = require('../controllers').user
 
 router.get('/', async (ctx, next) => {

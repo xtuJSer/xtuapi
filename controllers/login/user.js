@@ -8,7 +8,7 @@ const {
   spotImg,
   loginToJWXT,
   successLogin
-} = require('../crawlers').login
+} = require('../../crawlers').login.user
 
 module.exports = ({ username = '', password = '' }) => new Promise((resolve, reject) => {
   let isSuccess = false
