@@ -1,5 +1,10 @@
 const { headers, userAgent } = require('../config')
 
-headers['User-Agent'] = userAgent[~~(userAgent.length * Math.random())]
+const updateHeaders = () => (
+  headers['User-Agent'] = userAgent[~~(userAgent.length * Math.random())],
+  headers
+)
 
-module.exports = headers
+module.exports = {
+  updateHeaders
+}

@@ -17,9 +17,14 @@ const {
 
 const _getFullTime = ({ year, half }) => year + '-' + (+year + 1) + '-' + half
 
+/**
+ * 统一的爬取逻辑（除 rank）
+ * @param {Object} filter 过滤后的结果
+ */
 const _fetch = filter => ({ type = 'get', href, sid, data = '' }, options = {}) =>
   new Promise((resolve, reject) => {
-    const { headers } = require('../utils')
+    const { updateHeaders } = require('../utils').headers
+    const headers = updateHeaders()
 
     request[type](href)
       .set(headers)

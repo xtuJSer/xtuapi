@@ -7,10 +7,10 @@ require('superagent-charset')(request)
 
 const {
   token: { createToken },
-  headers
+  headers: { updateHeaders }
 } = require('../../utils')
 
-console.log(headers)
+const headers = updateHeaders()
 
 const {
   url: { host: hostURL, path: pathURL },
