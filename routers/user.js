@@ -1,7 +1,7 @@
 const router = require('koa-router')()
 
 const { url: { path: routes } } = require('../config').user
-const { getToken, verifyToken } = require('../utils/token')
+const { getToken, verifyToken } = require('../utils').token
 
 const getRules = ['info', 'course', 'schedule', 'classroom', 'rank', 'exam']
 const postRules = ['course', 'classroom', 'rank']

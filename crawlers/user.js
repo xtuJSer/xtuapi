@@ -19,7 +19,7 @@ const _getFullTime = ({ year, half }) => year + '-' + (+year + 1) + '-' + half
 
 const _fetch = filter => ({ type = 'get', href, sid, data = '' }, options = {}) =>
   new Promise((resolve, reject) => {
-    const { headers } = require('../config').user
+    const { headers } = require('../utils')
 
     request[type](href)
       .set(headers)

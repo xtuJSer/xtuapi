@@ -5,11 +5,15 @@ const gm = require('gm')
 const request = require('superagent')
 require('superagent-charset')(request)
 
-const { createToken } = require('../../utils/token')
+const {
+  token: { createToken },
+  headers
+} = require('../../utils')
+
+console.log(headers)
 
 const {
   url: { host: hostURL, path: pathURL },
-  headers,
   spotImgOptions
 } = require('../../config').user
 
