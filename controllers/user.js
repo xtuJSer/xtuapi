@@ -17,7 +17,7 @@ const getTopic = topic => async ({ sid, body = '' }) => {
   return ret
 }
 
-module.exports = async (ctx, { topic, user: { sid } }) => {
+module.exports = async (ctx, { topic, user: { sid_user: sid } }) => {
   const { body } = /post/i.test(ctx.method) ? ctx.request : {}
   const { isSuccess, message, content } = await getTopic(topic)({ sid, body })
 
