@@ -123,7 +123,7 @@ const loginToJWXT = ({ randomCode, username, password, cookie }) => new Promise(
 })
 
 const successLogin = ({ username, cookie }) => ({
-  token: createToken({ username, cookie }),
+  token: createToken('user')({ username, cookie }),
   isSuccess: true
 })
 

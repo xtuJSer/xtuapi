@@ -9,11 +9,18 @@ const getToken = ({ headers = {} }) => {
   return token || ''
 }
 
-const createToken = ({ username, cookie: sid }) => prefix + jwt.sign({ username, sid }, secret, { expiresIn })
+const createToken = (type) => ({ username, cookie }) => prefix + jwt.sign(
+  {
+    username,
+    ['sid_' + type]: cookie
+  },
+  secret,
+  { expiresIn }
+)
 
 const decodeToken = ({ token, secret }) => jwt.verify(token, secret)
 
-const verifyToken = (token = '') => new Promise(async (resolve, reject) => {
+const verifyToken = (type) => (token = '') => new Promise(async (resolve, reject) => {
   let decoded = null
   const ret = {
     message: '',
@@ -23,10 +30,16 @@ const verifyToken = (token = '') => new Promise(async (resolve, reject) => {
 
   try {
     decoded = decodeToken({ token, secret })
+    console.log(decoded)
 
     if (decoded.exp <= Date.now() / 1000) {
-      throw new Error('token 已过期，请重新登录 🤕')
+      throw new Error('已过期，请重新登录 🤕')
     }
+
+    if (!decoded['sid_' + type]) {
+      throw new Error('未登录 😷')
+    }
+
     ret.decoded = decoded
   } catch (err) {
     ret.message = err
