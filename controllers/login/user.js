@@ -10,7 +10,7 @@ const {
   successLogin
 } = require('../../crawlers').login.user
 
-module.exports = ({ username = '', password = '' }) => new Promise((resolve, reject) => {
+module.exports = ({ username = '', password = '' }, { decoded: sid }) => new Promise((resolve, reject) => {
   let isSuccess = false
   let isWrong = false
   let loopTime = 0
@@ -40,7 +40,7 @@ module.exports = ({ username = '', password = '' }) => new Promise((resolve, rej
         let randomCode = await spotImg({ username, imgDir })
         await loginToJWXT({ randomCode, username, password, cookie })
 
-        const ret = successLogin({ username, cookie })
+        const ret = successLogin({ username, cookie, sid })
 
         isSuccess = ret.isSuccess
         token = ret.token

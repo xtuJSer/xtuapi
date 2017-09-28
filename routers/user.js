@@ -23,41 +23,37 @@ router.use('/', async (ctx, next) => {
     const { message, isSuccess, decoded } = await verifyToken('user')(token)
 
     ctx.assert(isSuccess, 401, message)
-    ctx.state.user = decoded
+    ctx.state.decoded = decoded
   }
 
   await next()
 })
 
 router.post('/login', async (ctx, next) => {
-  let { isSuccess, token, message } = await loginController(ctx.request.body)
+  let { isSuccess, token, message } = await loginController(ctx.request.body, ctx.state)
 
   ctx.assert(isSuccess, 401, message)
   ctx.body = { token }
 })
 
-router.get('/:topic', async (ctx, next) => {
+const checkRoute = type => async (ctx) => {
   const {
     params: { topic },
-    state: { user }
+    state: { decoded }
   } = ctx
 
   ctx.assert(
-    getRules.includes(topic), 404, notFoundMsg
+    type.includes(topic), 404, notFoundMsg
   )
-  ctx.body = await userController(ctx, { topic, user })
+  ctx.body = await userController(ctx, { topic, decoded })
+}
+
+router.get('/:topic', async (ctx, next) => {
+  await checkRoute(getRules)(ctx)
 })
 
 router.post('/:topic', async (ctx, next) => {
-  const {
-    params: { topic },
-    state: { user }
-  } = ctx
-
-  ctx.assert(
-    postRules.includes(topic), 404, notFoundMsg
-  )
-  ctx.body = await userController(ctx, { topic, user })
+  await checkRoute(postRules)(ctx)
 })
 
 module.exports = router

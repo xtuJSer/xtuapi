@@ -19,7 +19,7 @@ router.use('/', async (ctx, next) => {
     const { message, isSuccess, decoded } = await verifyToken('book')(token)
 
     ctx.assert(isSuccess, 401, message)
-    ctx.state.book = decoded
+    ctx.state.decoded = decoded
   }
 
   await next()

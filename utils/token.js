@@ -2,6 +2,9 @@ const jwt = require('jsonwebtoken')
 
 const { secret, expiresIn, prefix } = require('../config').token
 
+/**
+ * 获取请求头中的 token
+ */
 const getToken = ({ headers = {} }) => {
   let { authorization = '' } = headers
   const token = authorization.split(' ')[1]
@@ -9,17 +12,23 @@ const getToken = ({ headers = {} }) => {
   return token || ''
 }
 
-const createToken = (type) => ({ username, cookie }) => prefix + jwt.sign(
-  {
-    username,
-    ['sid_' + type]: cookie
-  },
-  secret,
-  { expiresIn }
-)
+/**
+ * 根据 type 创建 token
+ */
+const createToken = (type) => ({ username, cookie, sid = {} }) => {
+  sid = Object.assign(sid, { [type]: cookie })
 
+  return prefix + jwt.sign({ username, sid }, secret, { expiresIn })
+}
+
+/**
+ * 解析 token
+ */
 const decodeToken = ({ token, secret }) => jwt.verify(token, secret)
 
+/**
+ * 验证 token
+ */
 const verifyToken = (type) => (token = '') => new Promise(async (resolve, reject) => {
   let decoded = null
   const ret = {
@@ -30,13 +39,12 @@ const verifyToken = (type) => (token = '') => new Promise(async (resolve, reject
 
   try {
     decoded = decodeToken({ token, secret })
-    console.log(decoded)
 
     if (decoded.exp <= Date.now() / 1000) {
       throw new Error('已过期，请重新登录 🤕')
     }
 
-    if (!decoded['sid_' + type]) {
+    if (!decoded.sid[type]) {
       throw new Error('未登录 😷')
     }
 
