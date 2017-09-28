@@ -21,7 +21,6 @@ module.exports = ({ username = '', password = '' }, { sid = {} }) => new Promise
 
   try {
     const cookie = await loginToLibrary({ username, password })
-    console.log(sid)
     const ret = successLogin('book')({ username, cookie, sid })
 
     isSuccess = ret.isSuccess
