@@ -3,8 +3,8 @@ const router = require('koa-router')()
 const { url: { path: routes } } = require('../config').book
 const { getToken, verifyToken } = require('../utils').token
 
-// const loginController = require('../controllers').login.user
-// const userController = require('../controllers').user
+const loginController = require('../controllers').login.book
+// const bookController = require('../controllers').book
 
 router.get('/', async (ctx, next) => {
   ctx.body = {
@@ -14,46 +14,32 @@ router.get('/', async (ctx, next) => {
 })
 
 router.use('/', async (ctx, next) => {
-  if (ctx.url !== '/user/login') {
-    const token = getToken(ctx)
-    const { message, isSuccess, decoded } = await verifyToken('book')(token)
+  const token = getToken(ctx)
+  const { message, isSuccess, decoded } = await verifyToken('book')(token)
 
-    ctx.assert(isSuccess, 401, message)
-    ctx.state.decoded = decoded
-  }
+  ctx.url === '/book/login' || ctx.assert(isSuccess, 401, message)
+  ctx.state.decoded = decoded
 
   await next()
 })
 
-// router.post('/login', async (ctx, next) => {
-//   let { isSuccess, token, message } = await loginController(ctx.request.body)
+/**
+ * 图书馆系统登录
+ */
+router.post('/login', async (ctx, next) => {
+  let { isSuccess, token, message } = await loginController(ctx.request.body, ctx.state.decoded)
 
-//   ctx.assert(isSuccess, 401, message)
-//   ctx.body = { token }
-// })
+  ctx.assert(isSuccess, 401, message)
+  ctx.body = { token }
+})
 
-// router.get('/:topic', async (ctx, next) => {
-//   const {
-//     params: { topic },
-//     state: { user }
-//   } = ctx
+/**
+ * 已借书籍罗列
+ */
+router.get('/list', async (ctx, next) => {
+  const { decoded } = ctx.state
 
-//   ctx.assert(
-//     getRules.includes(topic), 404, notFoundMsg
-//   )
-//   ctx.body = await userController(ctx, { topic, user })
-// })
-
-// router.post('/:topic', async (ctx, next) => {
-//   const {
-//     params: { topic },
-//     state: { user }
-//   } = ctx
-
-//   ctx.assert(
-//     postRules.includes(topic), 404, notFoundMsg
-//   )
-//   ctx.body = await userController(ctx, { topic, user })
-// })
+  ctx.body = decoded.sid
+})
 
 module.exports = router
