@@ -5,10 +5,7 @@ const gm = require('gm')
 const request = require('superagent')
 require('superagent-charset')(request)
 
-const {
-  token: { createToken },
-  headers: { updateHeaders }
-} = require('../../utils')
+const { headers: { updateHeaders } } = require('../../utils')
 
 const headers = updateHeaders()
 
@@ -20,24 +17,6 @@ const {
 const { verification, login } = pathURL
 const imgURL = hostURL + verification
 const loginURL = hostURL + login
-
-const checkFormat = ({ username, password }) => {
-  let message = ''
-  username && (username = username.trim())
-  password && (password = password.trim())
-
-  if (!username || !password) {
-    message = '账号或密码不能为空'
-  } else if (isNaN(+username)) {
-    message = '请输入正确的学号'
-  } else if (password.length < 6) {
-    message = '请输入正确的密码'
-  }
-  return {
-    isFormat: !message.length,
-    message
-  }
-}
 
 const getCookie = () => new Promise((resolve, reject) => {
   request
@@ -122,18 +101,11 @@ const loginToJWXT = ({ randomCode, username, password, cookie }) => new Promise(
     })
 })
 
-const successLogin = ({ username, cookie, sid }) => ({
-  token: createToken('user')({ username, cookie, sid }),
-  isSuccess: true
-})
-
 module.exports = {
-  checkFormat,
   getCookie,
   getImg,
   saveImg,
   editImg,
   spotImg,
-  loginToJWXT,
-  successLogin
+  loginToJWXT
 }

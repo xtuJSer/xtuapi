@@ -18,19 +18,17 @@ router.get('/', async (ctx, next) => {
 })
 
 router.use('/', async (ctx, next) => {
-  if (ctx.url !== '/user/login') {
-    const token = getToken(ctx)
-    const { message, isSuccess, decoded } = await verifyToken('user')(token)
+  const token = getToken(ctx)
+  const { message, isSuccess, decoded } = await verifyToken('user')(token)
 
-    ctx.assert(isSuccess, 401, message)
-    ctx.state.decoded = decoded
-  }
+  ctx.url === '/user/login' || ctx.assert(isSuccess, 401, message)
+  ctx.state.decoded = decoded
 
   await next()
 })
 
 router.post('/login', async (ctx, next) => {
-  let { isSuccess, token, message } = await loginController(ctx.request.body, ctx.state)
+  let { isSuccess, token, message } = await loginController(ctx.request.body, ctx.state.decoded)
 
   ctx.assert(isSuccess, 401, message)
   ctx.body = { token }

@@ -1,16 +1,20 @@
 const path = require('path')
 const {
-  checkFormat,
-  getCookie,
-  getImg,
-  saveImg,
-  editImg,
-  spotImg,
-  loginToJWXT,
-  successLogin
-} = require('../../crawlers').login.user
+  user: {
+    getCookie,
+    getImg,
+    saveImg,
+    editImg,
+    spotImg,
+    loginToJWXT
+  },
+  comment: {
+    checkFormat,
+    successLogin
+  }
+} = require('../../crawlers').login
 
-module.exports = ({ username = '', password = '' }, { decoded: sid }) => new Promise((resolve, reject) => {
+module.exports = ({ username = '', password = '' }, { sid = {} }) => new Promise((resolve, reject) => {
   let isSuccess = false
   let isWrong = false
   let loopTime = 0
@@ -40,7 +44,7 @@ module.exports = ({ username = '', password = '' }, { decoded: sid }) => new Pro
         let randomCode = await spotImg({ username, imgDir })
         await loginToJWXT({ randomCode, username, password, cookie })
 
-        const ret = successLogin({ username, cookie, sid })
+        const ret = successLogin('user')({ username, cookie, sid })
 
         isSuccess = ret.isSuccess
         token = ret.token
