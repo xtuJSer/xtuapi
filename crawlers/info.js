@@ -27,7 +27,7 @@ const crawlerList = (ctx, options) => new Promise((resolve, reject) => {
     .get(url)
     .charset(rule.charset || 'utf-8')
     .end((err, sres) => {
-      if (err) {
+      if (err || !sres) {
         ctx.status = 500
         reject(err)
       }
