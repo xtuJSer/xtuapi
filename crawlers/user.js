@@ -106,6 +106,20 @@ const userScheduleCrawler = async ({ sid }) => {
 }
 
 /**
+ * 课程表
+ * @param {Object} param0 userSchedule
+ */
+const userClassroomCrawler = async ({ sid }) => {
+  // const href = host + routes.classroom
+
+  // const ret = await _fetch(userScheduleFilter)(
+  //   { sid, href }
+  // )
+
+  // return ret
+}
+
+/**
  * 绩点排名
  * @param {Object} param0 userRank
  */
@@ -160,5 +174,6 @@ module.exports = {
   course: userCourseCrawler,
   exam: userExamCrawler,
   schedule: userScheduleCrawler,
-  rank: userRankCrawler
+  rank: userRankCrawler,
+  classroom: userClassroomCrawler
 }
