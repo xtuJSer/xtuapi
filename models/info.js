@@ -4,7 +4,8 @@ const { Schema } = mongoose
 const InfoSchema = new Schema({
   title: String,
   time: Date,
-  href: String
+  href: String,
+  topic: String
 })
 
 InfoSchema.statics.getNewest = async function (type = '_id') {
