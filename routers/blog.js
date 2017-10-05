@@ -16,7 +16,7 @@ router.get('/', async (ctx, next) => {
 
 router.get(api, async (ctx, next) => {
   const { scope, topic } = ctx.params
-  const { limit = 10, cursor = 0 } = ctx.query
+  const { limit = 10, skip = 0 } = ctx.query
 
   const map = new Map(scopes)
   const route = map.get(scope)
@@ -28,7 +28,7 @@ router.get(api, async (ctx, next) => {
   )
 
   const url = route.host + (topic === 'all' ? '' : route[topic])
-  const ret = await controller(ctx, { scope, topic, url, limit, cursor, host: route.host })
+  const ret = await controller(ctx, { scope, topic, url, limit, skip, host: route.host })
 
   ctx.body = ret
 })
