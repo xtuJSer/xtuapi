@@ -37,5 +37,5 @@ module.exports = async (ctx, options) => {
   list = await Model.getList({ limit, skip, topic })
 
   // url 后续删除
-  return { list, length, scope, url }
+  return { list, length: list.length, scope, url }
 }
