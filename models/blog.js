@@ -8,38 +8,52 @@ const BlogSchema = new Schema({
   topic: String
 })
 
-BlogSchema.statics.getNewest = async function (type = '_id') {
-  let newest = await this.findOne().sort(
-    { _id: -1 }
+/**
+ * type 最新数据的 type 属性
+ */
+BlogSchema.statics.getNewestTitle = async function ({ topic }) {
+  const options = topic ? { topic } : {}
+
+  let newest = await this.findOne(options).sort(
+    { time: -1, _id: -1 }
   ).exec()
 
-  return newest && newest[type]
+  return newest && newest.title
 }
 
-BlogSchema.statics.getList = async function ({ limit = 10, cursor = null }) {
-  cursor || (cursor = await this.getNewest())
+/**
+ * 按需获取数据库中的数据
+ */
+BlogSchema.statics.getList = async function ({ limit, cursor, topic }) {
+  const options = topic ? { topic } : {}
+
+  // cursor || (cursor = await this.getNewestTitle(options))
+  // cursor || (cursor = 0)
 
   let list = await this.find(
-    { _id: { $lte: cursor } },
-    { _id: 1, href: 1, title: 1, time: 1 }
+    { ...options },
+    { _id: 1, href: 1, title: 1, time: 1, topic: 1 }
   ).sort(
-    { _id: -1 }
-  ).limit(limit).exec()
+    { time: -1, _id: -1 }
+  ).limit(limit).skip(cursor).exec()
 
   return list || []
 }
 
-BlogSchema.statics.getNextId = async function ({ last }) {
-  if (!last) { return '' }
+/**
+ * 获取当前最后一个返回值的下一个 id
+ */
+// BlogSchema.statics.getNextId = async function ({ last }) {
+//   if (!last) { return '' }
 
-  let id = await this.findOne(
-    { _id: { $lt: last._id } },
-    { _id: 1 }
-  ).sort(
-    { _id: -1 }
-  ).exec()
+//   let id = await this.findOne(
+//     { _id: { $lt: last._id } },
+//     { _id: 1 }
+//   ).sort(
+//     { time: -1, _id: -1 }
+//   ).exec()
 
-  return id ? id._id : ''
-}
+//   return id ? id._id : ''
+// }
 
-module.exports = (scope, topic) => mongoose.model(`${scope}-${topic}`, BlogSchema)
+module.exports = scope => mongoose.model(scope, BlogSchema)
