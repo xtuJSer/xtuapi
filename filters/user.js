@@ -1,6 +1,6 @@
 const cheerio = require('cheerio')
 
-const userInfoFilter = ({ html }) => {
+const userBlogFilter = ({ html }) => {
   const $ = cheerio.load(html)
   let $td = $('.Nsb_layout_r tr').eq(3).find('td')
   let sex = $td.eq(3).text().indexOf('男') > -1 ? 'boy' : 'girl'
@@ -120,7 +120,7 @@ const userRankFilter = ({ html, propEl }) => {
 }
 
 module.exports = {
-  userInfoFilter,
+  userBlogFilter,
   userCourseFilter,
   userExamFilter,
   userScheduleFilter,

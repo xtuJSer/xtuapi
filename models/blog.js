@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
-const InfoSchema = new Schema({
+const BlogSchema = new Schema({
   title: String,
   time: Date,
   href: String,
   topic: String
 })
 
-InfoSchema.statics.getNewest = async function (type = '_id') {
+BlogSchema.statics.getNewest = async function (type = '_id') {
   let newest = await this.findOne().sort(
     { _id: -1 }
   ).exec()
@@ -16,7 +16,7 @@ InfoSchema.statics.getNewest = async function (type = '_id') {
   return newest && newest[type]
 }
 
-InfoSchema.statics.getList = async function ({ limit = 10, cursor = null }) {
+BlogSchema.statics.getList = async function ({ limit = 10, cursor = null }) {
   cursor || (cursor = await this.getNewest())
 
   let list = await this.find(
@@ -29,7 +29,7 @@ InfoSchema.statics.getList = async function ({ limit = 10, cursor = null }) {
   return list || []
 }
 
-InfoSchema.statics.getNextId = async function ({ last }) {
+BlogSchema.statics.getNextId = async function ({ last }) {
   if (!last) { return '' }
 
   let id = await this.findOne(
@@ -42,4 +42,4 @@ InfoSchema.statics.getNextId = async function ({ last }) {
   return id ? id._id : ''
 }
 
-module.exports = (scope, topic) => mongoose.model(`${scope}-${topic}`, InfoSchema)
+module.exports = (scope, topic) => mongoose.model(`${scope}-${topic}`, BlogSchema)

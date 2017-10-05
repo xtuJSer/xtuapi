@@ -24,7 +24,7 @@ module.exports = {
     'Mozilla/5.0 (Windows; U; Win98; zh-CN; rv:0.9.2) Gecko/20010725 Netscape6/6.1'
   ],
 
-  info: require('./info'),
+  blog: require('./blog'),
   user: require('./user'),
   book: require('./book')
 }

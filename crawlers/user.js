@@ -8,7 +8,7 @@ const {
 } = require('../config').user
 
 const {
-  userInfoFilter,
+  userBlogFilter,
   userCourseFilter,
   userExamFilter,
   userScheduleFilter,
@@ -42,11 +42,11 @@ const _fetch = filter => ({ type = 'get', href, sid, data = '' }, options = {}) 
 
 /**
  * 信息
- * @param {Object} param0 userInfo
+ * @param {Object} param0 userBlog
  */
-const userInfoCrawler = async ({ sid }) => {
-  const href = host + routes.info
-  const ret = await _fetch(userInfoFilter)({ href, sid })
+const userBlogCrawler = async ({ sid }) => {
+  const href = host + routes.blog
+  const ret = await _fetch(userBlogFilter)({ href, sid })
 
   return ret
 }
@@ -170,7 +170,7 @@ const userRankCrawler = async ({ sid, body }) => new Promise((resolve, reject) =
 })
 
 module.exports = {
-  info: userInfoCrawler,
+  blog: userBlogCrawler,
   course: userCourseCrawler,
   exam: userExamCrawler,
   schedule: userScheduleCrawler,

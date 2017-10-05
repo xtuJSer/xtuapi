@@ -1,10 +1,10 @@
-const { crawlerList } = require('../crawlers').info
-const { throttleTime } = require('../config').info
+const { crawlerList } = require('../crawlers').blog
+const { throttleTime } = require('../config').blog
 const start = {}
 
 module.exports = async (ctx, options) => {
   let { url, host, scope, topic, limit, cursor } = options
-  const Model = require('../models').info(scope, topic)
+  const Model = require('../models').blog(scope, topic)
 
   const now = Date.now()
   const cur = `${scope}-${topic}`

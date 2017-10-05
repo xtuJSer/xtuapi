@@ -1,7 +1,7 @@
 const router = require('koa-router')()
 
-const controller = require('../controllers').info
-const { info: { scopes } } = require('../config')
+const controller = require('../controllers').blog
+const { blog: { scopes } } = require('../config')
 const api = '/:scope/:topic'
 
 router.get('/', async (ctx, next) => {

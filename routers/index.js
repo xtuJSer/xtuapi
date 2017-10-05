@@ -1,7 +1,7 @@
 const router = require('koa-router')()
 
 const { name, description, version, author } = require('../package.json')
-const routes = ['info', 'user', 'book', 'card']
+const routes = ['blog', 'user', 'book', 'card']
 const api = 'https://github.com/xtuJSer/xtuapi'
 
 router.get('/', async (ctx) => {

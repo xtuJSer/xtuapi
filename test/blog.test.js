@@ -1,9 +1,9 @@
 const request = require('supertest')
 
 const app = require('../app')
-const { info: { scopes } } = require('../config')
+const { blog: { scopes } } = require('../config')
 
-const index = '/info'
+const index = '/blog'
 
 describe(`\n---- #test ${index} ----`, () => {
   const server = app.listen(3030)

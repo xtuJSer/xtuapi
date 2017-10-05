@@ -1,8 +1,8 @@
 const request = require('superagent')
 require('superagent-charset')(request)
 
-const { rules } = require('../config').info
-const { filterList } = require('../filters').info
+const { rules } = require('../config').blog
+const { filterList } = require('../filters').blog
 
 /**
  * 获取信息详情
