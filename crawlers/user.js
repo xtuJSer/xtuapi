@@ -15,6 +15,10 @@ const {
   userRankFilter
 } = require('../filters').user
 
+/**
+ * 返回完整的年份和学期
+ * @param {String} param0 学年，如：2016-2017-2
+ */
 const _getFullTime = ({ year, half }) => year + '-' + (+year + 1) + '-' + half
 
 /**
@@ -32,9 +36,7 @@ const _fetch = filter => ({ type = 'get', href, sid, data = '' }, options = {}) 
       .send(data)
       .charset('utf-8')
       .end((err, sres) => {
-        if (err) { reject(err) }
-
-        resolve(
+        err ? reject(err) : resolve(
           filter({ html: sres.text, ...options })
         )
       })
@@ -106,20 +108,6 @@ const userScheduleCrawler = async ({ sid }) => {
 }
 
 /**
- * 课程表
- * @param {Object} param0 userSchedule
- */
-const userClassroomCrawler = async ({ sid }) => {
-  // const href = host + routes.classroom
-
-  // const ret = await _fetch(userScheduleFilter)(
-  //   { sid, href }
-  // )
-
-  // return ret
-}
-
-/**
  * 绩点排名
  * @param {Object} param0 userRank
  */
@@ -163,11 +151,26 @@ const userRankCrawler = async ({ sid, body }) => new Promise((resolve, reject) =
       .set('Cookie', sid)
       .send(data)
       .end((err, sres) => {
-        if (err) { reject(err) }
-        ep.emit('getHtml', { html: sres.text, propEl })
+        err ? reject(err) : ep.emit('getHtml', {
+          html: sres.text, propEl
+        })
       })
   })
 })
+
+/**
+ * 课程表
+ * @param {Object} param0 userSchedule
+ */
+const userClassroomCrawler = async ({ sid }) => {
+  // const href = host + routes.classroom
+
+  // const ret = await _fetch(userScheduleFilter)(
+  //   { sid, href }
+  // )
+
+  // return ret
+}
 
 module.exports = {
   blog: userBlogCrawler,
