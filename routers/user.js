@@ -1,5 +1,4 @@
 const router = require('koa-router')()
-const request = require('superagent')
 
 const { url: { path: routes } } = require('../config').user
 const { getToken, verifyToken } = require('../utils').token
@@ -7,8 +6,11 @@ const { getToken, verifyToken } = require('../utils').token
 /**
  * get、post 的路由
  */
-const getRules = ['blog', 'course', 'schedule', 'classroom', 'rank', 'exam']
-const postRules = ['course', 'classroom', 'rank']
+const methodRule = {
+  get: ['blog', 'course', 'schedule', 'classroom', 'rank', 'exam'],
+  post: ['course', 'classroom', 'rank']
+}
+
 const notFoundMsg = '您所访问的资源是不存在的 🤔'
 
 const loginController = require('../controllers').login.user
@@ -86,18 +88,14 @@ const checkRoute = type => async (ctx) => {
     state: { decoded }
   } = ctx
 
-  ctx.assert(
-    type.includes(topic), 404, notFoundMsg
-  )
+  ctx.assert(type.includes(topic), 404, notFoundMsg)
   ctx.body = await userController(ctx, { topic, decoded })
 }
 
-router.get('/:topic', async (ctx, next) => {
-  await checkRoute(getRules)(ctx)
-})
-
-router.post('/:topic', async (ctx, next) => {
-  await checkRoute(postRules)(ctx)
-})
+;['get', 'post'].map(
+  m => router[m]('/:topic', async ctx => {
+    await checkRoute(methodRule[m])(ctx)
+  })
+)
 
 module.exports = router
