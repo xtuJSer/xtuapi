@@ -99,5 +99,3 @@ typings/
 sftp-config.json
 
 .idea/
-
-config/classroom.js

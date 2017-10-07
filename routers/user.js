@@ -4,6 +4,9 @@ const request = require('superagent')
 const { url: { path: routes } } = require('../config').user
 const { getToken, verifyToken } = require('../utils').token
 
+/**
+ * get、post 的路由
+ */
 const getRules = ['blog', 'course', 'schedule', 'classroom', 'rank', 'exam']
 const postRules = ['course', 'classroom', 'rank']
 const notFoundMsg = '您所访问的资源是不存在的 🤔'
@@ -11,6 +14,9 @@ const notFoundMsg = '您所访问的资源是不存在的 🤔'
 const loginController = require('../controllers').login.user
 const userController = require('../controllers').user
 
+/**
+ * Get:/user 返回所有的规则
+ */
 router.get('/', async (ctx, next) => {
   ctx.body = {
     topic: Object.keys(routes).filter(key => key !== 'verification'),
@@ -18,6 +24,11 @@ router.get('/', async (ctx, next) => {
   }
 })
 
+/**
+ * 登录校验钩子
+ * 检测 token 的有无，以及 token 是否过期，判断是否登录成功
+ * 否则返回 401
+ */
 router.use('/', async (ctx, next) => {
   const token = getToken(ctx)
   const { message, isSuccess, decoded } = await verifyToken('user')(token)
@@ -28,6 +39,9 @@ router.use('/', async (ctx, next) => {
   await next()
 })
 
+/**
+ * 登录教务系统
+ */
 router.post('/login', async (ctx, next) => {
   let { isSuccess, token, message } = await loginController(ctx.request.body, ctx.state.decoded)
 
@@ -35,42 +49,37 @@ router.post('/login', async (ctx, next) => {
   ctx.body = { token }
 })
 
-// 获取空教室
-router.get('/classroom', async (ctx, next) => {
-  const { day = 0 } = ctx.query // 0:今天 or 1:明天
-
+/**
+ * 更新、并获取空教室
+ */
+router.post('/classroom', async (ctx, next) => {
   try {
+    const { isSuccess, message, token } = await loginController(ctx.request.body, ctx.state.decoded)
 
-    ctx.assert(isSuccess, 404, message)
+    if (!isSuccess) { throw new Error(message) }
+    const { decoded } = await verifyToken('user')(token)
 
-
-
+    ctx.body = await userController(ctx, { topic: 'classroom', decoded })
   } catch (err) {
     ctx.status = 500
-    ctx.body = { msg: '获取数据失败' }
+    ctx.body = { message: err }
   }
 })
 
-// 更新空教室
-router.post('/classroom', async (ctx, next) => {
-  // 此处需要自定义，返回对象 { username: *****, password: ****** }，* 处由自己填充，且都为 String 类型
-  const mine = require('../config/classroom')
+/**
+ * 获取空教室
+ * day 0:今天 / 1:明天
+ */
+router.get('/classroom', async (ctx, next) => {
+  const { day = 0 } = ctx.query
 
-  let ret = await new Promise((resolve, reject) => {
-    request
-      .post('http://127.0.0.1:3000/user/login')
-      .send(mine)
-      .end((err, data) => {
-        if (err) { reject(err) }
-
-        console.log(data.body)
-        resolve(data.body)
-      })
-  })
-
-  ctx.body = ret
+  console.log(day)
 })
 
+/**
+ * 教务系统数据其他数据的获取
+ * @param {String} type 数据类型
+ */
 const checkRoute = type => async (ctx) => {
   const {
     params: { topic },
