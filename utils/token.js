@@ -16,8 +16,8 @@ const getToken = ({ headers = {} }) => {
  * 根据 type 创建 token
  */
 const createToken = (type) => ({ username, cookie, sid = {} }) => {
+  // sid = { user: 'JSESSIONID=0C5CB11979639D2A396D21F9D7BF1932' }
   sid[type] = cookie
-  console.log(sid)
 
   return prefix + jwt.sign({ username, sid }, secret, { expiresIn })
 }

@@ -1,4 +1,5 @@
 const router = require('koa-router')()
+const request = require('superagent')
 
 const { url: { path: routes } } = require('../config').user
 const { getToken, verifyToken } = require('../utils').token
@@ -21,7 +22,7 @@ router.use('/', async (ctx, next) => {
   const token = getToken(ctx)
   const { message, isSuccess, decoded } = await verifyToken('user')(token)
 
-  ctx.url === '/user/login' || ctx.assert(isSuccess, 401, message)
+  ctx.url === '/user/login' || ctx.url === '/user/classroom' || ctx.assert(isSuccess, 401, message)
   ctx.state.decoded = decoded
 
   await next()
@@ -32,6 +33,42 @@ router.post('/login', async (ctx, next) => {
 
   ctx.assert(isSuccess, 401, message)
   ctx.body = { token }
+})
+
+// 获取空教室
+router.get('/classroom', async (ctx, next) => {
+  const { day = 0 } = ctx.query // 0:今天 or 1:明天
+
+  try {
+
+    ctx.assert(isSuccess, 404, message)
+
+
+
+  } catch (err) {
+    ctx.status = 500
+    ctx.body = { msg: '获取数据失败' }
+  }
+})
+
+// 更新空教室
+router.post('/classroom', async (ctx, next) => {
+  // 此处需要自定义，返回对象 { username: *****, password: ****** }，* 处由自己填充，且都为 String 类型
+  const mine = require('../config/classroom')
+
+  let ret = await new Promise((resolve, reject) => {
+    request
+      .post('http://127.0.0.1:3000/user/login')
+      .send(mine)
+      .end((err, data) => {
+        if (err) { reject(err) }
+
+        console.log(data.body)
+        resolve(data.body)
+      })
+  })
+
+  ctx.body = ret
 })
 
 const checkRoute = type => async (ctx) => {
