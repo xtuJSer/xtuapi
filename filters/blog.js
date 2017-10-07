@@ -19,7 +19,7 @@ const filterHref = ({ host, href }) => {
     : host + href
 }
 
-const filterList = ({ host, html, rule, newest }) => {
+const filterList = ({ host, html, rule, newest, topic }) => {
   const $ = cheerio.load(html)
   const {
     el,
@@ -49,7 +49,7 @@ const filterList = ({ host, html, rule, newest }) => {
       $(p).find(child).text()
     )
 
-    ret.push({ title, href, time })
+    ret.push({ title, href, time, topic })
   })
 
   return ret.reverse()

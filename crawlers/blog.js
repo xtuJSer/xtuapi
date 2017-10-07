@@ -1,8 +1,8 @@
 const request = require('superagent')
 require('superagent-charset')(request)
 
-const { rules } = require('../config').info
-const { filterList } = require('../filters').info
+const { rules } = require('../config').blog
+const { filterList } = require('../filters').blog
 
 /**
  * 获取信息详情
@@ -29,13 +29,14 @@ const crawlerList = (ctx, options) => new Promise((resolve, reject) => {
     .end((err, sres) => {
       if (err || !sres) {
         ctx.status = 500
-        reject(err)
+        throw new Error(err)
       }
 
       let ret = filterList({
         host,
         rule,
         newest,
+        topic,
         html: sres.text
       })
 
