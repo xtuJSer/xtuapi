@@ -7,7 +7,7 @@ const { getToken, verifyToken } = require('../utils').token
  * get、post 的路由
  */
 const methodRule = {
-  get: ['blog', 'course', 'schedule', 'classroom', 'rank', 'exam'],
+  get: ['info', 'course', 'schedule', 'classroom', 'rank', 'exam'],
   post: ['course', 'classroom', 'rank']
 }
 
@@ -73,9 +73,7 @@ router.post('/classroom', async (ctx, next) => {
  * day 0:今天 / 1:明天
  */
 router.get('/classroom', async (ctx, next) => {
-  const { day = 0 } = ctx.query
-
-  console.log(day)
+  ctx.body = await userController(ctx, { topic: 'classroom' })
 })
 
 /**

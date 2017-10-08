@@ -13,7 +13,7 @@ module.exports = {
       schedule: '/xskb/xskb_list.do',
       classroom: '/kbxx/kxjs_query',
       rank: '/kscj/cjjd_list',
-      blog: '/grxx/xsxx',
+      info: '/grxx/xsxx',
       exam: '/xsks/xsksap_list'
     }
   },
