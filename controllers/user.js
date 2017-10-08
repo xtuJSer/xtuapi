@@ -1,6 +1,6 @@
 const crawler = require('../crawlers').user
 
-const getTopic = topic => async ({ sid, param = '' }) => {
+const getTopic = topic => async ({ sid, param }) => {
   let ret = {
     isSuccess: true,
     message: '',
@@ -23,7 +23,7 @@ module.exports = async (ctx, { topic, decoded: { sid } }) => {
     : ctx.query
 
   const { isSuccess, message, content } = await getTopic(topic)({
-    sid: sid.user,
+    sid: sid && sid.user,
     param
   })
 

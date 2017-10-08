@@ -16,6 +16,8 @@ const {
   classroomFilter
 } = require('../filters').user
 
+const ClassroomModel = require('../models').classroom
+
 /**
  * 返回完整的年份和学期
  * @param {String} param0 学年，如：2016-2017-2
@@ -110,21 +112,40 @@ const scheduleCrawler = async ({ sid }) => {
 
 /**
  * 空教室
- * sid 用于判断此次操作是否需要更新数据
- * @param {Object} param0 userSchedule
+ * @param {Object} param0 classroomSchedule
  */
 const classroomCrawler = async ({ sid, param }) => {
   const href = host + routes.classroom
   let { day = 0 } = param
 
+  day = +day
   day === 0 || (day = 1)
 
-  const ret = await _fetch(classroomFilter)(
-    { href, sid },
-    { day }
-  )
+  // sid 用于判断此次操作是否需要更新数据
+  if (sid) {
+    const ret = [0, 1].map(async day => {
+      const data = `xzlx=${day}`
+      const _ret = await _fetch(classroomFilter)({ href, sid, data })
 
-  return ret
+      // 首次操作需要取消以下注释，用于插入原始数据
+      // 增
+      // await new ClassroomModel({
+      //   day,
+      //   data: _ret
+      // }).save()
+
+      // 改
+      await ClassroomModel.updateByDay({ day, data: _ret })
+
+      return _ret
+    })
+
+    return ret[day]
+  } else {
+    const ret = await ClassroomModel.getByDay({ day })
+
+    return ret
+  }
 }
 
 /**

@@ -1,7 +1,7 @@
 const router = require('koa-router')()
 
 const { url: { path: routes } } = require('../config').user
-const { getToken, verifyToken } = require('../utils').token
+const { getToken, decodeToken, verifyToken } = require('../utils').token
 
 /**
  * get、post 的路由
@@ -56,10 +56,10 @@ router.post('/login', async (ctx, next) => {
  */
 router.post('/classroom', async (ctx, next) => {
   try {
-    const { isSuccess, message, token } = await loginController(ctx.request.body, ctx.state.decoded)
-
+    const { isSuccess, message, token } = await loginController(ctx.request.body, {})
     if (!isSuccess) { throw new Error(message) }
-    const { decoded } = await verifyToken('user')(token)
+
+    const decoded = decodeToken({ token: token.split(' ')[1] })
 
     ctx.body = await userController(ctx, { topic: 'classroom', decoded })
   } catch (err) {
@@ -73,7 +73,7 @@ router.post('/classroom', async (ctx, next) => {
  * day 0:今天 / 1:明天
  */
 router.get('/classroom', async (ctx, next) => {
-  ctx.body = await userController(ctx, { topic: 'classroom' })
+  ctx.body = await userController(ctx, { topic: 'classroom', decoded: {} })
 })
 
 /**

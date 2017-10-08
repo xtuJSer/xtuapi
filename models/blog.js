@@ -29,7 +29,7 @@ BlogSchema.statics.getList = async function ({ limit, skip, topic }) {
 
   let list = await this.find(
     { ...options },
-    { _id: 1, href: 1, title: 1, time: 1, topic: 1 }
+    { _id: 0, __v: 0 }
   ).sort(
     { time: -1, _id: -1 }
   ).limit(limit).skip(skip).exec()

@@ -119,6 +119,8 @@ const rankFilter = ({ html, propEl }) => {
   return obj
 }
 
+const { classroomFormat } = require('./classroom')
+
 const classroomFilter = ({ html }) => {
   const $ = cheerio.load(html)
   const table = []
@@ -138,7 +140,7 @@ const classroomFilter = ({ html }) => {
     table.push(item)
   })
 
-  return table
+  return classroomFormat(table)
 }
 
 module.exports = {

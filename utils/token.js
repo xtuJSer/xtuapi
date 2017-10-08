@@ -23,9 +23,9 @@ const createToken = (type) => ({ username, cookie, sid = {} }) => {
 }
 
 /**
- * 解析 token
+ * 解析 token（prefix + ' ' + token）
  */
-const decodeToken = ({ token, secret }) => jwt.verify(token, secret)
+const decodeToken = ({ token }) => jwt.verify(token, secret)
 
 /**
  * 验证 token
@@ -39,7 +39,7 @@ const verifyToken = (type) => (token = '') => new Promise(async (resolve, reject
   }
 
   try {
-    decoded = decodeToken({ token, secret })
+    decoded = decodeToken({ token })
     ret.decoded = decoded
 
     if (decoded.exp <= Date.now() / 1000) {
