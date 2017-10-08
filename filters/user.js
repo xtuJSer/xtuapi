@@ -1,6 +1,6 @@
 const cheerio = require('cheerio')
 
-const userBlogFilter = ({ html }) => {
+const infoFilter = ({ html }) => {
   const $ = cheerio.load(html)
   let $td = $('.Nsb_layout_r tr').eq(3).find('td')
   let sex = $td.eq(3).text().indexOf('男') > -1 ? 'boy' : 'girl'
@@ -11,7 +11,7 @@ const userBlogFilter = ({ html }) => {
   return { name, sex, id }
 }
 
-const userCourseFilter = ({ time, html }) => {
+const courseFilter = ({ time, html }) => {
   const $ = cheerio.load(html)
   const table = {
     time,
@@ -35,7 +35,7 @@ const userCourseFilter = ({ time, html }) => {
   return table
 }
 
-const userExamFilter = ({ html }) => {
+const examFilter = ({ html }) => {
   const $ = cheerio.load(html)
   let $tr = $('#dataList tr')
   let ret = []
@@ -57,7 +57,7 @@ const userExamFilter = ({ html }) => {
   return ret
 }
 
-const userScheduleFilter = ({ html }) => {
+const scheduleFilter = ({ html }) => {
   const $ = cheerio.load(html)
   const $tr = $('#kbtable tr')
   const row = []
@@ -98,7 +98,7 @@ const userScheduleFilter = ({ html }) => {
   return ret
 }
 
-const userRankFilter = ({ html, propEl }) => {
+const rankFilter = ({ html, propEl }) => {
   const $ = cheerio.load(html)
   const obj = {}
   const table = []
@@ -119,10 +119,35 @@ const userRankFilter = ({ html, propEl }) => {
   return obj
 }
 
+const { classroomFormat } = require('./classroom')
+
+const classroomFilter = ({ html }) => {
+  const $ = cheerio.load(html)
+  const table = []
+
+  $('#dataList').find('tr').each((idx, tr) => {
+    if (idx <= 1) return
+    let $tr = $(tr)
+    let item = {}
+    let tdArr = $tr.find('td')
+
+    item.classroomName = $(tdArr[0]).text().trim()
+    item.classroomTime = []
+
+    for (let i = 1; i < 6; i++) {
+      item.classroomTime.push($(tdArr[i]).text().trim())
+    }
+    table.push(item)
+  })
+
+  return classroomFormat(table)
+}
+
 module.exports = {
-  userBlogFilter,
-  userCourseFilter,
-  userExamFilter,
-  userScheduleFilter,
-  userRankFilter
+  infoFilter,
+  courseFilter,
+  examFilter,
+  scheduleFilter,
+  rankFilter,
+  classroomFilter
 }
