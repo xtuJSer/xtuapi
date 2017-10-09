@@ -35,7 +35,7 @@ router.use('/', async (ctx, next) => {
   const token = getToken(ctx)
   const { message, isSuccess, decoded } = await verifyToken('user')(token)
 
-  ctx.url === '/user/login' || ctx.url === '/user/classroom' || ctx.assert(isSuccess, 401, message)
+  ctx.url === '/user/login' || ctx.path === '/user/classroom' || ctx.assert(isSuccess, 401, message)
   ctx.state.decoded = decoded
 
   await next()
