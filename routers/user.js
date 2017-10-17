@@ -45,7 +45,10 @@ router.use('/', async (ctx, next) => {
  * 登录教务系统
  */
 router.post('/login', async (ctx, next) => {
-  let { isSuccess, token, message } = await loginController(ctx.request.body, ctx.state.decoded)
+  let { isSuccess, token, message } = await loginController(
+    ctx.request.body,
+    ctx.state.decoded
+  )
 
   ctx.assert(isSuccess, 401, message)
   ctx.body = { token }
