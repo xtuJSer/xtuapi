@@ -1,4 +1,4 @@
 module.exports = {
-  // user: require('./user'),
-  info: require('./info')
+  blog: require('./blog'),
+  classroom: require('./classroom')
 }

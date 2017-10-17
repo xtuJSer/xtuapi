@@ -16,16 +16,16 @@ const getToken = ({ headers = {} }) => {
  * 根据 type 创建 token
  */
 const createToken = (type) => ({ username, cookie, sid = {} }) => {
+  // sid = { user: 'JSESSIONID=0C5CB11979639D2A396D21F9D7BF1932' }
   sid[type] = cookie
-  console.log(sid)
 
   return prefix + jwt.sign({ username, sid }, secret, { expiresIn })
 }
 
 /**
- * 解析 token
+ * 解析 token（prefix + ' ' + token）
  */
-const decodeToken = ({ token, secret }) => jwt.verify(token, secret)
+const decodeToken = ({ token }) => jwt.verify(token, secret)
 
 /**
  * 验证 token
@@ -39,7 +39,7 @@ const verifyToken = (type) => (token = '') => new Promise(async (resolve, reject
   }
 
   try {
-    decoded = decodeToken({ token, secret })
+    decoded = decodeToken({ token })
     ret.decoded = decoded
 
     if (decoded.exp <= Date.now() / 1000) {
