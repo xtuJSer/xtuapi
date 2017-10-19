@@ -4,4 +4,4 @@ const { port } = require('../config')
 app.listen(port)
 
 console.clear()
-console.log(`app started at port ${port}...\n`)
+console.log(`App Started At Port ${port}...\n`)
