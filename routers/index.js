@@ -5,15 +5,20 @@ const routes = ['blog', 'user', 'book', 'card']
 const api = 'https://github.com/xtuJSer/xtuapi'
 
 router.get('/', async (ctx) => {
-  ctx.body = { name, description, version, author, path: routes, document: api }
+  ctx.body = {
+    name,
+    description,
+    version,
+    author,
+    path: routes,
+    document: api
+  }
 })
 
-routes.map(
-  routePath => {
-    const route = require(`./${routePath}`)
+routes.map(routePath => {
+  const route = require(`./${routePath}`)
 
-    router.use(`/${routePath}`, route.routes(), route.allowedMethods())
-  }
-)
+  router.use(`/${routePath}`, route.routes(), route.allowedMethods())
+})
 
 module.exports = router
