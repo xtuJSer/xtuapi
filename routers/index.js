@@ -18,7 +18,11 @@ router.get('/', async (ctx) => {
 routes.map(routePath => {
   const route = require(`./${routePath}`)
 
-  router.use(`/${routePath}`, route.routes(), route.allowedMethods())
+  router.use(
+    `/${routePath}`,
+    route.routes(),
+    route.allowedMethods()
+  )
 })
 
 module.exports = router
