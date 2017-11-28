@@ -1,7 +1,7 @@
 module.exports = {
   defaultTime: {
-    year: 2016,
-    half: 2
+    year: 2017,
+    half: 1
   },
 
   url: {
