@@ -19,7 +19,7 @@ const createToken = (type) => ({ username, cookie, sid = {} }) => {
   // sid = { user: 'JSESSIONID=0C5CB11979639D2A396D21F9D7BF1932' }
   sid[type] = cookie
 
-  return prefix + jwt.sign({ username, sid }, secret, { expiresIn })
+  return jwt.sign({ username, sid }, secret, { expiresIn })
 }
 
 /**
