@@ -100,10 +100,23 @@ module.exports = {
       }
     },
     hg: {
-      news: {},
-      lecture: {},
+      news: {
+        el: '#ctl00_ContentPlaceHolder1_GridView1',
+        parent: 'tr',
+        prev: 'td font>a',
+        child: 'td font'
+      },
+      lecture: {
+        el: '#ctl00_ContentPlaceHolder1_GridView1',
+        parent: 'tr',
+        prev: 'td font>a',
+        child: 'td font'
+      },
       notice: {
-        el: '#show-page'
+        el: '#ctl00_ContentPlaceHolder1_GridView1',
+        parent: 'tr',
+        prev: 'td font>a',
+        child: 'td font'
       }
     }
   }

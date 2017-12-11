@@ -8,15 +8,19 @@ const filterTitle = ({ title, parent }) => {
 
 const filterTime = (time) => {
   return time
+    .replace(/\s/g, '')
     .replace(/^（\d*次）/, '') // (**次)Date
     .replace(/^\(([\d-]+)\)$/, (str, $1) => $1) // (Date)
     .replace(/^.*(\d{4})年(\d+)月(\d+)日.*$/g, (str, $1, $2, $3) => $1 + '-' + $2 + '-' + $3) // (年月日)
+    .replace(/.*(\d{4})-(\d+)-(\d+).*/mg, (str, $1, $2, $3) => $1 + '-' + $2 + '-' + $3)
 }
 
 const filterHref = ({ host, href }) => {
   return /http/.test(href)
     ? href
-    : host + href
+    : /^\//.test(href)
+      ? host + href
+      : host + '/' + href
 }
 
 const filterList = ({ host, html, rule, newest, topic }) => {
@@ -32,24 +36,28 @@ const filterList = ({ host, html, rule, newest, topic }) => {
   let ret = []
 
   $(el + ' ' + parent).each((i, p) => {
-    let { href, title } = prev
-      ? $(p).find(prev)[0].attribs
-      : p.attribs
+    try {
+      let { href, title } = prev
+        ? $(p).find(prev)[0].attribs
+        : p.attribs
 
-    title = filterTitle({
-      title,
-      parent: p.children[1].data ||
-        (specialTitle && $(p).find(specialTitle)[0].children[0].data)
-    })
+      title = filterTitle({
+        title,
+        parent: p.children[1].data ||
+          (specialTitle && $(p).find(specialTitle)[0].children[0].data)
+      })
 
-    if (title === newest) { return false }
+      if (title === newest) { return false }
 
-    href = filterHref({ host, href })
-    let time = filterTime(
-      $(p).find(child).text()
-    )
+      href = filterHref({ host, href })
+      let time = filterTime(
+        $(p).find(child).text()
+      )
 
-    ret.push({ title, href, time, topic })
+      ret.push({ title, href, time, topic })
+    } catch (err) {
+      return false
+    }
   })
 
   return ret.reverse()
