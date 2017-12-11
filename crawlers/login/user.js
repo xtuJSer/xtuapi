@@ -54,12 +54,9 @@ const editImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
   gm(imgDir)
     .despeckle() // 去斑
     .contrast(-2000) // 对比度调整
-    .write(imgDir, err => {
-      if (err) {
-        reject(err)
-      }
-      resolve()
-    })
+    .write(imgDir, err =>
+      err ? reject(err) : resolve()
+    )
 })
 
 const spotImg = ({ username, imgDir }) => new Promise((resolve, reject) => {

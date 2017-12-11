@@ -1,4 +1,5 @@
 const path = require('path')
+const MAX_LOOP_TIME = 6
 const {
   user: {
     getCookie,
@@ -29,8 +30,6 @@ module.exports = ({ username = '', password = '' }, { sid = {} }) => new Promise
   const imgDir = path.join(__dirname) + `/${username}.jpg`
 
   ;(async () => {
-    const MAX_LOOP_TIME = 6
-
     while (!isSuccess && loopTime <= MAX_LOOP_TIME && !isWrong) {
       try {
         const cookie = await getCookie()

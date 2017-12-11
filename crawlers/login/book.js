@@ -22,10 +22,7 @@ const loginToLibrary = ({ username, password }) => new Promise((resolve, reject)
       _: ''
     })
     .end((err, sres) => {
-      if (err) {
-        let msg = '登录失败'
-        reject(msg)
-      }
+      err && reject(err)
 
       const cookie = sres.headers['set-cookie'].pop().split(';')[0]
       resolve(cookie)
