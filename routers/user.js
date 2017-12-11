@@ -62,12 +62,12 @@ router.post('/classroom', async (ctx, next) => {
     const { isSuccess, message, token } = await loginController(ctx.request.body, {})
     if (!isSuccess) { throw new Error(message) }
 
-    const decoded = decodeToken({ token: token.split(' ')[1] })
+    const decoded = decodeToken({ token })
 
     ctx.body = await userController(ctx, { topic: 'classroom', decoded })
   } catch (err) {
     ctx.status = 500
-    ctx.body = { message: err }
+    ctx.body = { message: err.message }
   }
 })
 
