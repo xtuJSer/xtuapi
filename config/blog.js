@@ -73,6 +73,14 @@ module.exports = {
         notice: '/index.php/index/index/cate/id/78.html',
         lecture: '/index.php/index/index/cate/id/69.html'
       }
+    ],
+    [
+      'wgyxy', {
+        host: 'http://wgyxy.xtu.edu.cn',
+        news: '/e/action/ListInfo/?classid=1',
+        notice: '/e/action/ListInfo/?classid=5',
+        lecture: '/e/action/ListInfo/?classid=24',
+      }
     ]
   ],
 
@@ -256,6 +264,29 @@ module.exports = {
       },
       lecture: {
         el: '.content_important',
+        parent: 'li',
+        prev: 'a',
+        child: 'span'
+      }
+    },
+    wgyxy: {
+      news: {
+        charset: 'gbk',
+        el: '.newslist2',
+        parent: 'li',
+        prev: 'a',
+        child: 'span'
+      },
+      notice: {
+        charset: 'gbk',
+        el: '.newslist2',
+        parent: 'li',
+        prev: 'a',
+        child: 'span'
+      },
+      lecture: {
+        charset: 'gbk',
+        el: '.newslist2',
         parent: 'li',
         prev: 'a',
         child: 'span'
