@@ -3,6 +3,9 @@ require('superagent-charset')(request)
 
 const { rules } = require('../config').blog
 const { filterList } = require('../filters').blog
+const { headers: { updateHeaders } } = require('../utils')
+
+const headers = updateHeaders()
 
 /**
  * 获取信息详情
@@ -25,8 +28,10 @@ const crawlerList = (ctx, options) => new Promise((resolve, reject) => {
 
   request
     .get(url)
+    .set(headers)
     .charset(rule.charset || 'utf-8')
     .end((err, sres) => {
+
       if (err || !sres) {
         ctx.status = 500
         throw new Error(err)

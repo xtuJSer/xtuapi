@@ -65,6 +65,14 @@ module.exports = {
         notice: '/myphp/math/?q=last_node/notice',
         lecture: '/myphp/math/?q=last_node/chair'
       }
+    ],
+    [
+      'clxy', {
+        host: 'http://clxy.xtu.edu.cn',
+        news: '/index.php/index/index/cate/id/61.html',
+        notice: '/index.php/index/index/cate/id/78.html',
+        lecture: '/index.php/index/index/cate/id/69.html'
+      }
     ]
   ],
 
@@ -231,6 +239,26 @@ module.exports = {
         el: '#news',
         parent: '.node',
         prev: 'a'
+      }
+    },
+    clxy: {
+      news: {
+        el: '.content_important',
+        parent: 'li',
+        prev: 'a',
+        child: 'span'
+      },
+      notice: {
+        el: '.content_important',
+        parent: 'li',
+        prev: 'a',
+        child: 'span'
+      },
+      lecture: {
+        el: '.content_important',
+        parent: 'li',
+        prev: 'a',
+        child: 'span'
       }
     }
   }
