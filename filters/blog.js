@@ -1,7 +1,7 @@
 const cheerio = require('cheerio')
 
 const filterTitle = ({ title, parent }) => {
-  if (!parent || title) { return title }
+  if (!parent || title) { return title.trim() }
 
   return parent.trim()
 }
@@ -37,6 +37,10 @@ const filterList = ({ host, html, rule, newest, topic }) => {
 
   $(el + ' ' + parent).each((i, p) => {
     try {
+      if (!$(p).find(prev)[0]) {
+        return
+      }
+
       let { href, title } = prev
         ? $(p).find(prev)[0].attribs
         : p.attribs
@@ -47,14 +51,14 @@ const filterList = ({ host, html, rule, newest, topic }) => {
           (specialTitle && $(p).find(specialTitle)[0].children[0].data)
       })
 
-      if (title === newest || !title) { return false }
+      if (title === newest) { return false }
 
       href = filterHref({ host, href })
       let time = filterTime(
         $(p).find(child).text()
       )
 
-      ret.push({ title, href, time, topic })
+      title && ret.push({ title, href, time, topic })
     } catch (err) {
       console.log(err)
       return false
