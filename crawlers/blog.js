@@ -24,7 +24,7 @@ const crawlerItem = async (ctx, options) => {
  */
 const crawlerList = (ctx, options) => new Promise((resolve, reject) => {
   const { host, url, scope, topic, newest = '' } = options
-  const rule = rules[scope][topic] || {}
+  const rule = rules[scope][topic] || rules[scope].default || {}
 
   request
     .get(url)

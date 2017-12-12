@@ -86,34 +86,14 @@ module.exports = {
 
   rules: {
     xtu: {
-      news: {
-        el: '.list',
-        parent: 'a',
-        child: 'span'
-      },
-      notice: {
-        el: '.list',
-        parent: 'a',
-        child: 'span'
-      },
-      lecture: {
+      default: {
         el: '.list',
         parent: 'a',
         child: 'span'
       }
     },
     cie: {
-      news: {
-        el: '#show-page',
-        parent: 'a',
-        child: 'span'
-      },
-      notice: {
-        el: '#show-page',
-        parent: 'a',
-        child: 'span'
-      },
-      lecture: {
+      default: {
         el: '#show-page',
         parent: 'a',
         child: 'span'
@@ -144,41 +124,15 @@ module.exports = {
       }
     },
     hxxy: {
-      news: {
+      default: {
         el: '#ctl00_ContentPlaceHolder1_GridView1',
         parent: 'tr',
-        prev: 'td font>a',
-        child: 'td font'
-      },
-      notice: {
-        el: '#ctl00_ContentPlaceHolder1_GridView1',
-        parent: 'tr',
-        prev: 'td font>a',
-        child: 'td font'
-      },
-      lecture: {
-        el: '#ctl00_ContentPlaceHolder1_GridView1',
-        parent: 'tr',
-        prev: 'td font>a',
-        child: 'td font'
+        prev: 'a[id^=ctl00_ContentPlaceHolder1]',
+        child: 'td'
       }
     },
     cem: {
-      news: {
-        charset: 'gbk',
-        el: '.newslist',
-        parent: 'li',
-        prev: 'a',
-        child: 'span'
-      },
-      notice: {
-        charset: 'gbk',
-        el: '.newslist',
-        parent: 'li',
-        prev: 'a',
-        child: 'span'
-      },
-      lecture: {
+      default: {
         charset: 'gbk',
         el: '.newslist',
         parent: 'li',
@@ -187,21 +141,7 @@ module.exports = {
       }
     },
     hgxy: {
-      news: {
-        charset: 'gbk',
-        el: '.newslist2',
-        parent: 'li',
-        prev: 'a',
-        child: 'span'
-      },
-      notice: {
-        charset: 'gbk',
-        el: '.newslist2',
-        parent: 'li',
-        prev: 'a',
-        child: 'span'
-      },
-      lecture: {
+      default: {
         charset: 'gbk',
         el: '.newslist2',
         parent: 'li',
@@ -210,21 +150,7 @@ module.exports = {
       }
     },
     law: {
-      news: {
-        charset: 'gbk',
-        el: '.newslist',
-        parent: 'li',
-        prev: 'a',
-        child: 'span'
-      },
-      notice: {
-        charset: 'gbk',
-        el: '.newslist',
-        parent: 'li',
-        prev: 'a',
-        child: 'span'
-      },
-      lecture: {
+      default: {
         charset: 'gbk',
         el: '.newslist',
         parent: 'li',
@@ -233,36 +159,14 @@ module.exports = {
       }
     },
     math: {
-      news: {
-        el: '#news',
-        parent: '.node',
-        prev: 'a'
-      },
-      notice: {
-        el: '#news',
-        parent: '.node',
-        prev: 'a'
-      },
-      lecture: {
+      default: {
         el: '#news',
         parent: '.node',
         prev: 'a'
       }
     },
     clxy: {
-      news: {
-        el: '.content_important',
-        parent: 'li',
-        prev: 'a',
-        child: 'span'
-      },
-      notice: {
-        el: '.content_important',
-        parent: 'li',
-        prev: 'a',
-        child: 'span'
-      },
-      lecture: {
+      default: {
         el: '.content_important',
         parent: 'li',
         prev: 'a',
@@ -270,21 +174,7 @@ module.exports = {
       }
     },
     wgyxy: {
-      news: {
-        charset: 'gbk',
-        el: '.newslist2',
-        parent: 'li',
-        prev: 'a',
-        child: 'span'
-      },
-      notice: {
-        charset: 'gbk',
-        el: '.newslist2',
-        parent: 'li',
-        prev: 'a',
-        child: 'span'
-      },
-      lecture: {
+      default: {
         charset: 'gbk',
         el: '.newslist2',
         parent: 'li',
