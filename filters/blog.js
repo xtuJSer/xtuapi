@@ -41,6 +41,8 @@ const filterList = ({ host, html, rule, newest, topic }) => {
         ? $(p).find(prev)[0].attribs
         : p.attribs
 
+      title = !title && prev && $(p).find(prev)[0].children[0].data
+
       title = filterTitle({
         title,
         parent: p.children[1].data ||
@@ -56,6 +58,7 @@ const filterList = ({ host, html, rule, newest, topic }) => {
 
       ret.push({ title, href, time, topic })
     } catch (err) {
+      console.log(err)
       return false
     }
   })

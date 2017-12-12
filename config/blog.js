@@ -11,7 +11,7 @@ module.exports = {
       }
     ],
     [
-      'xg', {
+      'cie', {
         host: 'http://cie.xtu.edu.cn',
         news: '/ciextu_new/zxdta',
         notice: '/ciextu_new/zzgga',
@@ -19,7 +19,7 @@ module.exports = {
       }
     ],
     [
-      's', {
+      'business', {
         host: 'http://business.xtu.edu.cn',
         news: '/index.jsp?cd=news&ac=list&newsclass=xueyuanxw',
         notice: '/index.jsp?cd=news&ac=list&newsclass=tongzhigg',
@@ -27,7 +27,7 @@ module.exports = {
       }
     ],
     [
-      'hx', {
+      'hxxy', {
         host: 'http://hxxy.web.xtu.edu.cn:8081',
         news: '/moreinfo.aspx?id=147',
         notice: '/moreinfo.aspx?id=112',
@@ -35,7 +35,7 @@ module.exports = {
       }
     ],
     [
-      'tm', {
+      'cem', {
         host: 'http://cem.xtu.edu.cn',
         news: '/e/action/ListInfo/?classid=1',
         notice: '/e/action/ListInfo/?classid=14',
@@ -43,11 +43,27 @@ module.exports = {
       }
     ],
     [
-      'hg', {
+      'hgxy', {
         host: 'http://hgxy.xtu.edu.cn',
         news: '/e/action/ListInfo/?classid=4',
         notice: '/e/action/ListInfo/?classid=12',
         lecture: '/e/action/ListInfo/?classid=14'
+      }
+    ],
+    [
+      'law', {
+        host: 'http://law.xtu.edu.cn',
+        news: '/infolist-7-0.html',
+        notice: '/infolist-67-0.html',
+        lecture: '/infolist-68-0.html'
+      }
+    ],
+    [
+      'math', {
+        host: 'http://math.xtu.edu.cn',
+        news: '/myphp/math/?q=last_node/news',
+        notice: '/myphp/math/?q=last_node/notice',
+        lecture: '/myphp/math/?q=last_node/chair'
       }
     ]
   ],
@@ -70,7 +86,7 @@ module.exports = {
         child: 'span'
       }
     },
-    xg: {
+    cie: {
       news: {
         el: '#show-page',
         parent: 'a',
@@ -87,7 +103,7 @@ module.exports = {
         child: 'span'
       }
     },
-    s: {
+    business: {
       news: {
         charset: 'gbk',
         el: '#xueyuanxw',
@@ -111,7 +127,7 @@ module.exports = {
         specialTitle: '.hdtitle'
       }
     },
-    hx: {
+    hxxy: {
       news: {
         el: '#ctl00_ContentPlaceHolder1_GridView1',
         parent: 'tr',
@@ -131,7 +147,7 @@ module.exports = {
         child: 'td font'
       }
     },
-    tm: {
+    cem: {
       news: {
         charset: 'gbk',
         el: '.newslist',
@@ -154,7 +170,7 @@ module.exports = {
         child: 'span'
       }
     },
-    hg: {
+    hgxy: {
       news: {
         charset: 'gbk',
         el: '.newslist2',
@@ -175,6 +191,46 @@ module.exports = {
         parent: 'li',
         prev: 'a',
         child: 'span'
+      }
+    },
+    law: {
+      news: {
+        charset: 'gbk',
+        el: '.newslist',
+        parent: 'li',
+        prev: 'a',
+        child: 'span'
+      },
+      notice: {
+        charset: 'gbk',
+        el: '.newslist',
+        parent: 'li',
+        prev: 'a',
+        child: 'span'
+      },
+      lecture: {
+        charset: 'gbk',
+        el: '.newslist',
+        parent: 'li',
+        prev: 'a',
+        child: 'span'
+      }
+    },
+    math: {
+      news: {
+        el: '#news',
+        parent: '.node',
+        prev: 'a'
+      },
+      notice: {
+        el: '#news',
+        parent: '.node',
+        prev: 'a'
+      },
+      lecture: {
+        el: '#news',
+        parent: '.node',
+        prev: 'a'
       }
     }
   }
