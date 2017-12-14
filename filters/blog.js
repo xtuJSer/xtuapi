@@ -37,16 +37,14 @@ const filterList = ({ host, html, rule, newest, topic }) => {
 
   $(el + ' ' + parent).each((i, p) => {
     try {
-      if (!$(p).find(prev)[0]) {
-        return
-      }
+      const $prev = $(p).find(prev)[0] || {}
 
       let { href, title } = prev
-        ? $(p).find(prev)[0].attribs
+        ? $prev.attribs
         : p.attribs
 
       title = filterTitle({
-        title: (!title && prev) ? $(p).find(prev)[0].children[0].data : title,
+        title: (!title && prev) ? $prev.children[0].data : title,
         parent: p.children[1].data ||
           (specialTitle && $(p).find(specialTitle)[0].children[0].data)
       })
