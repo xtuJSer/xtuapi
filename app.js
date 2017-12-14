@@ -5,7 +5,7 @@ const app = new Koa()
 const mongoose = require('mongoose')
 const bodyParser = require('koa-bodyparser')
 
-const { mongo_url } = require('./config')
+const { mongoURL } = require('./config')
 const routers = require('./routers')
 
 app.use(async (ctx, next) => {
@@ -16,7 +16,8 @@ app.use(async (ctx, next) => {
 })
 
 mongoose.Promise = global.Promise
-mongoose.connect(mongo_url, {
+mongoose.connect(
+  require('./config/private').mongoURL || mongoURL, {
   useMongoClient: true
 })
 
