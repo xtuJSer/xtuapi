@@ -24,6 +24,7 @@ const filterHref = ({ host, href }) => {
 }
 
 const filterList = ({ host, html, rule, newest, topic }) => {
+  const ret = []
   const $ = cheerio.load(html)
   const {
     el,
@@ -32,8 +33,6 @@ const filterList = ({ host, html, rule, newest, topic }) => {
     child = 'span',
     specialTitle = null
   } = rule
-
-  let ret = []
 
   $(el + ' ' + parent).each((i, p) => {
     try {

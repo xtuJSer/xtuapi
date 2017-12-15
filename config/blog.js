@@ -11,6 +11,13 @@ module.exports = {
       }
     ],
     [
+      'nic', {
+        host: 'http://nic.xtu.edu.cn',
+        news: '/wangluodongtai/zhongxinxinwen',
+        notice: '/wangluodongtai/tongzhigonggao'
+      }
+    ],
+    [
       'cie', {
         host: 'http://cie.xtu.edu.cn',
         news: '/ciextu_new/zxdta',
@@ -24,6 +31,13 @@ module.exports = {
         news: '/index.jsp?cd=news&ac=list&newsclass=xueyuanxw',
         notice: '/index.jsp?cd=news&ac=list&newsclass=tongzhigg',
         lecture: '/index.jsp?cd=xueshuhd&ac=list'
+      }
+    ],
+    [
+      'xxxy', {
+        host: 'http://xxxy.xtu.edu.cn',
+        news: '/info.php?catalog=3',
+        notice: '/info.php?catalog=4'
       }
     ],
     [
@@ -92,6 +106,14 @@ module.exports = {
         child: 'span'
       }
     },
+    nic: {
+      default: {
+        el: '.detail-main-list-ul',
+        parent: 'li',
+        child: 'span',
+        prev: 'a'
+      }
+    },
     cie: {
       default: {
         el: '#show-page',
@@ -121,6 +143,14 @@ module.exports = {
         prev: 'a',
         child: '.detail',
         specialTitle: '.hdtitle'
+      }
+    },
+    xxxy: {
+      default: {
+        el: '.list1',
+        parent: 'li',
+        prev: 'a',
+        child: 'span'
       }
     },
     hxxy: {
