@@ -136,7 +136,7 @@ module.exports = {
         prev: 'a',
         child: 'span'
       },
-      // BUG: 不可用
+      // BUG: 不可用，12·28日后修复
       lecture: {
         charset: 'gbk',
         el: '.jobs-list',
