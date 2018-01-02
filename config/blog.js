@@ -1,4 +1,5 @@
 module.exports = {
+  // 爬虫节流
   throttle: 5 * 1000 * 60,
 
   scopes: [
