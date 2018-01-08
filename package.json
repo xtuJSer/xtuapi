@@ -24,14 +24,14 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "eventproxy": "^1.0.0",
-    "gm": "^1.23.0",
+    "gm": "^1.23.1",
     "jsonwebtoken": "^8.1.0",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.3.0",
     "koa-session": "^5.5.1",
     "koa-static": "^4.0.2",
-    "mongoose": "^4.13.7",
+    "mongoose": "^4.13.9",
     "node-tesseract": "^0.2.7",
     "superagent": "^3.8.2",
     "superagent-charset": "^1.2.0"
