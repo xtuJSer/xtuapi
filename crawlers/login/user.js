@@ -60,16 +60,19 @@ const editImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
 })
 
 const spotImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
-  tesseract.process(imgDir, spotImgOptions, (err, ret) => {
-    if (err) { reject(err) }
+  tesseract.process(imgDir, spotImgOptions, (err, text) => {
+    if (err) {
+      reject(err)
+      return
+    }
     fs.unlinkSync(imgDir)
 
-    ret = ret.replace(/\s*/gm, '').substr(0, 4).toLowerCase()
-    if (ret.length !== 4 || ret.match(/\W/g) !== null) {
+    text = text.replace(/\s*/gm, '').substr(0, 4).toLowerCase()
+    if (text.length !== 4 || text.match(/\W/g) !== null) {
       err = '验证码不合法'
       reject(err)
     }
-    resolve(ret)
+    resolve(text)
   })
 })
 
