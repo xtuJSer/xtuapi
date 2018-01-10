@@ -51,7 +51,10 @@ module.exports = ({ username = '', password = '' }, { sid = {} }) => new Promise
         loopTime++
         console.error(`登录失败: ${err}`)
 
-        if (err.includes('用户名或密码错误')) { isWrong = true } // 若用户的账号密码错误，则跳出循环
+        // 若用户的账号密码错误，则跳出循环
+        if (err.includes('用户名或密码错误')) {
+          isWrong = true
+        }
       }
     }
 
