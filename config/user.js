@@ -20,7 +20,7 @@ module.exports = {
 
   spotImgOptions: {
     l: 'lu',
-    binary: process.env.NODE_ENV === 'dev'
+    binary: /(dev|test)/.test(process.env.NODE_ENV)
       ? '/usr/local/bin/tesseract'
       : '/usr/bin/tesseract'
   }
