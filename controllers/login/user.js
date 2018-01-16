@@ -1,5 +1,5 @@
 const path = require('path')
-const MAX_LOOP_TIME = 6
+const MAX_LOOP_TIME = 5
 const {
   user: {
     getCookie,
@@ -52,7 +52,7 @@ module.exports = ({ username = '', password = '' }, { sid = {} }) => new Promise
         console.error(`登录失败: ${err}`)
 
         // 若用户的账号密码错误，则跳出循环
-        if (err.includes('用户名或密码错误')) {
+        if (err.message === '用户名或密码错误') {
           isWrong = true
         }
       }
