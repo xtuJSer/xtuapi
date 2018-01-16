@@ -11,7 +11,7 @@ const methodRule = {
   post: ['course', 'classroom', 'rank']
 }
 
-const notFoundMsg = '您所访问的资源是不存在的 🤔'
+const notFoundMsg = '资源不存在'
 
 const loginController = require('../controllers').login.user
 const userController = require('../controllers').user
@@ -64,10 +64,15 @@ router.post('/classroom', async (ctx, next) => {
 
     const decoded = decodeToken({ token })
 
-    ctx.body = await userController(ctx, { topic: 'classroom', decoded })
+    ctx.body = await userController(ctx, {
+      topic: 'classroom',
+      decoded
+    })
   } catch (err) {
     ctx.status = 500
-    ctx.body = { message: err.message }
+    ctx.body = {
+      message: err.message
+    }
   }
 })
 
@@ -76,7 +81,10 @@ router.post('/classroom', async (ctx, next) => {
  * day 0:今天 / 1:明天
  */
 router.get('/classroom', async (ctx, next) => {
-  ctx.body = await userController(ctx, { topic: 'classroom', decoded: {} })
+  ctx.body = await userController(ctx, {
+    topic: 'classroom',
+    decoded: {}
+  })
 })
 
 /**
@@ -90,7 +98,10 @@ const checkRoute = type => async (ctx) => {
   } = ctx
 
   ctx.assert(type.includes(topic), 404, notFoundMsg)
-  ctx.body = await userController(ctx, { topic, decoded })
+  ctx.body = await userController(ctx, {
+    topic,
+    decoded
+  })
 }
 
 ;['get', 'post'].map(
