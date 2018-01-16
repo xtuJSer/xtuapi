@@ -166,10 +166,10 @@ const rankCrawler = async ({ sid, param }) => new Promise((resolve, reject) => {
     }))
     year = time.reduce((a, b) => a + '&kksj=' + b)
   } else {
-    year = time = _getFullTime({
+    year = time = [_getFullTime({
       year: time.split('-')[0],
       half: time.split('-')[1]
-    })
+    })]
   }
 
   const ep = new Eventproxy()
