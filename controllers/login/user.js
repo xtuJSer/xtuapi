@@ -49,10 +49,10 @@ module.exports = ({ username = '', password = '' }, { sid = {} }) => new Promise
         token = ret.token
       } catch (err) {
         loopTime++
-        console.error(`登录失败: ${err}`)
+        console.error(`${username} 登录失败: ${err}`)
 
         // 若用户的账号密码错误，则跳出循环
-        if (err.message === '用户名或密码错误') {
+        if ((err + '').includes('用户名或密码错误')) {
           isWrong = true
         }
       }
