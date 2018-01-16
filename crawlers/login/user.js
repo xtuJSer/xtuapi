@@ -21,9 +21,10 @@ const loginURL = hostURL + login
 const getCookie = () => new Promise((resolve, reject) => {
   request
     .get(hostURL)
+    .set(headers)
     .end((err, sres) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
 
       let cookie = sres.headers['set-cookie'].pop().split(';')[0]
@@ -38,7 +39,7 @@ const getImg = cookie => new Promise((resolve, reject) => {
     .set('Cookie', cookie)
     .end((err, sres) => {
       if (err) {
-        reject(err)
+        return reject(err)
       }
       resolve(sres.body)
     })
@@ -62,15 +63,18 @@ const editImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
 const spotImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
   tesseract.process(imgDir, spotImgOptions, (err, text) => {
     if (err) {
-      reject(err)
-      return
+      return reject(err)
     }
     fs.unlinkSync(imgDir)
 
-    text = text.replace(/\s*/gm, '').substr(0, 4).toLowerCase()
-    if (text.length !== 4 || text.match(/\W/g) !== null) {
+    text = text
+      .replace(/[^a-zA-Z0-9]/gm, '')
+      .substr(0, 4)
+      .toLowerCase()
+
+    if (text.match(/\W/g) !== null) {
       err = '验证码不合法'
-      reject(err)
+      return reject(err)
     }
     resolve(text)
   })
@@ -80,8 +84,13 @@ const loginToJWXT = ({ randomCode, username, password, cookie }) => new Promise(
   request
     .post(loginURL)
     .type('form')
-    .set(headers)
-    .set('Cookie', cookie)
+    .set({
+      ...headers,
+      Cookie: cookie,
+      Referer: 'http://jwxt.xtu.edu.cn/jsxsd/',
+      Origin: 'http://jwxt.xtu.edu.cn',
+      Host: 'jwxt.xtu.edu.cn'
+    })
     .charset('gbk')
     .send({
       USERNAME: username,
@@ -89,13 +98,16 @@ const loginToJWXT = ({ randomCode, username, password, cookie }) => new Promise(
       RANDOMCODE: randomCode
     })
     .end((err, sres) => {
-      if (err) { reject(err) }
+      if (err) {
+        return reject(err)
+      }
       if (sres.text.includes('用户名或密码错误')) {
         err = '用户名或密码错误'
-        reject(err)
-      } else if (sres.text.includes('验证码错误')) {
+        return reject(err)
+      }
+      if (sres.text.includes('验证码错误')) {
         err = '验证码错误'
-        reject(err)
+        return reject(err)
       }
       resolve()
     })
