@@ -1,14 +1,14 @@
 const request = require('supertest')
 const { expect } = require('chai')
 
-const app = require('../app')
+const app = require('../build/app')
 const server = app.listen(3030)
 const testRequest = request(server)
 
 const headers = {
   'Content-Type': 'application/x-www-form-urlencoded'
 }
-const loginData = require('../config/private') || {}
+const loginData = require('../build/config/private') || {}
 const testFn = function ({ method = 'get', url, data = null, status = 200 }, done) {
   return testRequest[method](url)
     .set(headers)

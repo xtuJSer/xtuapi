@@ -1,10 +1,10 @@
 const request = require('supertest')
 
-const app = require('../app')
+const app = require('../build/app')
 const server = app.listen(3030)
 const testRequest = request(server)
 
-const { blog: { scopes } } = require('../config')
+const { scopes } = require('../build/config/blog')
 const target = 'blog'
 
 describe(`#TEST ${target}`, () => {
