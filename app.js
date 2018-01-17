@@ -1,5 +1,3 @@
-require('babel-polyfill')
-
 const Koa = require('koa')
 const app = new Koa()
 const mongoose = require('mongoose')
