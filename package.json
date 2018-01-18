@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "NODE_ENV=dev supervisor ./bin/start.js",
     "test": "NODE_ENV=test mocha --recursive -t 10000 -s 1000",
-    "test:user": "NODE_ENV=test mocha ./test/user.test.js -t 60000 -s 1000",
-    "test:blog": "NODE_ENV=test mocha ./test/blog.test.js -t 60000 -s 1000",
-    "start": "NODE_NEV=prod pm2 start ./bin/start.js --name 'xtuapi'"
+    "test:user": "NODE_ENV=test mocha ./test/user.test.ts -t 60000 -s 1000",
+    "test:blog": "NODE_ENV=test mocha ./test/blog.test.ts -t 60000 -s 1000",
+    "start": "NODE_NEV=prod pm2 start ./bin/start.ts --name 'xtuapi'"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,12 @@
   },
   "homepage": "https://github.com/xtuJSer/xtuapi#readme",
   "dependencies": {
+    "@types/gm": "^1.17.33",
+    "@types/jsonwebtoken": "^7.2.5",
+    "@types/koa": "^2.0.43",
+    "@types/koa-bodyparser": "^3.0.26",
+    "@types/mongoose": "^4.7.32",
+    "@types/superagent": "^3.5.6",
     "cheerio": "^1.0.0-rc.2",
     "eventproxy": "^1.0.0",
     "gm": "^1.23.1",
@@ -39,8 +45,13 @@
     "superagent-charset": "^1.2.0"
   },
   "devDependencies": {
-    "babel-polyfill": "^6.26.0",
     "chai": "^4.1.2",
+    "eslint": "^4.15.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
     "mocha": "^3.5.3",
     "supertest": "^3.0.0",
     "supervisor": "^0.12.0"

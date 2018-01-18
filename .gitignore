@@ -101,6 +101,5 @@ sftp-config.json
 .idea/
 
 config/private.js
-
 ocr/*
 build/*

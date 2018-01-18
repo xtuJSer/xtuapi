@@ -1,5 +1,5 @@
-const app = require('../app')
-const { port } = require('../config')
+const app = require('../build/app')
+const { port } = require('../build/config')
 
 app.listen(port)
 
