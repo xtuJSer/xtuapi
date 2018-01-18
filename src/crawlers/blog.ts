@@ -3,9 +3,9 @@ require('superagent-charset')(request)
 
 const { rules } = require('../config/blog')
 const { filterList } = require('../filters/blog')
-const { headers: { updateHeaders } } = require('../utils')
+import _h from '../utils/headers'
 
-const headers = updateHeaders()
+const headers = _h.updateHeaders()
 
 /**
  * 获取信息详情

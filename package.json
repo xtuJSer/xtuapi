@@ -4,7 +4,7 @@
   "description": "为开发者提供湘大相关的数据支持",
   "main": "app.js",
   "scripts": {
-    "dev": "NODE_ENV=dev supervisor ./bin/start.ts",
+    "dev": "NODE_ENV=dev supervisor ./bin/start.js",
     "test": "NODE_ENV=test mocha --recursive -t 10000 -s 1000",
     "test:user": "NODE_ENV=test mocha ./test/user.test.ts -t 60000 -s 1000",
     "test:blog": "NODE_ENV=test mocha ./test/blog.test.ts -t 60000 -s 1000",
@@ -25,6 +25,7 @@
   "homepage": "https://github.com/xtuJSer/xtuapi#readme",
   "dependencies": {
     "@types/gm": "^1.17.33",
+    "@types/jsonwebtoken": "^7.2.5",
     "@types/koa": "^2.0.43",
     "@types/koa-bodyparser": "^3.0.26",
     "@types/mongoose": "^4.7.32",
@@ -45,6 +46,12 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "eslint": "^4.15.0",
+    "eslint-config-standard": "^11.0.0-beta.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
     "mocha": "^3.5.3",
     "supertest": "^3.0.0",
     "supervisor": "^0.12.0"

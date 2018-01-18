@@ -5,19 +5,20 @@ import * as bodyParser from 'koa-bodyparser'
 const app = new Koa()
 
 import config from './config'
-import { routers } from './routers'
-import { _config = {} } from './config/private'
+import routers from './routers'
 
 app.use(async (ctx, next) => {
   const start = Date.now()
+
   await next()
   const ms = Date.now() - start
+
   console.log(`${ctx.method} ${ctx.url} ${ms}ms\n`)
 })
 
 // mongoose.Promise = global.Promise
 mongoose.connect(
-  _config.mongoURL || config.mongoURL, {
+  config.mongoURL, {
   useMongoClient: true
 })
 

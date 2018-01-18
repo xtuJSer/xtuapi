@@ -1,6 +1,12 @@
-const jwt = require('jsonwebtoken')
+import * as jwt from 'jsonwebtoken'
 
-const { secret, expiresIn, prefix } = require('../config').token
+import config from '../config'
+
+const {
+  secret,
+  expiresIn,
+  prefix
+} = config.token
 
 /**
  * 获取请求头中的 token
@@ -42,11 +48,11 @@ const verifyToken = (type) => (token = '') => new Promise(async (resolve, reject
     ret.decoded = decoded
 
     if (decoded.exp <= Date.now() / 1000) {
-      throw new Error('已过期，请重新登录 🤕')
+      throw new Error('已过期，请重新登录')
     }
 
     if (!decoded.sid[type]) {
-      throw new Error('未登录 😷')
+      throw new Error('未登录')
     }
   } catch (err) {
     ret.message = err
