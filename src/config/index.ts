@@ -4,6 +4,7 @@ import book from './book'
 
 export default {
   port: process.env.PORT || 3000,
+  testPort: 3030,
 
   token: {
     secret: 'xtuapi',
