@@ -9,7 +9,7 @@ const ClassroomSchema = new Schema({
 /**
  * 通过 day 判断更新对象，并返回
  */
-ClassroomSchema.statics.updateByDay = async function ({ data, day = 0 }) {
+ClassroomSchema.statics.updateByDay = async function ({ data, day = 0 }: { data: string, day: number }) {
   await this.findOneAndUpdate({ day }, { $set: { data } }).exec()
 }
 
