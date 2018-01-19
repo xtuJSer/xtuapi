@@ -1,4 +1,5 @@
-const { createToken } = require('../../utils').token
+import _t from '../../utils/token'
+const { createToken } = _t
 
 const successLogin = (type) => ({ username, cookie, sid }) => ({
   token: createToken(type)({ username, cookie, sid }),

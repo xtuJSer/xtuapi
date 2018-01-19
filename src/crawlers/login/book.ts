@@ -1,11 +1,17 @@
-const request = require('superagent')
+import * as request from 'superagent'
 
-const { updateHeaders } = require('../../utils').headers
+import _h from '../../utils/headers'
+import config from '../../config/book'
+
+const { updateHeaders } = _h
 const {
   url: {
-    host, path: { login }
+    host,
+    path: {
+      login
+    }
   }
-} = require('../../config').book
+} = config
 const loginURL = host + login
 
 const loginToLibrary = ({ username, password }) => new Promise((resolve, reject) => {

@@ -1,5 +1,10 @@
-const { crawlerList } = require('../crawlers').blog
-const { throttleTime } = require('../config').blog
+import crawler from '../crawlers/blog'
+import config from '../config/blog'
+import model from '../models/blog'
+
+const { crawlerList } = crawler
+const { throttle: throttleTime } = config
+
 const start = {}
 
 export default async (ctx, options) => {
@@ -9,7 +14,7 @@ export default async (ctx, options) => {
   limit = +limit
   skip = +skip
 
-  const Model = require('../models').blog(scope)
+  const Model = model(scope)
 
   const now = Date.now()
   const cur = scope + '-' + topic

@@ -1,7 +1,9 @@
-const request = require('supertest')
+import * as request from 'supertest'
 
-const app = require('../build/app')
-const server = app.listen(3030)
+import app from '../app'
+import config from '../config'
+
+const server = app.listen(config.testPort)
 const testRequest = request(server)
 
 const { scopes } = require('../build/config/blog')

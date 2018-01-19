@@ -1,11 +1,15 @@
-const request = require('superagent')
+import * as request from 'superagent'
 require('superagent-charset')(request)
+
 const Eventproxy = require('eventproxy')
+
+import config from '../config/user'
+import filter from '../filters/user'
 
 const {
   url: { host, path: routes },
   defaultTime: { year: defaultYear, half: defaultHalf }
-} = require('../config').user
+} = config
 
 const {
   infoFilter,
@@ -14,9 +18,10 @@ const {
   scheduleFilter,
   rankFilter,
   classroomFilter
-} = require('../filters').user
+} = filter
 
-const ClassroomModel = require('../models').classroom
+import Model from '../models/classroom'
+import _h from '../utils/headers'
 
 /**
  * 返回完整的年份和学期
@@ -30,7 +35,7 @@ const _getFullTime = ({ year, half }) => year + '-' + (+year + 1) + '-' + half
  */
 const _fetch = filter => ({ type = 'get', href, sid, data = '' }, options = {}) =>
   new Promise((resolve, reject) => {
-    const { updateHeaders } = require('../utils').headers
+    const { updateHeaders } = _h
     const headers = updateHeaders()
 
     request[type](href)
@@ -40,7 +45,10 @@ const _fetch = filter => ({ type = 'get', href, sid, data = '' }, options = {}) 
       .charset('utf-8')
       .end((err, sres) => {
         err ? reject(err) : resolve(
-          filter({ html: sres.text, ...options })
+          filter({
+            html: sres.text,
+            ...options
+          })
         )
       })
   })
@@ -129,20 +137,20 @@ const classroomCrawler = async ({ sid, param }) => {
 
       // 首次操作需要取消以下注释，用于插入原始数据
       // 增
-      // await new ClassroomModel({
+      // await new Model({
       //   day,
       //   data: _ret
       // }).save()
 
       // 改
-      await ClassroomModel.updateByDay({ day, data: _ret })
+      await Model.updateByDay({ day, data: _ret })
 
       return _ret
     })
 
     return ret[day]
   } else {
-    const ret = await ClassroomModel.getByDay({ day })
+    const ret = await Model.getByDay({ day })
 
     return ret
   }

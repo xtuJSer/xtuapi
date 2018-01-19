@@ -1,10 +1,12 @@
 import * as request from 'superagent'
 require('superagent-charset')(request)
 
-const { rules } = require('../config/blog')
-const { filterList } = require('../filters/blog')
+import config from '../config/blog'
+import filter from '../filters/blog'
 import _h from '../utils/headers'
 
+const { rules } = config
+const { filterList } = filter
 const headers = _h.updateHeaders()
 
 /**

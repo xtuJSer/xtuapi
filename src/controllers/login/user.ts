@@ -1,5 +1,8 @@
-const path = require('path')
+// const path = require('path')
+import * as path from 'path'
 const MAX_LOOP_TIME = 5
+
+import crawler from '../../crawlers/login'
 const {
   user: {
     getCookie,
@@ -13,7 +16,7 @@ const {
     checkFormat,
     successLogin
   }
-} = require('../../crawlers/login')
+} = crawler
 
 export default ({ username = '', password = '' }, { sid = {} }) => new Promise((resolve, reject) => {
   let isSuccess = false
