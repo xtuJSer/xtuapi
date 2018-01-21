@@ -2,11 +2,13 @@ const request = require('superagent')
 require('superagent-charset')(request)
 const Eventproxy = require('eventproxy')
 
+import config from '../config/user'
 const {
   url: { host, path: routes },
   defaultTime: { year: defaultYear, half: defaultHalf }
-} = require('../config').user
+} = config
 
+import filter from '../filters/user'
 const {
   infoFilter,
   courseFilter,
@@ -14,21 +16,30 @@ const {
   scheduleFilter,
   rankFilter,
   classroomFilter
-} = require('../filters').user
+} = filter
 
-const ClassroomModel = require('../models').classroom
+import ClassroomModel from '../models/classroom'
+
+type TYPE = {
+  year: number,
+  half: number,
+  href: string,
+  sid: string,
+  data: string,
+  type: string
+}
 
 /**
  * 返回完整的年份和学期
  * @param {String} param0 学年，如：2016-2017-2
  */
-const _getFullTime = ({ year, half }) => year + '-' + (+year + 1) + '-' + half
+const _getFullTime = ({ year, half } : TYPE) => year + '-' + (+year + 1) + '-' + half
 
 /**
  * 统一的爬取逻辑（除 rank）
  * @param {Object} filter 过滤后的结果
  */
-const _fetch = filter => ({ type = 'get', href, sid, data = '' }, options = {}) =>
+const _fetch = (filter: any) => ({ type = 'get', href, sid, data = '' } : TYPE, options = {}) =>
   new Promise((resolve, reject) => {
     const { updateHeaders } = require('../utils').headers
     const headers = updateHeaders()
@@ -38,7 +49,7 @@ const _fetch = filter => ({ type = 'get', href, sid, data = '' }, options = {}) 
       .set('Cookie', sid)
       .send(data)
       .charset('utf-8')
-      .end((err, sres) => {
+      .end((err: any, sres: any) => {
         err ? reject(err) : resolve(
           filter({ html: sres.text, ...options })
         )
@@ -49,7 +60,7 @@ const _fetch = filter => ({ type = 'get', href, sid, data = '' }, options = {}) 
  * 信息
  * @param {Object} param0 userInfo
  */
-const infoCrawler = async ({ sid }) => {
+const infoCrawler = async ({ sid }: TYPE) => {
   const href = host + routes.info
   const ret = await _fetch(infoFilter)({ href, sid })
 
@@ -88,9 +99,12 @@ const examCrawler = async ({ sid }) => {
   const href = host + routes.exam
   const data = `xqlbmc=&xnxqid=${defaultYear}-${defaultHalf}&xqlb=`
 
-  const ret = await _fetch(examFilter)(
-    { type: 'post', sid, data, href }
-  )
+  const ret = await _fetch(examFilter)({
+    type: 'post',
+    sid,
+    data,
+    href
+  })
 
   return ret
 }
@@ -103,9 +117,12 @@ const scheduleCrawler = async ({ sid }) => {
   const href = host + routes.schedule
   const data = `cj0701id=&zc=&demo=&xnxq01id=${defaultYear}-${defaultYear + 1}-${defaultHalf}&sfFD=1`
 
-  const ret = await _fetch(scheduleFilter)(
-    { type: 'post', sid, data, href }
-  )
+  const ret = await _fetch(scheduleFilter)({
+    type: 'post',
+    sid,
+    data,
+    href
+  })
 
   return ret
 }
