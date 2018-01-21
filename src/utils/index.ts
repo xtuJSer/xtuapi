@@ -1,4 +1,4 @@
-export default {
-  token: require('./token'),
-  headers: require('./headers')
-}
+// export default {
+//   token: require('./token'),
+//   headers: require('./headers')
+// }

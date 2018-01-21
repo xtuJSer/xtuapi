@@ -1,4 +1,4 @@
-const cheerio = require('cheerio')
+import * as cheerio from 'cheerio'
 
 const filterTitle = ({ title, parent }) => {
   if (!parent || title) { return title.trim() }

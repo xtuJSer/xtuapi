@@ -1,4 +1,4 @@
-const cheerio = require('cheerio')
+import * as cheerio from 'cheerio'
 
 const infoFilter = ({ html }) => {
   const $ = cheerio.load(html)
@@ -119,7 +119,8 @@ const rankFilter = ({ html, propEl }) => {
   return obj
 }
 
-const { classroomFormat } = require('./classroom')
+import filter from './classroom'
+const { classroomFormat } = filter
 
 const classroomFilter = ({ html }) => {
   const $ = cheerio.load(html)

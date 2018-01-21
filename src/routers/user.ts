@@ -1,7 +1,10 @@
 const router = require('koa-router')()
 
-const { url: { path: routes } } = require('../config').user
-const { getToken, decodeToken, verifyToken } = require('../utils').token
+import config from '../config/user'
+import _t from '../utils/token'
+
+const { url: { path: routes } } = config
+const { getToken, decodeToken, verifyToken } = _t
 
 /**
  * get、post 的路由
@@ -13,8 +16,8 @@ const methodRule = {
 
 const notFoundMsg = '资源不存在'
 
-const loginController = require('../controllers').login.user
-const userController = require('../controllers').user
+import loginController from '../controllers/login/user'
+import userController from '../controllers/user'
 
 /**
  * Get:/user 返回所有的规则

@@ -1,14 +1,16 @@
-const request = require('supertest')
+import * as request from 'supertest'
 const { expect } = require('chai')
 
-const app = require('../build/app')
-const server = app.listen(3030)
+import app from '../app'
+import config from '../config'
+
+const server = app.listen(config.testPort)
 const testRequest = request(server)
 
 const headers = {
   'Content-Type': 'application/x-www-form-urlencoded'
 }
-const loginData = require('../build/config/private') || {}
+const loginData = require('../../config/private') || {}
 const testFn = function ({ method = 'get', url, data = null, status = 200 }, done) {
   return testRequest[method](url)
     .set(headers)

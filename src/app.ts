@@ -16,7 +16,7 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} ${ms}ms\n`)
 })
 
-// mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise
 mongoose.connect(
   config.mongoURL, {
   useMongoClient: true

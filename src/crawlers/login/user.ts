@@ -7,13 +7,14 @@ require('superagent-charset')(request)
 const { promisify } = require('util')
 const tesseract = require('node-tesseract')
 
-const { headers: { updateHeaders } } = require('../../utils')
-const headers = updateHeaders()
+import _h from '../../utils/headers'
+const headers = _h.updateHeaders()
 
+import config from '../../config/user'
 const {
   url: { host: hostURL, path: pathURL },
   spotImgOptions
-} = require('../../config').user
+} = config
 
 const { verification, login } = pathURL
 const imgURL = hostURL + verification

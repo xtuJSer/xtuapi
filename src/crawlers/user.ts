@@ -1,5 +1,6 @@
-const request = require('superagent')
+import * as request from 'superagent'
 require('superagent-charset')(request)
+
 const Eventproxy = require('eventproxy')
 
 import config from '../config/user'
@@ -41,7 +42,7 @@ const _getFullTime = ({ year, half } : TYPE) => year + '-' + (+year + 1) + '-' +
  */
 const _fetch = (filter: any) => ({ type = 'get', href, sid, data = '' } : TYPE, options = {}) =>
   new Promise((resolve, reject) => {
-    const { updateHeaders } = require('../utils').headers
+    const { updateHeaders } = _h
     const headers = updateHeaders()
 
     request[type](href)
@@ -51,7 +52,10 @@ const _fetch = (filter: any) => ({ type = 'get', href, sid, data = '' } : TYPE, 
       .charset('utf-8')
       .end((err: any, sres: any) => {
         err ? reject(err) : resolve(
-          filter({ html: sres.text, ...options })
+          filter({
+            html: sres.text,
+            ...options
+          })
         )
       })
   })
@@ -146,20 +150,20 @@ const classroomCrawler = async ({ sid, param }) => {
 
       // 首次操作需要取消以下注释，用于插入原始数据
       // 增
-      // await new ClassroomModel({
+      // await new Model({
       //   day,
       //   data: _ret
       // }).save()
 
       // 改
-      await ClassroomModel.updateByDay({ day, data: _ret })
+      await Model.updateByDay({ day, data: _ret })
 
       return _ret
     })
 
     return ret[day]
   } else {
-    const ret = await ClassroomModel.getByDay({ day })
+    const ret = await Model.getByDay({ day })
 
     return ret
   }

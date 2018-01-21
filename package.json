@@ -4,10 +4,10 @@
   "description": "为开发者提供湘大相关的数据支持",
   "main": "app.js",
   "scripts": {
-    "dev": "NODE_ENV=dev supervisor ./bin/start.js",
-    "test": "NODE_ENV=test mocha --recursive -t 10000 -s 1000",
-    "test:user": "NODE_ENV=test mocha ./test/user.test.ts -t 60000 -s 1000",
-    "test:blog": "NODE_ENV=test mocha ./test/blog.test.ts -t 60000 -s 1000",
+    "dev": "NODE_ENV=dev supervisor ./build/start.js",
+    "test": "NODE_ENV=test mocha ./build/ --recursive -t 10000 -s 1000",
+    "test:user": "NODE_ENV=test mocha ./build/test/user.test.js -t 60000 -s 1000",
+    "test:blog": "NODE_ENV=test mocha ./build/test/blog.test.js -t 60000 -s 1000",
     "start": "NODE_NEV=prod pm2 start ./bin/start.ts --name 'xtuapi'"
   },
   "repository": {
@@ -24,12 +24,16 @@
   },
   "homepage": "https://github.com/xtuJSer/xtuapi#readme",
   "dependencies": {
+    "@types/chai": "^4.1.1",
+    "@types/cheerio": "^0.22.7",
     "@types/gm": "^1.17.33",
     "@types/jsonwebtoken": "^7.2.5",
     "@types/koa": "^2.0.43",
     "@types/koa-bodyparser": "^3.0.26",
+    "@types/koa-router": "^7.0.27",
     "@types/mongoose": "^4.7.32",
     "@types/superagent": "^3.5.6",
+    "@types/supertest": "^2.0.4",
     "cheerio": "^1.0.0-rc.2",
     "eventproxy": "^1.0.0",
     "gm": "^1.23.1",

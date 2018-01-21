@@ -15,14 +15,29 @@ const api = 'https://github.com/xtuJSer/xtuapi'
 //   }
 // })
 
-routes.map(routePath => {
-  const route = require(`./${routePath}`)
+// routes.map(routePath => {
+//   const route = require(`./${routePath}`)
 
-  router.use(
-    `/${routePath}`,
-    route.routes(),
-    route.allowedMethods()
-  )
-})
+//   router.use(
+//     `/${routePath}`,
+//     route.routes(),
+//     route.allowedMethods()
+//   )
+// })
+
+import blog from './blog'
+import user from './user'
+
+router.use(
+  '/blog',
+  blog.routes(),
+  blog.allowedMethods()
+)
+
+router.use(
+  '/user',
+  user.routes(),
+  user.allowedMethods()
+)
 
 export default router
