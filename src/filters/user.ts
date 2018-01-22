@@ -1,6 +1,11 @@
 import * as cheerio from 'cheerio'
 
-const infoFilter = ({ html }) => {
+type TYPE = {
+  html: string,
+  time: string
+}
+
+const infoFilter = ({ html }: TYPE) => {
   const $ = cheerio.load(html)
   let $td = $('.Nsb_layout_r tr').eq(3).find('td')
   let sex = $td.eq(3).text().indexOf('男') > -1 ? 'boy' : 'girl'
@@ -11,7 +16,7 @@ const infoFilter = ({ html }) => {
   return { name, sex, id }
 }
 
-const courseFilter = ({ time, html }) => {
+const courseFilter = ({ time, html }: TYPE) => {
   const $ = cheerio.load(html)
   const table = {
     time,
