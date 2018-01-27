@@ -40,7 +40,7 @@ const courseFilter = ({ time, html }: TYPE) => {
   return table
 }
 
-const examFilter = ({ html }) => {
+const examFilter = ({ html }: { html: string }) => {
   const $ = cheerio.load(html)
   let $tr = $('#dataList tr')
   let ret = []
