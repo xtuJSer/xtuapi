@@ -3,7 +3,7 @@ import crawler from '../crawlers/user'
 type USER = {
   sid: string,
   param: string
-}
+};
 
 const getTopic = (topic: string) => (
   async ({ sid, param }: USER) => {
