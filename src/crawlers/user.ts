@@ -19,7 +19,8 @@ const {
   classroomFilter
 } = filter
 
-import ClassroomModel from '../models/classroom'
+import Model from '../models/classroom'
+import _h from '../utils/headers'
 
 type TYPE = {
   year: number,
@@ -40,25 +41,27 @@ const _getFullTime = ({ year, half } : TYPE) => year + '-' + (+year + 1) + '-' +
  * 统一的爬取逻辑（除 rank）
  * @param {Object} filter 过滤后的结果
  */
-const _fetch = (filter: any) => ({ type = 'get', href, sid, data = '' } : TYPE, options = {}) =>
-  new Promise((resolve, reject) => {
-    const { updateHeaders } = _h
-    const headers = updateHeaders()
+const _fetch = (filter: any) => {
+  return ({ type = 'get', href, sid, data = '' } : TYPE, options = {}) => {
+    return new Promise((resolve, reject) => {
+      const headers = _h.updateHeaders()
 
-    request[type](href)
-      .set(headers)
-      .set('Cookie', sid)
-      .send(data)
-      .charset('utf-8')
-      .end((err: any, sres: any) => {
-        err ? reject(err) : resolve(
-          filter({
-            html: sres.text,
-            ...options
-          })
-        )
-      })
-  })
+      request[type](href)
+        .set(headers)
+        .set('Cookie', sid)
+        .send(data)
+        .charset('utf-8')
+        .end((err: any, sres: any) => {
+          err ? reject(err) : resolve(
+            filter({
+              html: sres.text,
+              ...options
+            })
+          )
+        })
+    })
+  }
+}
 
 /**
  * 信息
