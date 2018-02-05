@@ -1,22 +1,18 @@
-// const path = require('path')
 import * as path from 'path'
-const MAX_LOOP_TIME = 5
+const MAX_LOOP_TIME = 3
 
-import crawler from '../../crawlers/login'
-const {
-  user: {
-    getCookie,
-    getImg,
-    saveImg,
-    editImg,
-    spotImg,
-    loginToJWXT
-  },
-  comment: {
-    checkFormat,
-    successLogin
-  }
-} = crawler
+import {
+  getCookie,
+  getImg,
+  saveImg,
+  editImg,
+  spotImg,
+  loginToJWXT,
+  fetchEncoded,
+  packEncoded
+} from '../../crawlers/login/user'
+
+import { checkFormat, successLogin } from '../../crawlers/login/common'
 
 export default ({ username = '', password = '' }, { sid = {} }) => new Promise((resolve, reject) => {
   let isSuccess = false
@@ -33,18 +29,24 @@ export default ({ username = '', password = '' }, { sid = {} }) => new Promise((
   const imgDir = path.join(__dirname) + `/${username}.jpg`
 
   ;(async () => {
-    while (!isSuccess && loopTime <= MAX_LOOP_TIME && !isWrong) {
+    while (!isSuccess && !isWrong && loopTime < MAX_LOOP_TIME) {
       try {
         const cookie = await getCookie()
-        await saveImg({
-          img: await getImg(cookie),
-          username,
-          imgDir
-        })
+        const img = await getImg(cookie)
+
+        await saveImg({ img, username, imgDir })
         await editImg({ username, imgDir })
 
         let randomCode = await spotImg({ username, imgDir })
-        await loginToJWXT({ randomCode, username, password, cookie })
+        let encoded = packEncoded({
+          username,
+          password,
+          encoded: await fetchEncoded(cookie)
+        })
+
+        await loginToJWXT({ randomCode, username, password, encoded, cookie })
+
+        console.log(randomCode)
 
         const ret = successLogin('user')({ username, cookie, sid })
 

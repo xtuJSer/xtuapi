@@ -2,25 +2,35 @@ import * as fs from 'fs'
 import * as gm from 'gm'
 import * as request from 'superagent'
 
-require('superagent-charset')(request)
-
 const { promisify } = require('util')
 const tesseract = require('node-tesseract')
 
 import _h from '../../utils/headers'
-const headers = _h.updateHeaders()
-
+import _c from '../../utils/charset'
 import config from '../../config/user'
+// import { Promise } from 'mongoose';
+
+const headers = _h.updateHeaders()
 const {
   url: { host: hostURL, path: pathURL },
   spotImgOptions
 } = config
 
-const { verification, login } = pathURL
+const { verification, login, encoded } = pathURL
 const imgURL = hostURL + verification
 const loginURL = hostURL + login
 
-const getCookie = () => new Promise((resolve, reject) => {
+type TYPE = {
+  randomCode?: string,
+  username?: string,
+  password?: string,
+  cookie?: string,
+  imgDir?: string,
+  encoded?: string,
+  img?: string
+};
+
+export const getCookie = () => new Promise((resolve, reject) => {
   request
     .get(hostURL)
     .set(headers)
@@ -34,7 +44,7 @@ const getCookie = () => new Promise((resolve, reject) => {
     })
 })
 
-const getImg = (cookie: string) => new Promise((resolve, reject) => {
+export const getImg = (cookie: string) => new Promise((resolve, reject) => {
   request
     .get(imgURL)
     .set(headers)
@@ -47,22 +57,22 @@ const getImg = (cookie: string) => new Promise((resolve, reject) => {
     })
 })
 
-const saveImg = ({ username, img, imgDir }) => new Promise((resolve) => {
+export const saveImg = ({ username, img, imgDir }: TYPE) => new Promise((resolve) => {
   const writeFile = promisify(fs.writeFile)
 
   writeFile(imgDir, img).then(() => resolve())
 })
 
-const editImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
+export const editImg = ({ username, imgDir }: TYPE) => new Promise((resolve, reject) => {
   gm(imgDir)
     .despeckle() // 去斑
     .contrast(-2000) // 对比度调整
-    .write(imgDir, err =>
+    .write(imgDir, (err) =>
       err ? reject(err) : resolve()
     )
 })
 
-const spotImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
+export const spotImg = ({ username, imgDir }: TYPE) => new Promise((resolve, reject) => {
   tesseract.process(imgDir, spotImgOptions, (err: any, text: string) => {
     if (err) {
       return reject(err)
@@ -82,7 +92,45 @@ const spotImg = ({ username, imgDir }) => new Promise((resolve, reject) => {
   })
 })
 
-const loginToJWXT = ({ randomCode, username, password, cookie }) => new Promise((resolve, reject) => {
+export const fetchEncoded = (cookie) => new Promise((resolve, reject) => {
+  request
+    .post(loginURL + encoded)
+    .set(headers)
+    .set({
+      Cookie: cookie
+    })
+    .end((err: any, sres: any) => {
+      if (err) {
+        return reject(err)
+      }
+
+      resolve(JSON.parse(sres.text).data)
+    })
+})
+
+export const packEncoded = ({ username, password, encoded = '' }: TYPE) => {
+  const code = username + '%%%' + password
+
+  let ret = '';
+  let scode = encoded.split("#")[0];
+  let sxh = encoded.split("#")[1];
+
+  for (let i = 0; i < code.length; i++) {
+    if (i < 20) {
+      ret = ret + code.substring(i,i+1)+scode.substring(0,parseInt(sxh.substring(i,i+1)));
+      scode = scode.substring(parseInt(sxh.substring(i,i+1)),scode.length);
+    }else{
+      ret= ret + code.substring(i,code.length);
+      i=code.length;
+    }
+  }
+
+  return ret
+}
+
+export const loginToJWXT = ({ randomCode, username, password, encoded, cookie }: TYPE) => new Promise((resolve, reject) => {
+  console.log(encoded)
+
   request
     .post(loginURL)
     .type('form')
@@ -93,16 +141,18 @@ const loginToJWXT = ({ randomCode, username, password, cookie }) => new Promise(
       Origin: 'http://jwxt.xtu.edu.cn',
       Host: 'jwxt.xtu.edu.cn'
     })
-    .charset('gbk')
     .send({
       USERNAME: username,
       PASSWORD: password,
-      RANDOMCODE: randomCode
+      RANDOMCODE: randomCode,
+      encoded
     })
-    .end((err: any, sres: object) => {
+    .end((err: any, sres: any) => {
       if (err) {
         return reject(err)
       }
+
+      _c(sres, 'gbk')
       if (sres.text.includes('用户名或密码错误')) {
         err = '用户名或密码错误'
         return reject(err)
@@ -115,11 +165,11 @@ const loginToJWXT = ({ randomCode, username, password, cookie }) => new Promise(
     })
 })
 
-export default {
-  getCookie,
-  getImg,
-  saveImg,
-  editImg,
-  spotImg,
-  loginToJWXT
-}
+// export default {
+//   getCookie,
+//   getImg,
+//   saveImg,
+//   editImg,
+//   spotImg,
+//   loginToJWXT
+// }
