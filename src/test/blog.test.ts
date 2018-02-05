@@ -6,11 +6,11 @@ import config from '../config'
 const server = app.listen(config.testPort)
 const testRequest = request(server)
 
-const { scopes } = require('../build/config/blog')
+import _config from '../config/blog'
 const target = 'blog'
 
 describe(`#TEST ${target}`, () => {
-  scopes.map(scope => {
+  _config.scopes.map(scope => {
     const scopeName = scope[0]
     const topics = Object.keys(scope[1]).filter(key => key !== 'host')
 

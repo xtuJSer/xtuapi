@@ -1,12 +1,12 @@
 import * as cheerio from 'cheerio'
 
-const filterTitle = ({ title, parent }) => {
+const _filterTitle = ({ title, parent }) => {
   if (!parent || title) { return title.trim() }
 
   return parent.trim()
 }
 
-const filterTime = (time) => {
+export const filterTime = (time) => {
   return time
     .replace(/\s/g, '')
     .replace(/^（\d*次）/, '') // (**次)Date
@@ -15,7 +15,7 @@ const filterTime = (time) => {
     .replace(/.*(\d{4}).{1}(\d+).{1}(\d+).*/mg, (str, $1, $2, $3) => $1 + '-' + $2 + '-' + $3)
 }
 
-const filterHref = ({ host, href }) => {
+const _filterHref = ({ host, href }) => {
   return /http/.test(href)
     ? href
     : /^\//.test(href)
@@ -23,7 +23,7 @@ const filterHref = ({ host, href }) => {
       : host + '/' + href
 }
 
-const filterList = ({ host, html, rule, newest, topic }) => {
+export const filterList = ({ host, html, rule, newest, topic }) => {
   const ret = []
   const $ = cheerio.load(html)
   const {
@@ -42,7 +42,7 @@ const filterList = ({ host, html, rule, newest, topic }) => {
         ? $prev.attribs
         : p.attribs
 
-      title = filterTitle({
+      title = _filterTitle({
         title: (!title && prev) ? $prev.children[0].data : title,
         parent: p.children[1].data ||
           (specialTitle && $(p).find(specialTitle)[0].children[0].data)
@@ -50,7 +50,7 @@ const filterList = ({ host, html, rule, newest, topic }) => {
 
       if (title === newest) { return false }
 
-      href = filterHref({ host, href })
+      href = _filterHref({ host, href })
       let time = filterTime(
         $(p).find(child).text()
       )
@@ -65,7 +65,7 @@ const filterList = ({ host, html, rule, newest, topic }) => {
   return ret.reverse()
 }
 
-export default {
-  filterList,
-  filterTime
-}
+// export default {
+//   filterList,
+//   filterTime
+// }

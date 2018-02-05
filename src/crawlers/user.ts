@@ -1,57 +1,60 @@
 import * as request from 'superagent'
-require('superagent-charset')(request)
-
 const Eventproxy = require('eventproxy')
 
 import config from '../config/user'
-const {
-  url: { host, path: routes },
-  defaultTime: { year: defaultYear, half: defaultHalf }
-} = config
-
-import filter from '../filters/user'
-const {
+import Model from '../models/classroom'
+import {
   infoFilter,
   courseFilter,
   examFilter,
   scheduleFilter,
   rankFilter,
   classroomFilter
-} = filter
+} from '../filters/user'
 
-import Model from '../models/classroom'
 import _h from '../utils/headers'
+import _c from '../utils/charset'
+
+const {
+  url: { host, path: routes },
+  defaultTime: { year: defaultYear, half: defaultHalf }
+} = config
 
 type TYPE = {
-  year: number,
-  half: number,
-  href: string,
-  sid: string,
-  data: string,
-  type: string
-}
+  year?: number,
+  half?: number,
+  href?: string,
+  sid?: string,
+  data?: string,
+  method?: string,
+  param?: object
+};
 
 /**
  * 返回完整的年份和学期
  * @param {String} param0 学年，如：2016-2017-2
  */
-const _getFullTime = ({ year, half } : TYPE) => year + '-' + (+year + 1) + '-' + half
+const _getFullTime = ({ year, half } : TYPE) => (
+  `${ year }-${ (Number(year) + 1) }-${ half }`
+)
 
 /**
  * 统一的爬取逻辑（除 rank）
  * @param {Object} filter 过滤后的结果
  */
 const _fetch = (filter: any) => {
-  return ({ type = 'get', href, sid, data = '' } : TYPE, options = {}) => {
+  return ({ method = 'get', href, sid, data = '' } : TYPE, options = {}) => {
     return new Promise((resolve, reject) => {
       const headers = _h.updateHeaders()
 
-      request[type](href)
+      request
+        [method](href)
         .set(headers)
         .set('Cookie', sid)
         .send(data)
-        .charset('utf-8')
         .end((err: any, sres: any) => {
+          _c(sres)
+
           err ? reject(err) : resolve(
             filter({
               html: sres.text,
@@ -78,7 +81,7 @@ const infoCrawler = async ({ sid }: TYPE) => {
  * 成绩
  * @param {Object} param0 userCourse
  */
-const courseCrawler = async ({ sid, param }) => {
+const courseCrawler = async ({ sid, param }: TYPE) => {
   const {
     time = (defaultYear + '-' + defaultHalf)
   } = param
@@ -102,12 +105,12 @@ const courseCrawler = async ({ sid, param }) => {
  * 考试信息
  * @param {Object} param0 userExam
  */
-const examCrawler = async ({ sid }) => {
+const examCrawler = async ({ sid }: TYPE) => {
   const href = host + routes.exam
   const data = `xqlbmc=&xnxqid=${defaultYear}-${defaultHalf}&xqlb=`
 
   const ret = await _fetch(examFilter)({
-    type: 'post',
+    method: 'post',
     sid,
     data,
     href
@@ -120,12 +123,12 @@ const examCrawler = async ({ sid }) => {
  * 课程表
  * @param {Object} param0 userSchedule
  */
-const scheduleCrawler = async ({ sid }) => {
+const scheduleCrawler = async ({ sid }: TYPE) => {
   const href = host + routes.schedule
   const data = `cj0701id=&zc=&demo=&xnxq01id=${defaultYear}-${defaultYear + 1}-${defaultHalf}&sfFD=1`
 
   const ret = await _fetch(scheduleFilter)({
-    type: 'post',
+    method: 'post',
     sid,
     data,
     href
@@ -138,7 +141,7 @@ const scheduleCrawler = async ({ sid }) => {
  * 空教室
  * @param {Object} param0 classroomSchedule
  */
-const classroomCrawler = async ({ sid, param }) => {
+const classroomCrawler = async ({ sid, param }: TYPE) => {
   const href = host + routes.classroom
   let { day = 0 } = param
 
@@ -176,7 +179,7 @@ const classroomCrawler = async ({ sid, param }) => {
  * 绩点排名
  * @param {Object} param0 userRank
  */
-const rankCrawler = async ({ sid, param }) => new Promise((resolve, reject) => {
+const rankCrawler = async ({ sid, param }: TYPE) => new Promise((resolve, reject) => {
   const href = host + routes.rank
   const prop = ['all', '7', '1']
   const defaultTime = defaultYear + '-' + defaultHalf
@@ -209,7 +212,11 @@ const rankCrawler = async ({ sid, param }) => new Promise((resolve, reject) => {
   })
 
   prop.map((propEl, pid) => {
-    const data = `kksj=${year}&kclb=${propEl = propEl !== 'all' ? propEl : '1&kclb=7'}&zsb=0`
+    const data = `kksj=${ year }&kclb=${
+      propEl = propEl !== 'all'
+        ? propEl
+        : '1&kclb=7'
+      }&zsb=0`
 
     request
       .post(href)

@@ -2,11 +2,10 @@ import * as request from 'superagent'
 require('superagent-charset')(request)
 
 import config from '../config/blog'
-import filter from '../filters/blog'
+import { filterList } from '../filters/blog'
 import _h from '../utils/headers'
 
 const { rules } = config
-const { filterList } = filter
 const headers = _h.updateHeaders()
 
 /**
@@ -24,7 +23,7 @@ const crawlerItem = async (ctx: object, options: object) => {
  * @param {*} options
  * @param {*} newest
  */
-const crawlerList = (ctx: object, options: object) => new Promise((resolve, reject) => {
+export const crawlerList = (ctx: object, options: object) => new Promise((resolve, reject) => {
   const { host, url, scope, topic, newest = '' } = options
   const rule = rules[scope][topic] || rules[scope].default || {}
 
@@ -51,7 +50,7 @@ const crawlerList = (ctx: object, options: object) => new Promise((resolve, reje
     })
 })
 
-export default {
-  crawlerItem,
-  crawlerList
-}
+// export default {
+//   crawlerItem,
+//   crawlerList
+// }

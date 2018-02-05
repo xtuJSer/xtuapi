@@ -1,8 +1,7 @@
-import crawler from '../crawlers/blog'
+import { crawlerList } from '../crawlers/blog'
 import config from '../config/blog'
 import model from '../models/blog'
 
-const { crawlerList } = crawler
 const { throttle: throttleTime } = config
 
 const start = {}

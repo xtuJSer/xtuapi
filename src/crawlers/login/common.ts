@@ -1,12 +1,12 @@
 import _t from '../../utils/token'
 const { createToken } = _t
 
-const successLogin = (type) => ({ username, cookie, sid }) => ({
+export const successLogin = (type) => ({ username, cookie, sid }) => ({
   token: createToken(type)({ username, cookie, sid }),
   isSuccess: true
 })
 
-const checkFormat = ({ username, password }) => {
+export const checkFormat = ({ username, password }) => {
   let message = ''
   username && (username = username.trim())
   password && (password = password.trim())
@@ -22,9 +22,4 @@ const checkFormat = ({ username, password }) => {
     isFormat: !message.length,
     message
   }
-}
-
-export default {
-  successLogin,
-  checkFormat
 }

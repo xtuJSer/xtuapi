@@ -3,12 +3,12 @@ import * as cheerio from 'cheerio'
 type TYPE = {
   html: string,
   time: string
-}
+};
 
-const infoFilter = ({ html }: TYPE) => {
+export const infoFilter = ({ html }: TYPE) => {
   const $ = cheerio.load(html)
   let $td = $('.Nsb_layout_r tr').eq(3).find('td')
-  let sex = $td.eq(3).text().indexOf('男') > -1 ? 'boy' : 'girl'
+  let sex = $td.eq(3).text().includes('男') ? 'boy' : 'girl'
   let name = $td.eq(5).text().trim()
 
   let id = $('.Nsb_layout_r tr').eq(-4).find('td').eq(3).text().trim().slice(-6)
@@ -16,9 +16,9 @@ const infoFilter = ({ html }: TYPE) => {
   return { name, sex, id }
 }
 
-const courseFilter = ({ time, html }: TYPE) => {
+export const courseFilter = ({ time, html }: TYPE) => {
   const $ = cheerio.load(html)
-  const table = {
+  const table: { time: string, course: number[] } = {
     time,
     course: []
   }
@@ -40,7 +40,7 @@ const courseFilter = ({ time, html }: TYPE) => {
   return table
 }
 
-const examFilter = ({ html }: { html: string }) => {
+export const examFilter = ({ html }: TYPE) => {
   const $ = cheerio.load(html)
   let $tr = $('#dataList tr')
   let ret = []
@@ -62,7 +62,7 @@ const examFilter = ({ html }: { html: string }) => {
   return ret
 }
 
-const scheduleFilter = ({ html }) => {
+export const scheduleFilter = ({ html }) => {
   const $ = cheerio.load(html)
   const $tr = $('#kbtable tr')
   const row = []
@@ -103,7 +103,7 @@ const scheduleFilter = ({ html }) => {
   return ret
 }
 
-const rankFilter = ({ html, propEl }) => {
+export const rankFilter = ({ html, propEl }) => {
   const $ = cheerio.load(html)
   const obj = {}
   const table = []
@@ -127,18 +127,20 @@ const rankFilter = ({ html, propEl }) => {
 import filter from './classroom'
 const { classroomFormat } = filter
 
-const classroomFilter = ({ html }) => {
+export const classroomFilter = ({ html }: TYPE) => {
   const $ = cheerio.load(html)
-  const table = []
+  const table: object[] = []
 
   $('#dataList').find('tr').each((idx, tr) => {
-    if (idx <= 1) return
-    let $tr = $(tr)
-    let item = {}
-    let tdArr = $tr.find('td')
+    if (idx <= 1) {
+      return
+    }
 
-    item.classroomName = $(tdArr[0]).text().trim()
-    item.classroomTime = []
+    const tdArr = $(tr).find('td')
+    const item: { classroomName: string, classroomTime: string[] } = {
+      classroomName: $(tdArr[0]).text().trim(),
+      classroomTime: []
+    }
 
     for (let i = 1; i < 6; i++) {
       item.classroomTime.push($(tdArr[i]).text().trim())
@@ -149,11 +151,11 @@ const classroomFilter = ({ html }) => {
   return classroomFormat(table)
 }
 
-export default {
-  infoFilter,
-  courseFilter,
-  examFilter,
-  scheduleFilter,
-  rankFilter,
-  classroomFilter
-}
+// export default {
+//   infoFilter,
+//   courseFilter,
+//   examFilter,
+//   scheduleFilter,
+//   rankFilter,
+//   classroomFilter
+// }
