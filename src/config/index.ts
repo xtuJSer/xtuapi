@@ -21,7 +21,7 @@ export default {
     'Connection': 'keep-alive',
     'Pragma': 'no-cache',
     'Accept-Encoding': 'gzip, deflate',
-    'Cache-Control': 'no-cache',
+    'Cache-Control': 'no-cache'
   },
 
   userAgent: [
