@@ -37,6 +37,7 @@
     "cheerio": "^1.0.0-rc.2",
     "eventproxy": "^1.0.0",
     "gm": "^1.23.1",
+    "iconv-lite": "^0.4.19",
     "jsonwebtoken": "^8.1.0",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
