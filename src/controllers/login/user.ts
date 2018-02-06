@@ -46,8 +46,6 @@ export default ({ username = '', password = '' }, { sid = {} }) => new Promise((
 
         await loginToJWXT({ randomCode, username, password, encoded, cookie })
 
-        console.log(randomCode)
-
         const ret = successLogin('user')({ username, cookie, sid })
 
         isSuccess = ret.isSuccess
