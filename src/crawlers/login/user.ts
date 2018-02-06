@@ -8,7 +8,6 @@ const tesseract = require('node-tesseract')
 import _h from '../../utils/headers'
 import _c from '../../utils/charset'
 import config from '../../config/user'
-// import { Promise } from 'mongoose';
 
 const headers = _h.updateHeaders()
 const {
@@ -40,7 +39,7 @@ export const getCookie = () => new Promise((resolve, reject) => {
       }
 
       let cookie = sres.headers['set-cookie'].pop().split(';')[0]
-      resolve(cookie)
+      return resolve(cookie)
     })
 })
 
@@ -129,8 +128,6 @@ export const packEncoded = ({ username, password, encoded = '' }: TYPE) => {
 }
 
 export const loginToJWXT = ({ randomCode, username, password, encoded, cookie }: TYPE) => new Promise((resolve, reject) => {
-  console.log(encoded)
-
   request
     .post(loginURL)
     .type('form')
@@ -152,7 +149,9 @@ export const loginToJWXT = ({ randomCode, username, password, encoded, cookie }:
         return reject(err)
       }
 
-      _c(sres, 'gbk')
+      _c(sres)
+      fs.writeFileSync('test.html', sres.text)
+
       if (sres.text.includes('用户名或密码错误')) {
         err = '用户名或密码错误'
         return reject(err)
