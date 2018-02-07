@@ -91,7 +91,7 @@ export const spotImg = ({ username, imgDir }: TYPE) => new Promise((resolve, rej
   })
 })
 
-export const fetchEncoded = (cookie) => new Promise((resolve, reject) => {
+export const fetchEncoded = (cookie: string) => new Promise((resolve, reject) => {
   request
     .post(loginURL + encoded)
     .set(headers)
@@ -163,12 +163,3 @@ export const loginToJWXT = ({ randomCode, username, password, encoded, cookie }:
       resolve()
     })
 })
-
-// export default {
-//   getCookie,
-//   getImg,
-//   saveImg,
-//   editImg,
-//   spotImg,
-//   loginToJWXT
-// }
