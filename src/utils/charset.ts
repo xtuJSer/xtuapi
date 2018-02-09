@@ -1,6 +1,6 @@
 import * as iconv from 'iconv-lite'
 
-export default (sres: any, enc?: any) => {
+export default (sres: any, enc?: string) => {
   if (!sres) {
     return
   }
