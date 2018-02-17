@@ -150,7 +150,6 @@ export const loginToJWXT = ({ randomCode, username, password, encoded, cookie }:
       }
 
       _c(sres)
-      fs.writeFileSync('test.html', sres.text)
 
       if (sres.text.includes('用户名或密码错误')) {
         err = '用户名或密码错误'
