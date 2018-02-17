@@ -2,6 +2,20 @@ export default {
   // 爬虫节流
   throttle: 5 * 1000 * 60,
 
+  dict: {
+    xtu: '湘大本部',
+    business: '商学院',
+    cie: '信工院',
+    hgxy: '化工院',
+    hxxy: '化学院',
+    cem: '土木院',
+    law: '法学院',
+    math: '数学院',
+    clxy: '材料院',
+    wgyxy: '外院',
+    xxxy: '兴湘学院'
+  },
+
   scopes: [
     [
       'xtu', {
