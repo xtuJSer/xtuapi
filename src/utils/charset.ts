@@ -17,7 +17,5 @@ export default (sres: any, enc?: string) => {
     }
   }
 
-  console.log(enc)
-
   sres.text = iconv.decode(buf, enc)
 }
