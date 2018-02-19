@@ -1,11 +1,9 @@
-// TODO: 后续重构
-
 const list = {
   classroomList: [
     '经管',
     '逸夫'
   ],
-  northOrSouthList: [
+  northOrSouth: [
     '南山',
     '北山'
   ]
@@ -13,7 +11,9 @@ const list = {
 
 const _checkList = listName => name => {
   for (let el of list[listName]) {
-    if (name.indexOf(el) > -1 && name.indexOf('阶') > -1) { return el }
+    if (name.indexOf(el) > -1 && name.indexOf('阶') > -1) {
+      return el
+    }
   }
   return null
 }
@@ -23,7 +23,7 @@ const _classroomGetNameAndRoom = name => {
   let nextName = name
   let pos = name.search(/\w/g)
   let isClassroom = _checkList('classroomList')(name)
-  let isNorthOrSouth = _checkList('northOrSouthList')(name)
+  let isNorthOrSouth = _checkList('northOrSouth')(name)
 
   if (/-/.test(name)) {
     curName = name.split('-')[0]
@@ -53,7 +53,10 @@ const classroomFormat = (data) => {
 
   let ret = []
   Object.keys(Name).forEach(key => {
-    ret.push({ name: key, details: Name[key] })
+    ret.push({
+      building: key,
+      rooms: Name[key]
+    })
   })
 
   return ret
