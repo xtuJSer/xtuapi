@@ -13,7 +13,8 @@ export default {
     math: '数学院',
     clxy: '材料院',
     wgyxy: '外院',
-    xxxy: '兴湘学院'
+    xxxy: '兴湘学院',
+    nic: '网络信息管理'
   },
 
   scopes: [
@@ -151,7 +152,6 @@ export default {
         prev: 'a',
         child: 'span'
       },
-      // BUG: 不可用，12·28日后修复
       lecture: {
         charset: 'gbk',
         el: '.jobs-list',
