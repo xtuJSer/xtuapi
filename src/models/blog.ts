@@ -5,10 +5,12 @@ const BlogSchema = new Schema({
   title: String,
   time: Date,
   href: String,
-  topic: String
+  topic: String,
+  scope: String
 })
 
 type TYPE = {
+  scope: string,
   topic: string,
   limit: number,
   skip: number
@@ -17,8 +19,10 @@ type TYPE = {
 /**
  * type 最新数据的 type 属性
  */
-BlogSchema.statics.getNewestTitle = async function ({ topic }: TYPE) {
-  const options = topic ? { topic } : {}
+BlogSchema.statics.getNewestTitle = async function ({ scope, topic }: TYPE) {
+  const options = { scope }
+  // const options = topic ? { topic } : {}
+  topic && (options.topic = topic)
 
   let newest = await this.findOne(
     options
@@ -32,11 +36,11 @@ BlogSchema.statics.getNewestTitle = async function ({ topic }: TYPE) {
 /**
  * 按需获取数据库中的数据
  */
-BlogSchema.statics.getList = async function ({ limit, skip, topic }: TYPE) {
+BlogSchema.statics.getList = async function ({ limit, skip, scope, topic }: TYPE) {
   const options = topic ? { topic } : {}
 
   let list = await this.find(
-    { ...options },
+    { ...options, scope },
     { _id: 0, __v: 0 }
   ).sort(
     { time: -1, _id: -1 }
@@ -45,4 +49,5 @@ BlogSchema.statics.getList = async function ({ limit, skip, topic }: TYPE) {
   return list || []
 }
 
-export default (scope: string) => mongoose.model(scope, BlogSchema)
+// export default (scope: string) => mongoose.model(scope, BlogSchema)
+export default mongoose.model('blog', BlogSchema)

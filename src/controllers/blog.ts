@@ -1,8 +1,9 @@
 import { crawlerList } from '../crawlers/blog'
 import config from '../config/blog'
-import model from '../models/blog'
+// import model from '../models/blog'
+import Model from '../models/blog'
 
-const { throttle: throttleTime } = config
+const { throttle: throttleTime, dict } = config
 
 const start = {}
 
@@ -13,7 +14,7 @@ export default async (ctx, options) => {
   limit = +limit
   skip = +skip
 
-  const Model = model(scope)
+  // const Model = model(scope)
 
   const now = Date.now()
   const cur = scope + '-' + topic
@@ -23,7 +24,7 @@ export default async (ctx, options) => {
   if (topic && (!start[cur] || now - start[cur] >= throttleTime)) {
     start[cur] = now
 
-    const newest = await Model.getNewestTitle({ topic })
+    const newest = await Model.getNewestTitle({ scope, topic })
 
     list = await crawlerList(ctx, { url, host, scope, topic, newest })
 
@@ -38,13 +39,13 @@ export default async (ctx, options) => {
   limit = Math.max(
     Math.min(20, limit), 1
   )
-  list = await Model.getList({ limit, skip, topic })
+  list = await Model.getList({ limit, skip, scope, topic })
 
-  // TODO: url 后续删除
   return {
-    length: list.length,
+    amount: list.length,
     list,
     scope,
-    url
+    url,
+    label: dict[scope] || ''
   }
 }

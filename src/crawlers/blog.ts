@@ -43,6 +43,7 @@ export const crawlerList = (ctx: object, options: object) => new Promise((resolv
         rule,
         newest,
         topic,
+        scope,
         html: sres.text
       })
 

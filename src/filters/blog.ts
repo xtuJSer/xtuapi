@@ -23,7 +23,7 @@ const _filterHref = ({ host, href }) => {
       : host + '/' + href
 }
 
-export const filterList = ({ host, html, rule, newest, topic }) => {
+export const filterList = ({ host, html, rule, newest, scope, topic }) => {
   const ret = []
   const $ = cheerio.load(html)
   const {
@@ -55,7 +55,7 @@ export const filterList = ({ host, html, rule, newest, topic }) => {
         $(p).find(child).text()
       )
 
-      title && ret.push({ title, href, time, topic })
+      title && ret.push({ title, href, time, scope, topic })
     } catch (err) {
       console.log(err)
       return false
@@ -64,8 +64,3 @@ export const filterList = ({ host, html, rule, newest, topic }) => {
 
   return ret.reverse()
 }
-
-// export default {
-//   filterList,
-//   filterTime
-// }
