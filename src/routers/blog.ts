@@ -2,9 +2,11 @@ const router = require('koa-router')()
 
 import controller from '../controllers/blog'
 import config from '../config/blog'
+import msg from '../config/message'
 
 const { scopes } = config
 const api = '/:scope/:topic'
+const map = new Map(scopes)
 
 router.get('/', async (ctx, next) => {
   ctx.body = {
@@ -20,13 +22,12 @@ router.get(api, async (ctx, next) => {
   const { scope, topic } = ctx.params
   const { limit = 10, skip = 0 } = ctx.query
 
-  const map = new Map(scopes)
   const route = map.get(scope)
 
   ctx.assert(
     map.has(scope) && (route[topic] || topic === 'all'),
     404,
-    '您所访问的资源不存在'
+    msg.NOT_FOUND
   )
 
   const url = route.host + (topic === 'all' ? '' : route[topic])
