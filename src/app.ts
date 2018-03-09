@@ -1,20 +1,12 @@
 import * as Koa from 'koa'
-import * as mongoose from 'mongoose'
 import * as bodyParser from 'koa-bodyparser'
+import * as mongoose from 'mongoose'
+import * as middlewares from './middlewares/common'
 
 const app = new Koa()
 
 import config from './config'
 import routers from './routers'
-
-app.use(async (ctx, next) => {
-  const start = Date.now()
-
-  await next()
-  const ms = Date.now() - start
-
-  console.log(`${ctx.method} ${ctx.url} ${ms}ms\n`)
-})
 
 mongoose.Promise = global.Promise
 mongoose.connect(
@@ -22,6 +14,7 @@ mongoose.connect(
   useMongoClient: true
 })
 
+app.use(middlewares.log)
 app.use(bodyParser())
 app.use(routers.routes())
 
