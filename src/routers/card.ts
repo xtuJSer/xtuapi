@@ -1,5 +1,5 @@
-import * as koaRouter from 'koa-router'
-const router = new koaRouter()
+import * as KoaRouter from 'koa-router'
+const router = new KoaRouter()
 
 router.get('/test', async (ctx, next) => {
   ctx.body = 'test'

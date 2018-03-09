@@ -2,11 +2,17 @@ import { crawlerList } from '../crawlers/blog'
 import config from '../config/blog'
 import { Blog } from '../models'
 
+import msg from '../config/message'
+
+const { scopes, dict } = config
+const api = '/:scope/:topic'
+const map = new Map(scopes)
+
 const { throttle: throttleTime } = config
 
 const start = {}
 
-export default async (ctx, options = {}) => {
+const controller = async (ctx, options = {}) => {
   let { url, host, scope, topic, limit, skip, flag } = options
   let list = []
 
@@ -51,4 +57,57 @@ export default async (ctx, options = {}) => {
     scope,
     url
   }
+}
+
+
+export const getBlogApi = async (ctx, next) => {
+  ctx.body = {
+    api,
+    ...scopes.map(el => ({
+      scope: el[0],
+      topic: Object.keys(el[1]).filter(key => key !== 'host')
+    }))
+  }
+}
+
+export const getBlog = async (ctx, next) => {
+  const { scope, topic } = ctx.params
+  const { limit = 10, skip = 0 } = ctx.query
+
+  ctx.body = await controller(ctx, {
+    flag: 'multiple',
+    scope,
+    topic,
+    limit,
+    skip
+  })
+}
+
+export const updateBlog = async (ctx, next) => {
+  const { scope, topic } = ctx.params
+  const { limit = 10, skip = 0 } = ctx.query
+
+  const route = map.get(scope)
+
+  ctx.assert(
+    map.has(scope) && (route[topic] || topic === 'all'),
+    404,
+    msg.NOT_FOUND
+  )
+
+  const url = route.host + (topic === 'all' ? '' : route[topic])
+
+  ctx.body = await controller(ctx, {
+    flag: 'single',
+    scope,
+    topic,
+    url,
+    limit,
+    skip,
+    host: route.host
+  })
+}
+
+export const getBlogDict = async (ctx, next) => {
+  ctx.body = dict
 }

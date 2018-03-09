@@ -1,5 +1,5 @@
-import * as koaRouter from 'koa-router'
-const router = new koaRouter()
+import * as KoaRouter from 'koa-router'
+const router = new KoaRouter()
 
 const { url: { path: routes } } = require('../config').book
 const { getToken, verifyToken } = require('../utils').token
