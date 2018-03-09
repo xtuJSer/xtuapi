@@ -1,6 +1,6 @@
 import { crawlerList } from '../crawlers/blog'
 import config from '../config/blog'
-import Model from '../models/blog'
+import { Blog } from '../models'
 
 const { throttle: throttleTime } = config
 
@@ -25,26 +25,25 @@ export default async (ctx, options = {}) => {
     if (topic && (!start[cur] || now - start[cur] >= throttleTime)) {
       start[cur] = now
 
-      const newest = await Model.getNewestTitle({ scope, topic })
+      const newest = await Blog.getNewestTitle({ scope, topic })
 
       list = await crawlerList(ctx, { url, host, scope, topic, newest })
 
-      // list.length && await list.map(async item => { await new Model(item).save() })
+      // list.length && await list.map(async item => { await new Blog(item).save() })
       if (list.length) {
         for (let item of list) {
-          await new Model(item).save()
+          await new Blog(item).save()
         }
       }
     }
   } else if (flag === 'multiple') {
-
 
   }
 
   limit = Math.max(
     Math.min(20, limit), 1
   )
-  list = await Model.getList({ limit, skip, scope, topic })
+  list = await Blog.getList({ limit, skip, scope, topic })
 
   return {
     amount: list.length,

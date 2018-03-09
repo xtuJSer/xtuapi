@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose'
 const { Schema } = mongoose
-const ClassroomSchema = new Schema({
+const Classroom = new Schema({
   day: Number,
   data: Schema.Types.Mixed
 })
@@ -13,7 +13,7 @@ type TYPE = {
 /**
  * 通过 day 判断更新对象，并返回
  */
-ClassroomSchema.statics.updateByDay = async function ({ data, day = 0 }: TYPE) {
+Classroom.statics.updateByDay = async function ({ data, day = 0 }: TYPE) {
   await this.findOneAndUpdate(
     { day },
     { $set: { data } }
@@ -23,7 +23,7 @@ ClassroomSchema.statics.updateByDay = async function ({ data, day = 0 }: TYPE) {
 /**
  * 按需获取数据库中的数据
  */
-ClassroomSchema.statics.getByDay = async function ({ day = 0 }: TYPE) {
+Classroom.statics.getByDay = async function ({ day = 0 }: TYPE) {
   let ret = await this.findOne(
     { day },
     { data: 1, _id: 0 }
@@ -32,4 +32,4 @@ ClassroomSchema.statics.getByDay = async function ({ day = 0 }: TYPE) {
   return ret
 }
 
-export default mongoose.model('classroom', ClassroomSchema)
+export default Classroom

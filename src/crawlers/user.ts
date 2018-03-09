@@ -2,7 +2,7 @@ import * as request from 'superagent'
 const Eventproxy = require('eventproxy')
 
 import config from '../config/user'
-import Model from '../models/classroom'
+import { Classroom } from '../models'
 import {
   infoFilter,
   courseFilter,
@@ -156,20 +156,20 @@ const classroomCrawler = async ({ sid, param }: TYPE) => {
 
       // 首次操作需要取消以下注释，用于插入原始数据
       // 增
-      // await new Model({
+      // await new Classroom({
       //   day,
       //   data: _ret
       // }).save()
 
       // 改
-      await Model.updateByDay({ day, data: _ret })
+      await Classroom.updateByDay({ day, data: _ret })
 
       return _ret
     })
 
     return ret[day]
   } else {
-    const ret = await Model.getByDay({ day })
+    const ret = await Classroom.getByDay({ day })
 
     return ret
   }
