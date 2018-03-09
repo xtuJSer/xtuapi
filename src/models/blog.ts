@@ -37,14 +37,25 @@ BlogSchema.statics.getNewestTitle = async function ({ scope, topic }: TYPE) {
  * 按需获取数据库中的数据
  */
 BlogSchema.statics.getList = async function ({ limit, skip, scope, topic }: TYPE) {
-  const options = topic ? { topic } : {}
+  const options = {}
+
+  if (scope) {
+    options.scope = scope
+  }
+  if (topic) {
+    options.topic = topic
+  }
 
   let list = await this.find(
-    { ...options, scope },
+    options,
     { _id: 0, __v: 0 }
-  ).sort(
-    { time: -1, _id: -1 }
-  ).limit(limit).skip(skip).exec()
+  ).sort({
+    time: -1,
+    _id: -1
+  })
+  .limit(limit)
+  .skip(skip)
+  .exec()
 
   return list || []
 }

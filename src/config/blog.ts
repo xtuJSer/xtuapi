@@ -12,7 +12,7 @@ export default {
     law: '法学院',
     math: '数学院',
     clxy: '材料院',
-    wgyxy: '外院',
+    wgyxy: '外国语学院',
     xxxy: '兴湘学院',
     nic: '网络信息管理'
   },
@@ -72,14 +72,14 @@ export default {
         lecture: '/e/action/ListInfo/?classid=49'
       }
     ],
-    [
-      'hgxy', {
-        host: 'http://hgxy.xtu.edu.cn',
-        news: '/e/action/ListInfo/?classid=4',
-        notice: '/e/action/ListInfo/?classid=12',
-        lecture: '/e/action/ListInfo/?classid=14'
-      }
-    ],
+    // [
+    //   'hgxy', {
+    //     host: 'http://hgxy.xtu.edu.cn',
+    //     news: '/e/action/ListInfo/?classid=4',
+    //     notice: '/e/action/ListInfo/?classid=12',
+    //     lecture: '/e/action/ListInfo/?classid=14'
+    //   }
+    // ],
     [
       'law', {
         host: 'http://law.xtu.edu.cn',

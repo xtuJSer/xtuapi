@@ -1,4 +1,5 @@
-const router = require('koa-router')()
+import * as koaRouter from 'koa-router'
+const router = new koaRouter()
 
 import config from '../config/user'
 import _t from '../utils/token'

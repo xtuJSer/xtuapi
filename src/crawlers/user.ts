@@ -203,11 +203,11 @@ const rankCrawler = async ({ sid, param }: TYPE) => new Promise((resolve, reject
 
   ep.after('getHtml', prop.length, (htmlArr) => {
     const result = {
-      rank: [],
+      data: [],
       time
     }
 
-    result.rank = htmlArr.map((htmlObj) => rankFilter(htmlObj))
+    result.data = htmlArr.map((htmlObj) => rankFilter(htmlObj))
     resolve(result)
   })
 

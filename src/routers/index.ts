@@ -1,4 +1,5 @@
-const router = require('koa-router')()
+import * as koaRouter from 'koa-router'
+const router = new koaRouter()
 
 // const { name, description, version, author } = require('../package.json')
 const routes = ['blog', 'user', 'book', 'card']

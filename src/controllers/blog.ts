@@ -1,39 +1,44 @@
 import { crawlerList } from '../crawlers/blog'
 import config from '../config/blog'
-// import model from '../models/blog'
 import Model from '../models/blog'
 
-const { throttle: throttleTime, dict } = config
+const { throttle: throttleTime } = config
 
 const start = {}
 
-export default async (ctx, options) => {
-  let { url, host, scope, topic, limit, skip } = options
-  topic === 'all' && (topic = '')
-  // TODO: 类型校验
+export default async (ctx, options = {}) => {
+  let { url, host, scope, topic, limit, skip, flag } = options
+  let list = []
+
   limit = +limit
   skip = +skip
 
-  // const Model = model(scope)
+  if (flag === 'single') {
+    topic === 'all' && (topic = '')
 
-  const now = Date.now()
-  const cur = scope + '-' + topic
-  let list = []
+    // TODO: 类型校验
 
-  // 节流 爬取数据
-  if (topic && (!start[cur] || now - start[cur] >= throttleTime)) {
-    start[cur] = now
+    const now = Date.now()
+    const cur = scope + '-' + topic
 
-    const newest = await Model.getNewestTitle({ scope, topic })
+    // 节流 爬取数据
+    if (topic && (!start[cur] || now - start[cur] >= throttleTime)) {
+      start[cur] = now
 
-    list = await crawlerList(ctx, { url, host, scope, topic, newest })
+      const newest = await Model.getNewestTitle({ scope, topic })
 
-    // list.length && await list.map(async item => { await new Model(item).save() })
-    if (list.length) {
-      for (let item of list) {
-        await new Model(item).save()
+      list = await crawlerList(ctx, { url, host, scope, topic, newest })
+
+      // list.length && await list.map(async item => { await new Model(item).save() })
+      if (list.length) {
+        for (let item of list) {
+          await new Model(item).save()
+        }
       }
     }
+  } else if (flag === 'multiple') {
+
+
   }
 
   limit = Math.max(
@@ -45,7 +50,6 @@ export default async (ctx, options) => {
     amount: list.length,
     list,
     scope,
-    url,
-    label: dict[scope] || ''
+    url
   }
 }

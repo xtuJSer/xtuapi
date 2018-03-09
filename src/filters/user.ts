@@ -8,7 +8,9 @@ type TYPE = {
 export const infoFilter = ({ html }: TYPE) => {
   const $ = cheerio.load(html)
   let $td = $('.Nsb_layout_r tr').eq(3).find('td')
-  let sex = $td.eq(3).text().includes('男') ? 'boy' : 'girl'
+  let sex = $td.eq(3).text()
+    ? $td.eq(3).text().includes('男') ? 'boy' : 'girl'
+    : ''
   let name = $td.eq(5).text().trim()
 
   let id = $('.Nsb_layout_r tr').eq(-4).find('td').eq(3).text().trim().slice(-6)
@@ -18,9 +20,9 @@ export const infoFilter = ({ html }: TYPE) => {
 
 export const courseFilter = ({ time, html }: TYPE) => {
   const $ = cheerio.load(html)
-  const table: { time: string, course: number[] } = {
+  const table: { time: string, data: number[] } = {
     time,
-    course: []
+    data: []
   }
 
   $('#dataList').find('tr').each((idx, tr) => {
@@ -33,10 +35,10 @@ export const courseFilter = ({ time, html }: TYPE) => {
       property: $td.eq(7).text()
     }
 
-    table.course.push(item)
+    table.data.push(item)
   })
 
-  table.course.shift(0)
+  table.data.shift(0)
   return table
 }
 
