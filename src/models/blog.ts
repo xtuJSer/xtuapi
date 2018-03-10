@@ -1,7 +1,7 @@
+import * as formatUtils from '../utils/format'
 import * as mongoose from 'mongoose'
-const { Schema } = mongoose
 
-const Blog = new Schema({
+const Blog = new mongoose.Schema({
   title: String,
   time: Date,
   href: String,
@@ -20,9 +20,7 @@ type TYPE = {
  * type 最新数据的 type 属性
  */
 Blog.statics.getNewestTitle = async function ({ scope, topic }: TYPE) {
-  const options = { scope }
-  // const options = topic ? { topic } : {}
-  topic && (options.topic = topic)
+  const options = formatUtils.siftUndefinedKey({ scope, topic })
 
   let newest = await this.findOne(
     options
@@ -37,22 +35,14 @@ Blog.statics.getNewestTitle = async function ({ scope, topic }: TYPE) {
  * 按需获取数据库中的数据
  */
 Blog.statics.getList = async function ({ limit, skip, scope, topic }: TYPE) {
-  const options = {}
-
-  if (scope) {
-    options.scope = scope
-  }
-  if (topic) {
-    options.topic = topic
-  }
+  const options = formatUtils.siftUndefinedKey({ scope, topic })
 
   let list = await this.find(
     options,
     { _id: 0, __v: 0 }
-  ).sort({
-    time: -1,
-    _id: -1
-  })
+  ).sort(
+    { time: -1, _id: -1 }
+  )
   .limit(limit)
   .skip(skip)
   .exec()

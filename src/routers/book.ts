@@ -18,7 +18,13 @@ router.use('/', async (ctx, next) => {
   const token = getToken(ctx)
   const { message, isSuccess, decoded } = await verifyToken('book')(token)
 
-  ctx.url === '/book/login' || ctx.assert(isSuccess, 401, message)
+  if (ctx.url !== '/book/login') {
+    if (!isSuccess) {
+      ctx.status = 401
+      throw new Error(message)
+    }
+  }
+
   ctx.state.decoded = decoded
 
   await next()
@@ -28,9 +34,13 @@ router.use('/', async (ctx, next) => {
  * 图书馆系统登录
  */
 router.post('/login', async (ctx, next) => {
-  let { isSuccess, token, message } = await loginController(ctx.request.body, ctx.state.decoded)
+  let { isSuccess, token, message } = await loginController(ctx.data, ctx.state.decoded)
 
-  ctx.assert(isSuccess, 401, message)
+  if (!isSuccess) {
+    ctx.status = 401
+    throw new Error(message)
+  }
+
   ctx.body = { token }
 })
 

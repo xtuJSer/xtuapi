@@ -39,7 +39,13 @@ router.use('/', async (ctx, next) => {
   const token = getToken(ctx)
   const { message, isSuccess, decoded } = await verifyToken('user')(token)
 
-  ctx.url === '/user/login' || ctx.path === '/user/classroom' || ctx.assert(isSuccess, 401, message)
+  if (ctx.url !== '/user/login' && ctx.path !== '/user/classroom') {
+    if (!isSuccess) {
+      ctx.status = 401
+      throw new Error(message)
+    }
+  }
+
   ctx.state.decoded = decoded
 
   await next()
@@ -50,11 +56,15 @@ router.use('/', async (ctx, next) => {
  */
 router.post('/login', async (ctx, next) => {
   let { isSuccess, token, message } = await loginController(
-    ctx.request.body,
+    ctx.data,
     ctx.state.decoded
   )
 
-  ctx.assert(isSuccess, 401, message)
+  if (!isSuccess) {
+    ctx.status = 401
+    throw new Error(message)
+  }
+
   ctx.body = { token }
 })
 
@@ -63,7 +73,7 @@ router.post('/login', async (ctx, next) => {
  */
 router.post('/classroom', async (ctx, next) => {
   try {
-    const { isSuccess, message, token } = await loginController(ctx.request.body, {})
+    const { isSuccess, message, token } = await loginController(ctx.data, {})
     if (!isSuccess) { throw new Error(message) }
 
     const decoded = decodeToken({ token })
@@ -101,7 +111,11 @@ const checkRoute = type => async (ctx) => {
     state: { decoded }
   } = ctx
 
-  ctx.assert(type.includes(topic), 404, notFoundMsg)
+  if (!type.includes(topic)) {
+    ctx.status = 404
+    throw new Error(notFoundMsg)
+  }
+
   ctx.body = await userController(ctx, {
     topic,
     decoded

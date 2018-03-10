@@ -1,8 +1,8 @@
 import * as mongoose from 'mongoose'
-const { Schema } = mongoose
-const Classroom = new Schema({
+
+const Classroom = new mongoose.Schema({
   day: Number,
-  data: Schema.Types.Mixed
+  data: mongoose.Schema.Types.Mixed
 })
 
 type TYPE = {

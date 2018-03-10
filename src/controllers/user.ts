@@ -26,7 +26,7 @@ const getTopic = (topic: string) => (
 
 export default async (ctx, { topic, decoded: { sid } }) => {
   const param = /post/i.test(ctx.method)
-    ? ctx.request.body
+    ? ctx.data
     : ctx.query
 
   const { isSuccess, message, content } = await getTopic(topic)({
@@ -34,6 +34,9 @@ export default async (ctx, { topic, decoded: { sid } }) => {
     param
   })
 
-  ctx.assert(isSuccess, 401, message)
+  if (!isSuccess) {
+    ctx.status = 401
+    throw new Error(message)
+  }
   return content
 }
