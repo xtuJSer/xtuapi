@@ -6,5 +6,6 @@ const router = new KoaRouter()
 router.post('/', controller.getBlog)
 router.get('/:scope/:topic', controller.updateBlog)
 router.get('/dict', controller.getBlogDict)
+router.post('/info', controller.getBlogInfo)
 
 export default router

@@ -4,7 +4,7 @@ import { crawlerList } from '../crawlers/blog'
 import config from '../config/blog'
 import msg from '../config/message'
 
-const { scopes, dict } = config
+const { scopes, dict, info } = config
 const api = '/:scope/:topic'
 const map = new Map(scopes)
 
@@ -124,4 +124,13 @@ export const updateBlog = async (ctx, next) => {
 
 export const getBlogDict = async (ctx, next) => {
   ctx.body = dict
+}
+
+export const getBlogInfo = async (ctx, next) => {
+  const { scope } = ctx.data
+
+  ctx.body = {
+    info: info[scope],
+    url: map.get(scope).host
+  }
 }
