@@ -108,20 +108,20 @@ export const scheduleFilter = ({ html }) => {
 export const rankFilter = ({ html, propEl }) => {
   const $ = cheerio.load(html)
   const obj = {}
-  const table = []
+  const list = []
 
   propEl.length === 1
     ? (obj.prop = propEl === '1' ? '必修' : '选修')
     : obj.prop = '综合'
 
   $('#dataList tr').find('th').each((i, th) => {
-    table[i] = {}
-    table[i].title = $(th).text()
+    list[i] = {}
+    list[i].label = $(th).text()
   })
   $('#dataList tr').find('td').each((i, td) => {
-    table[i].number = $(td).text()
+    list[i].value = $(td).text()
   })
-  obj.table = table
+  obj.list = list
 
   return obj
 }

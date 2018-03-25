@@ -152,7 +152,12 @@ const classroomCrawler = async ({ sid, param }: TYPE) => {
   if (sid) {
     const ret = [0, 1].map(async day => {
       const data = `xzlx=${day}`
-      const _ret = await _fetch(classroomFilter)({ href, sid, data })
+      const _ret = await _fetch(classroomFilter)({
+        method: 'post',
+        href,
+        sid,
+        data
+      })
 
       // 首次操作需要取消以下注释，用于插入原始数据
       // 增

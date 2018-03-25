@@ -48,7 +48,9 @@ export const filterList = ({ host, html, rule, newest, scope, topic }) => {
           (specialTitle && $(p).find(specialTitle)[0].children[0].data)
       })
 
-      if (title === newest) { return false }
+      if (title === newest) {
+        return false
+      }
 
       href = _filterHref({ host, href })
       let time = filterTime(
