@@ -213,6 +213,7 @@ const rankCrawler = async ({ sid, param }: TYPE) => new Promise((resolve, reject
     }
 
     result.data = htmlArr.map((htmlObj) => rankFilter(htmlObj))
+    result.time.sort()
     resolve(result)
   })
 
