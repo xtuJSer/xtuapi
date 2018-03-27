@@ -7,15 +7,23 @@ type TYPE = {
 
 export const infoFilter = ({ html }: TYPE) => {
   const $ = cheerio.load(html)
-  let $td = $('.Nsb_layout_r tr').eq(3).find('td')
-  let sex = $td.eq(3).text()
-    ? $td.eq(3).text().includes('男') ? 'boy' : 'girl'
-    : ''
-  let name = $td.eq(5).text().trim()
+  let sex = $('.Nsb_layout_r tr').eq(3).find('td').eq(3).text().includes('男') ? 'boy' : 'girl'
+  let name = $('.Nsb_layout_r tr').eq(3).find('td').eq(5).text().trim()
+
+  let scope = $('.Nsb_layout_r tr').eq(2).find('td').eq(0).text().split('：')[1]
+  let specialty = $('.Nsb_layout_r tr').eq(2).find('td').eq(1).text().split('：')[1]
 
   let id = $('.Nsb_layout_r tr').eq(-4).find('td').eq(3).text().trim().slice(-6)
+  let time = $('.Nsb_layout_r tr').eq(-5).find('td').eq(1).text().trim()
 
-  return { name, sex, id }
+  return {
+    name,
+    sex,
+    id,
+    time,
+    scope,
+    specialty
+  }
 }
 
 export const courseFilter = ({ time, html }: TYPE) => {
