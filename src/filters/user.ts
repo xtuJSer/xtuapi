@@ -61,9 +61,10 @@ export const examFilter = ({ html }: TYPE) => {
     let $td = $(tr).find('td')
     const temp = {
       name: $td.eq(2).text(),
-      date: $td.eq(3).text().split(' ')[0],
-      time: $td.eq(3).text().split(' ')[1],
-      place: $td.eq(4).text()
+      assessmentMethod: $td.eq(3).text(),
+      examFormat: $td.eq(4).text(),
+      time: $td.eq(5).text(),
+      place: $td.eq(6).text()
     }
 
     ret.push(temp)
