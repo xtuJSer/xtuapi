@@ -107,7 +107,7 @@ const courseCrawler = async ({ sid, param }: TYPE) => {
  */
 const examCrawler = async ({ sid }: TYPE) => {
   const href = host + routes.exam
-  const data = `xqlbmc=&xnxqid=${defaultYear}-${defaultHalf}&xqlb=`
+  const data = `xqlbmc=&xnxqid=${defaultYear}-${defaultYear + 1}-${defaultHalf}&xqlb=`
 
   const ret = await _fetch(examFilter)({
     method: 'post',
