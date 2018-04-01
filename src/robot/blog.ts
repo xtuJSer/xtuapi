@@ -4,7 +4,7 @@ import * as schedule from 'node-schedule'
 import * as request from 'superagent'
 
 const HOST = `http://localhost:${config.port}`
-const UPDATE_TIME = '*/15 * * * *'
+const UPDATE_TIME = '*/15 8-22 * * *'
 
 const fetchAllBlog = () => {
   blogConfig.scopes.map(scope => {
