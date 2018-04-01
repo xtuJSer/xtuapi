@@ -26,7 +26,7 @@ export default ({ username = '', password = '' }, { sid = {} }) => new Promise((
     throw new Error()
   }
 
-  const imgDir = path.join(__dirname) + `/${username}.jpg`
+  const imgDir = path.join(__dirname) + `/${Date.now()}.jpg`
 
   ;(async () => {
     while (!isSuccess && !isWrong && loopTime < MAX_LOOP_TIME) {
