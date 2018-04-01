@@ -17,8 +17,9 @@ app.use(async (ctx, next) => {
 mongoose.Promise = global.Promise
 mongoose.connect(
   _config.mongoURL || mongoURL, {
-  useMongoClient: true
-})
+    useMongoClient: true
+  }
+)
 
 app.use(bodyParser())
 app.use(routers.routes())
