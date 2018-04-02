@@ -16,6 +16,28 @@ export default {
       }
     ],
     [
+      'jwc', {
+        name: '教务处',
+        host: 'http://jwc.xtu.edu.cn/',
+        path: {
+          news: '/e/action/ListInfo/?classid=1',
+          notice: 'e/action/ListInfo/?classid=2'
+        },
+        info: '这个人懒死了'
+      }
+    ],
+    [
+      'hqbzc', {
+        name: '后勤保障处',
+        host: 'http://hqbzc.xtu.edu.cn/',
+        path: {
+          news: 'index.php/index-index-cate-id-14.html',
+          notice: 'index.php/index-index-cate-id-15.html'
+        },
+        info: '为学校师生员工提供强有力的后勤服务保障，努力构建有鲜明特色高水平现代大学的后勤服务保障体系'
+      }
+    ],
+    [
       'nic', {
         name: '网络与信息管理中心',
         host: 'http://nic.xtu.edu.cn',
@@ -142,28 +164,6 @@ export default {
           lecture: '/e/action/ListInfo/?classid=24',
         },
         info: '湘潭大学外国语学院成立于2016年1月，其前身分别为湘潭大学外国语学院，湘潭大学大学英语教学部'
-      }
-    ],
-    [
-      'jwc', {
-        name: '教务处',
-        host: 'http://jwc.xtu.edu.cn/',
-        path: {
-          news: '/e/action/ListInfo/?classid=1',
-          notice: 'e/action/ListInfo/?classid=2'
-        },
-        info: ''
-      }
-    ],
-    [
-      'hqbzc', {
-        name: '后勤保障处',
-        host: 'http://hqbzc.xtu.edu.cn/',
-        path: {
-          news: 'index.php/index-index-cate-id-14.html',
-          notice: 'index.php/index-index-cate-id-15.html'
-        },
-        info: '为学校师生员工提供强有力的后勤服务保障，努力构建有鲜明特色高水平现代大学的后勤服务保障体系'
       }
     ]
   ],

@@ -54,7 +54,5 @@ export const filterList = ({ host, html, rule, newest, scope, topic }) => {
     return false
   }
 
-  console.log(ret)
-
   return ret.reverse()
 }

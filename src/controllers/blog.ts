@@ -34,7 +34,7 @@ const controller = async (ctx, options = {}) => {
 
     if (list.length) {
       for (let item of list) {
-        // await new Blog(item).save()
+        await new Blog(item).save()
       }
     }
   }
