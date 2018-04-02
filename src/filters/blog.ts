@@ -26,43 +26,35 @@ const _filterHref = ({ host, href }) => {
 export const filterList = ({ host, html, rule, newest, scope, topic }) => {
   const ret = []
   const $ = cheerio.load(html)
-  const {
-    el,
-    parent = 'li',
-    prev = null,
-    child = 'span',
-    specialTitle = null
-  } = rule
 
-  $(el + ' ' + parent).each((i, p) => {
-    try {
-      const $prev = $(p).find(prev)[0] || {}
+  try {
+    $(rule.el).find(rule.parent).each(function (i) {
+      let { href, title, time } = rule.func($(this))
 
-      let { href, title } = prev
-        ? $prev.attribs
-        : p.attribs
-
-      title = _filterTitle({
-        title: (!title && prev) ? $prev.children[0].data : title,
-        parent: p.children[1].data ||
-          (specialTitle && $(p).find(specialTitle)[0].children[0].data)
-      })
-
-      if (title === newest) {
+      if (!title) {
         return false
+      } else {
+        title = title.trim()
+        if (title.trim() === newest) {
+          return false
+        }
       }
 
       href = _filterHref({ host, href })
-      let time = filterTime(
-        $(p).find(child).text()
-      )
+      if (!time) {
+        time = filterTime(
+          $(this).find(rule.time).text()
+        )
+      }
 
-      title && ret.push({ title, href, time, scope, topic })
-    } catch (err) {
-      console.log(err)
-      return false
-    }
-  })
+      ret.push({ title, href, time, scope, topic })
+    })
+  } catch (err) {
+    console.log(err.message)
+    return false
+  }
+
+  console.log(ret)
 
   return ret.reverse()
 }

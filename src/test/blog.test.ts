@@ -12,7 +12,7 @@ const target = 'blog'
 describe(`#TEST ${target}`, () => {
   _config.scopes.map(scope => {
     const scopeName = scope[0]
-    const topics = Object.keys(scope[1]).filter(key => key !== 'host')
+    const topics = Object.keys(scope[1].path)
 
     describe(`scope: ${scopeName}`, () => {
       topics.map(topic => {

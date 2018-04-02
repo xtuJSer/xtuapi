@@ -4,7 +4,7 @@ import { crawlerList } from '../crawlers/blog'
 import config from '../config/blog'
 import msg from '../config/message'
 
-const { scopes, dict, info } = config
+const { scopes } = config
 const api = '/:scope/:topic'
 const map = new Map(scopes)
 
@@ -32,10 +32,9 @@ const controller = async (ctx, options = {}) => {
 
     list = await crawlerList(ctx, { url, host, scope, topic, newest })
 
-    // list.length && await list.map(async item => { await new Blog(item).save() })
     if (list.length) {
       for (let item of list) {
-        await new Blog(item).save()
+        // await new Blog(item).save()
       }
     }
   }
@@ -55,7 +54,7 @@ export const getBlogApi = async (ctx, next) => {
     api,
     ...scopes.map(el => ({
       scope: el[0],
-      topic: Object.keys(el[1]).filter(key => key !== 'host')
+      topic: Object.keys(el[1].path)
     }))
   }
 }
@@ -105,12 +104,12 @@ export const updateBlog = async (ctx, next) => {
 
   const route = map.get(scope)
 
-  if (!(map.has(scope) && route[topic])) {
+  if (!(map.has(scope) && route.path[topic])) {
     ctx.status = 404
     throw new Error(msg.NOT_FOUND)
   }
 
-  const url = route.host + (topic === 'all' ? '' : route[topic])
+  const url = route.host + (topic === 'all' ? '' : route.path[topic])
 
   ctx.body = await controller(ctx, {
     scope,
@@ -123,14 +122,20 @@ export const updateBlog = async (ctx, next) => {
 }
 
 export const getBlogDict = async (ctx, next) => {
-  ctx.body = dict
+  const ret = {}
+
+  scopes.map(el => {
+    ret[el[0]] = el[1].name
+  })
+
+  ctx.body = ret
 }
 
 export const getBlogInfo = async (ctx, next) => {
   const { scope } = ctx.data
 
   ctx.body = {
-    info: info[scope],
+    info: map.get(scope).info,
     url: map.get(scope).host
   }
 }

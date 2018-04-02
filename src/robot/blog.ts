@@ -9,7 +9,7 @@ const UPDATE_TIME = '*/15 8-22 * * *'
 const fetchAllBlog = () => {
   blogConfig.scopes.map(scope => {
     const scopeName = scope[0]
-    const topics = Object.keys(scope[1]).filter(key => key !== 'host')
+    const topics = Object.keys(scope[1].path)
 
     topics.map(topic => {
       const fullPath = `${HOST}/blog/${scopeName}/${topic}`
