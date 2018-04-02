@@ -11,7 +11,7 @@ const fetchClassroom = () => {
   request
     .post(URL)
     .send({
-      ...userConfig
+      ...userConfig.xtu
     })
     .then((res) => {
       if (res.body.length) {

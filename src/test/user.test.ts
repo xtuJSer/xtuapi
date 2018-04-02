@@ -31,7 +31,7 @@ describe(`#TEST User`, () => {
     await testFn({
       method: 'post',
       url: '/user/login',
-      data: loginData
+      data: loginData.xtu
     }, (res) => {
       expect(res.body.token).to.be.a('string')
       headers.authorization = `Bearer ${res.body.token}`
@@ -44,7 +44,7 @@ describe(`#TEST User`, () => {
       url: '/user/login',
       status: 401,
       data: {
-        ...loginData,
+        ...loginData.xtu,
         username: ''
       }
     }, (res) => {
