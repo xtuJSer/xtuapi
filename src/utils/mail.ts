@@ -17,7 +17,7 @@ export default {
       )
 
       transport.sendMail({
-        from: '522413622@qq.com',
+        from: 'xtutx@magicallu.cn',
         to,
         subject: title,
         html

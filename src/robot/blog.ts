@@ -37,7 +37,7 @@ const fetchAllBlog = () => {
 
   return Promise.all(promises)
     .then((data) => {
-      console.log('成功获取 blog', `${Date.now() - start}ms`)
+      console.log('成功获取 blog 集合', `${Date.now() - start}ms`)
     })
     .catch((err) => {
       console.log('异常', err)

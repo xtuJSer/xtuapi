@@ -30,7 +30,7 @@ const fetchClassroom = () => {
 }
 
 ;(() => {
-  console.log('robot-classroom', URL)
+  console.log('启用 robot-classroom', URL)
 
   schedule.scheduleJob(UPDATE_TIME, () => {
     fetchClassroom()

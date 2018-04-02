@@ -6,4 +6,4 @@ const { port } = config
 app.listen(port)
 
 console.clear()
-console.log(`App Started At Port ${port}...\n`)
+console.log(`App Started At Port ${port}...`)
