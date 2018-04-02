@@ -1,5 +1,7 @@
 import config from '../config'
 import blogConfig from '../config/blog'
+import mail from '../utils/mail'
+
 import * as schedule from 'node-schedule'
 import * as request from 'superagent'
 
@@ -20,7 +22,16 @@ const fetchAllBlog = () => {
         .get(fullPath)
         .catch((e) => {
           console.log('异常', fullPath, e.message)
-          // 发送邮件
+          const html = `
+            <h3>${fullPath}</h3>
+            <p>原因: ${e.message}</p>
+          `
+
+          mail.send({
+            to: '522413622@qq.com',
+            title: 'xtuapi-robot-blog 异常',
+            html
+          })
         })
     })
   })
