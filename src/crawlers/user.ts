@@ -167,7 +167,9 @@ const classroomCrawler = async ({ sid, param }: TYPE) => {
       // }).save()
 
       // 改
-      await Classroom.updateByDay({ day, data: _ret })
+      if (_ret.length) {
+        await Classroom.updateByDay({ day, data: _ret })
+      }
 
       return _ret
     })
