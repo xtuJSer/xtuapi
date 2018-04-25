@@ -1,13 +1,17 @@
 import * as cheerio from 'cheerio'
 
-type TYPE = {
+type COMMON_TYPE = {
+  html: string
+}
+
+type COURSE_TYPE = {
   html: string,
   time: string
-};
+}
 
-export const infoFilter = ({ html }: TYPE) => {
+export const infoFilter = ({ html }: COMMON_TYPE) => {
   const $ = cheerio.load(html)
-  let sex = $('.Nsb_layout_r tr').eq(3).find('td').eq(3).text().includes('男') ? 'boy' : 'girl'
+  let gender = $('.Nsb_layout_r tr').eq(3).find('td').eq(3).text().includes('男') ? 'boy' : 'girl'
   let name = $('.Nsb_layout_r tr').eq(3).find('td').eq(5).text().trim()
 
   let scope = $('.Nsb_layout_r tr').eq(2).find('td').eq(0).text().split('：')[1]
@@ -18,7 +22,7 @@ export const infoFilter = ({ html }: TYPE) => {
 
   return {
     name,
-    sex,
+    gender,
     id,
     time,
     scope,
@@ -26,9 +30,9 @@ export const infoFilter = ({ html }: TYPE) => {
   }
 }
 
-export const courseFilter = ({ time, html }: TYPE) => {
+export const courseFilter = ({ time, html }: COURSE_TYPE) => {
   const $ = cheerio.load(html)
-  const table: { time: string, data: number[] } = {
+  const table: { time: string, data: object[] } = {
     time,
     data: []
   }
@@ -46,14 +50,14 @@ export const courseFilter = ({ time, html }: TYPE) => {
     table.data.push(item)
   })
 
-  table.data.shift(0)
+  table.data.shift()
   return table
 }
 
-export const examFilter = ({ html }: TYPE) => {
+export const examFilter = ({ html }: COMMON_TYPE) => {
   const $ = cheerio.load(html)
   let $tr = $('#dataList tr')
-  let ret = []
+  let ret: object[] = []
 
   $tr.each((i, tr) => {
     if (i === 0) return
@@ -73,11 +77,11 @@ export const examFilter = ({ html }: TYPE) => {
   return ret
 }
 
-export const scheduleFilter = ({ html }) => {
+export const scheduleFilter = ({ html }: COMMON_TYPE) => {
   const $ = cheerio.load(html)
   const $tr = $('#kbtable tr')
-  const row = []
-  const ret = []
+  const row: object[] = []
+  const ret: (object | null)[][] = []
 
   $tr.each((i, tr) => { row.push(tr) })
 
@@ -114,21 +118,39 @@ export const scheduleFilter = ({ html }) => {
   return ret
 }
 
-export const rankFilter = ({ html, propEl }) => {
+type RANK_TYPE = {
+  html: string,
+  propEl: string
+}
+
+export const rankFilter = ({ html, propEl }: RANK_TYPE) => {
+  type OBJ_TYPE = {
+    prop: string,
+    list: object
+  }
+
   const $ = cheerio.load(html)
-  const obj = {}
-  const list = []
+  const list: object[] = []
+  const obj: OBJ_TYPE = {
+    prop: '',
+    list: []
+  }
 
   propEl.length === 1
     ? (obj.prop = propEl === '1' ? '必修' : '选修')
     : obj.prop = '综合'
 
   $('#dataList tr').find('th').each((i, th) => {
-    list[i] = {}
-    list[i].label = $(th).text()
+    const ret: { label: string } = { label: '' }
+
+    ret.label = $(th).text()
+    list[i] = ret
   })
   $('#dataList tr').find('td').each((i, td) => {
-    list[i].value = $(td).text()
+    const ret: { value: string } = { value: '' }
+
+    ret.value = $(td).text()
+    list[i] = Object.assign(list[i], ret)
   })
   obj.list = list
 
@@ -136,9 +158,9 @@ export const rankFilter = ({ html, propEl }) => {
 }
 
 import filter from './classroom'
-const { classroomFormat } = filter
+import { StringValue } from 'aws-sdk/clients/elbv2';
 
-export const classroomFilter = ({ html }: TYPE) => {
+export const classroomFilter = ({ html }: COMMON_TYPE) => {
   const $ = cheerio.load(html)
   const table: object[] = []
 
@@ -159,14 +181,5 @@ export const classroomFilter = ({ html }: TYPE) => {
     table.push(item)
   })
 
-  return classroomFormat(table)
+  return filter.classroomFormat(table)
 }
-
-// export default {
-//   infoFilter,
-//   courseFilter,
-//   examFilter,
-//   scheduleFilter,
-//   rankFilter,
-//   classroomFilter
-// }

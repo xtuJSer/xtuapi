@@ -1,12 +1,39 @@
 import * as cheerio from 'cheerio'
 
-const _filterTitle = ({ title, parent }) => {
-  if (!parent || title) { return title.trim() }
-
-  return parent.trim()
+type TIME_TYPE = {
+  time: string
 }
 
-export const filterTime = (time) => {
+type HREF_TYPE = {
+  host: string,
+  href: string
+}
+
+type LIST_TYPE = {
+  host: string,
+  html: string,
+  rule: LIST_TYPE_RULE,
+  newest: string,
+  scope: string,
+  topic: string
+}
+
+type LIST_TYPE_RULE = {
+  el: object,
+  parent: string,
+  time: string,
+  func: LIST_TYPE_RULE_FUNC
+}
+
+interface LIST_TYPE_RULE_FUNC {
+  (target: object): {
+    href: string,
+    title?: string,
+    time?: string
+  }
+}
+
+const _filterTime = ({ time }: TIME_TYPE) => {
   return time
     .replace(/\s/g, '')
     .replace(/^（\d*次）/, '') // (**次)Date
@@ -14,7 +41,7 @@ export const filterTime = (time) => {
     .replace(/.*(\d{4}).{1}(\d+).{1}(\d+).*/mg, (str, $1, $2, $3) => $1 + '-' + $2 + '-' + $3)
 }
 
-const _filterHref = ({ host, href }) => {
+const _filterHref = ({ host, href }: HREF_TYPE) => {
   return /http/.test(href)
     ? href
     : /^\//.test(href)
@@ -22,12 +49,12 @@ const _filterHref = ({ host, href }) => {
       : host + '/' + href
 }
 
-export const filterList = ({ host, html, rule, newest, scope, topic }) => {
-  const ret = []
+export const filterList = ({ host, html, rule, newest, scope, topic }: LIST_TYPE) => {
+  const ret: object[] = []
   const $ = cheerio.load(html)
 
   try {
-    $(rule.el).find(rule.parent).each(function (i) {
+    $(rule.el).find(rule.parent).each(function (i): any {
       let { href, title, time } = rule.func($(this))
 
       if (!title) {
@@ -41,9 +68,9 @@ export const filterList = ({ host, html, rule, newest, scope, topic }) => {
 
       href = _filterHref({ host, href })
       if (!time) {
-        time = filterTime(
-          $(this).find(rule.time).text()
-        )
+        time = _filterTime({
+          time: $(this).find(rule.time).text()
+        })
       }
 
       ret.push({ title, href, time, scope, topic })
