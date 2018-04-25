@@ -9,7 +9,7 @@ const HOST = `http://localhost:${config.port}`
 const UPDATE_TIME = '*/15 8-21 * * *'
 
 const fetchAllBlog = () => {
-  const promises = []
+  const promises:object[] = []
   const start = Date.now()
 
   blogConfig.scopes.map(scope => {
@@ -44,7 +44,7 @@ const fetchAllBlog = () => {
       mail.send({
         to: '522413622@qq.com',
         title: 'xtuapi-robot-blog 异常',
-        html: `<p>${err}</p>`
+        html: `<p>${err.message}</p>`
       })
     })
 }
