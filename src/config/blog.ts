@@ -107,17 +107,16 @@ export default {
         info: '湘潭大学土木工程与力学学院的前身是流变力学研究所和建筑工程系'
       }
     ],
-    // [
-    //   'hgxy', {
-    //     name: '化工院',
-    //     host: 'http://hgxy.xtu.edu.cn',
-    //       path: {
-    //         news: '/plus/list.php?tid=43',
-    //         notice: '/plus/list.php?tid=20'
-    //         // lecture: '/e/action/ListInfo/?classid=14'
-    //       }
-    //   }
-    // ],
+    [
+      'hgxy', {
+        name: '化工院',
+        host: 'http://hgxy.xtu.edu.cn',
+          path: {
+            news: '/plus/list.php?tid=43',
+            notice: '/plus/list.php?tid=20'
+          }
+      }
+    ],
     [
       'law', {
         name: '法学院',
@@ -305,13 +304,16 @@ export default {
       default: {
         el: '.list-news',
         parent: 'a',
-        time: '.list-news-time',
         func: (dom) => {
-          // TODO: time
+          const monthAndDate = dom.find('.list-news-time').children('span').text()
+          const year = dom.find('.list-news-time').contents().filter(function() {
+            return this.nodeType === 3
+          }).text().trim()
 
           return {
             title: dom.find('.list-news-nr').children('span').text(),
-            href: dom.attr('href')
+            href: dom.attr('href'),
+            time: year + '-' + monthAndDate
           }
         }
       }
