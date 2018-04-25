@@ -6,7 +6,7 @@ import * as request from 'superagent'
 import mail from '../utils/mail'
 
 const URL = `http://localhost:${config.port}/user/classroom`
-const UPDATE_TIME = '*/15 0 * * *'
+const UPDATE_TIME = '*/30 0-1 * * *'
 
 const fetchClassroom = () => {
   return request
