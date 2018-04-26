@@ -12,7 +12,7 @@ export default {
           lecture: '/xysh/xywh/xsjz',
           notice: '/gonggao'
         },
-        info: '综合性全国重点大学，湖南省与教育部共建高校，湖南省与国家国防科工局共建高校',
+        info: '综合性全国重点大学，湖南省与教育部共建高校，湖南省与国家国防科工局共建高校。',
       }
     ],
     [
@@ -23,7 +23,7 @@ export default {
           news: '/e/action/ListInfo/?classid=1',
           notice: 'e/action/ListInfo/?classid=2'
         },
-        info: '这个人懒死了'
+        info: ':)'
       }
     ],
     [
@@ -34,7 +34,7 @@ export default {
           news: 'index.php/index-index-cate-id-14.html',
           notice: 'index.php/index-index-cate-id-15.html'
         },
-        info: '为学校师生员工提供强有力的后勤服务保障，努力构建有鲜明特色高水平现代大学的后勤服务保障体系'
+        info: '为学校师生员工提供强有力的后勤服务保障，努力构建有鲜明特色高水平现代大学的后勤服务保障体系。'
       }
     ],
     [
@@ -45,7 +45,7 @@ export default {
           news: '/wangluodongtai/zhongxinxinwen',
           notice: '/wangluodongtai/tongzhigonggao'
         },
-        info: '网络与信息管理中心是1997年5月成立的学校正处级直属单位',
+        info: '网络与信息管理中心是1997年5月成立的学校正处级直属单位。',
       }
     ],
     [
@@ -57,7 +57,7 @@ export default {
           notice: '/ciextu_new/zzgga',
           lecture: '/ciextu_new/kxyj/kyxm'
         },
-        info: '学院以培养合格人才为中心，以知识、能力和素质培养为主线，坚持“厚基础、宽口径、重应用，强能力”的培养目标'
+        info: '学院以培养合格人才为中心，以知识、能力和素质培养为主线，坚持“厚基础、宽口径、重应用，强能力”的培养目标。'
       }
     ],
     [
@@ -69,7 +69,7 @@ export default {
           notice: '/index.jsp?cd=news&ac=list&newsclass=tongzhigg',
           lecture: '/index.jsp?cd=xueshuhd&ac=list'
         },
-        info: '湘潭大学商学院前身为1975年成立的政治系。1981年经济学教研室从政治系分离成立经济系'
+        info: '湘潭大学商学院前身为1975年成立的政治系。1981年经济学教研室从政治系分离成立经济系。'
       }
     ],
     [
@@ -80,7 +80,7 @@ export default {
           news: '/info.php?catalog=3',
           notice: '/info.php?catalog=4'
         },
-        info: '湘潭大学兴湘学院是经教育部和湖南省人民政府批准设立，由湘潭大学举办的独立学院'
+        info: '湘潭大学兴湘学院是经教育部和湖南省人民政府批准设立，由湘潭大学举办的独立学院。'
       }
     ],
     [
@@ -92,7 +92,7 @@ export default {
           notice: '/moreinfo.aspx?id=112',
           lecture: '/moreinfo.aspx?id=97'
         },
-        info: '化学学院成立于2001年，其前身为化学系'
+        info: '化学学院成立于2001年，其前身为化学系。'
       }
     ],
     [
@@ -104,17 +104,18 @@ export default {
           notice: '/e/action/ListInfo/?classid=14',
           lecture: '/e/action/ListInfo/?classid=49'
         },
-        info: '湘潭大学土木工程与力学学院的前身是流变力学研究所和建筑工程系'
+        info: '湘潭大学土木工程与力学学院的前身是流变力学研究所和建筑工程系。'
       }
     ],
     [
       'hgxy', {
         name: '化工院',
         host: 'http://hgxy.xtu.edu.cn',
-          path: {
-            news: '/plus/list.php?tid=43',
-            notice: '/plus/list.php?tid=20'
-          }
+        path: {
+          news: '/plus/list.php?tid=43',
+          notice: '/plus/list.php?tid=20'
+        },
+        info: '湘潭大学化工学院始创于1976年的化工机械系，是湘潭大学最早的理工科院系之一，2001年正式成立化工学院。'
       }
     ],
     [
@@ -126,7 +127,7 @@ export default {
           notice: '/infolist-67-0.html',
           lecture: '/infolist-68-0.html'
         },
-        info: '湘潭大学法学专业创办于1982年，是湖南省创办最早的法学专业。湘潭大学法学院是湖南省师资力量最强、学科门类最全、招生规模最大、教育层次最齐全的法学院系之一'
+        info: '湘潭大学法学专业创办于1982年，是湖南省创办最早的法学专业。湘潭大学法学院是湖南省师资力量最强、学科门类最全、招生规模最大、教育层次最齐全的法学院系之一。'
       }
     ],
     [
@@ -138,7 +139,7 @@ export default {
           notice: '/t2.html',
           lecture: '/t1.html'
         },
-        info: '数学与计算科学学院是湘潭大学成立最早的院系之一，其前身是成立于1974年的数理系'
+        info: '数学与计算科学学院是湘潭大学成立最早的院系之一，其前身是成立于1974年的数理系。'
       }
     ],
     [
@@ -150,7 +151,7 @@ export default {
           notice: '/index.php/index/index/cate/id/78.html',
           lecture: '/index.php/index/index/cate/id/69.html'
         },
-        info: '致力于国家重大战略需求，以材料与力学学科交叉为特色，着重解决信息、能源、航空航天、探测技术等领域的材料设计、制备、性能与应用中的重大科学和工程化问题'
+        info: '致力于国家重大战略需求，以材料与力学学科交叉为特色，着重解决信息、能源、航空航天、探测技术等领域的材料设计、制备、性能与应用中的重大科学和工程化问题。'
       }
     ],
     [
@@ -162,7 +163,63 @@ export default {
           notice: '/e/action/ListInfo/?classid=5',
           lecture: '/e/action/ListInfo/?classid=24',
         },
-        info: '湘潭大学外国语学院成立于2016年1月，其前身分别为湘潭大学外国语学院，湘潭大学大学英语教学部'
+        info: '湘潭大学外国语学院成立于2016年1月，其前身分别为湘潭大学外国语学院，湘潭大学大学英语教学部。'
+      }
+    ],
+    [
+      'zxx', {
+        name: '哲学系',
+        host: 'http://zxx.xtu.edu.cn',
+        path: {
+          news: '/e/action/ListInfo/?classid=42',
+          notice: '/e/action/ListInfo/?classid=25',
+          lecture: '/e/action/ListInfo/?classid=4',
+        },
+        info: '湘潭大学哲学系是与学校各二级学院平级的基础专业研究教学部门，创建于1979年，是湘潭大学最早建立的院系之一。'
+      }
+    ],
+    [
+      'lsx', {
+        name: '历史系',
+        host: 'http://lishixi.xtu.edu.cn',
+        path: {
+          news: '/info.php?catalog=21',
+          notice: '/info.php?catalog=22'
+        },
+        info: '历史系是湘潭大学设置最早的二级教学单位之一。'
+      }
+    ],
+    [
+      'glxy', {
+        name: '公共管理学院',
+        host: 'http://glxy.xtu.edu.cn',
+        path: {
+          news: '/e/action/ListInfo/?classid=62',
+          notice: '/e/action/ListInfo/?classid=63'
+        },
+        info: ' 湘潭大学公共管理学院成立于2007年，是在原来人文学院、信息管理系、管理学院相关专业和学科整合基础上发展而来的。'
+      }
+    ],
+    [
+      'zscqxy', {
+        name: '知识产权学院',
+        host: 'http://law.xtu.edu.cn',
+        path: {
+          news: '/infolist-81-0.html',
+          notice: '/infolist-82-0.html'
+        },
+        info: '湘潭大学知识产权学院成立于2008年11月，与法学院合署办公，是湖南省首家也是惟一一家知识产权学院。'
+      }
+    ],
+    [
+      'xyfxgl', {
+        name: '信用风险管理学院',
+        host: 'http://xyfxgl.web.xtu.edu.cn:8081',
+        path: {
+          news: '/newchinld_list.aspx?category_id=63',
+          notice: '/notice_list.aspx?category_id=70'
+        },
+        info: '湘潭大学信用风险管理学院成立于2017年5月，是由湘潭大学校友、长沙永雄股权投资管理有限公司董事长谭曼先生独资捐建的湘潭大学下设的二级学院，是全国首家信用风险管理学院。'
       }
     ]
   ],
@@ -409,6 +466,85 @@ export default {
           }
         }
       }
-    }
+    },
+    zxx: {
+      default: {
+        charset: 'gbk',
+        el: '.newslist',
+        parent: 'li',
+        time: 'span',
+        func: (dom) => {
+          const $a = dom.find('a').eq(0)
+
+          return {
+            title: $a.attr('title'),
+            href: $a.attr('href')
+          }
+        }
+      }
+    },
+    lsx: {
+      default: {
+        el: '.lst3',
+        parent: 'li',
+        time: 'span',
+        func: (dom) => {
+          const $a = dom.children('a').eq(0)
+
+          return {
+            title: $a.text(),
+            href: $a.attr('href')
+          }
+        }
+      }
+    },
+    glxy: {
+      default: {
+        charset: 'gbk',
+        el: '.newslist',
+        parent: 'li',
+        time: 'span',
+        func: (dom) => {
+          const $a = dom.find('a').eq(0)
+
+          return {
+            title: $a.attr('title'),
+            href: $a.attr('href')
+          }
+        }
+      }
+    },
+    zscqxy: {
+      default: {
+        charset: 'gbk',
+        el: '.newslist',
+        parent: 'li',
+        time: 'span',
+        func: (dom) => {
+          const $a = dom.find('a').eq(0)
+
+          return {
+            title: $a.attr('title'),
+            href: $a.attr('href')
+          }
+        }
+      }
+    },
+    xyfxgl: {
+      default: {
+        el: '.page-list',
+        parent: 'li',
+        func: (dom) => {
+          const $a = dom.find('a').eq(0)
+          const time = dom.find('.title_remarks').eq(0).text().split(' ')[0]
+
+          return {
+            title: $a.text(),
+            href: $a.attr('href'),
+            time
+          }
+        }
+      }
+    },
   }
 }
