@@ -221,7 +221,87 @@ export default {
         },
         info: '湘潭大学信用风险管理学院成立于2017年5月，是由湘潭大学校友、长沙永雄股权投资管理有限公司董事长谭曼先生独资捐建的湘潭大学下设的二级学院，是全国首家信用风险管理学院。'
       }
-    ]
+    ],
+    [
+      'mks', {
+        name: '马克思主义学院',
+        host: 'http://mks.xtu.edu.cn',
+        path: {
+          news: '/e/action/ListInfo/?classid=1',
+          notice: '/e/action/ListInfo/?classid=2',
+          lecture: '/e/action/ListInfo/?classid=13'
+        },
+        info: '学院源于1975年湘大复校时设立的政治系。1978年成立马列主义教研室。2002年成立马克思主义学院。'
+      }
+    ],
+    [
+      'wlxy', {
+        name: '物理与光电工程学院',
+        host: 'http://wlxy.xtu.edu.cn',
+        path: {
+          news: '/slanmu.php?id=33',
+          notice: '/slanmu.php?id=34'
+        },
+        info: '物理与光电工程学院起源于湘潭大学1976年成立的数理系，2014年9月更名为物理与光电工程学院。'
+      }
+    ],
+    [
+      'jxgc', {
+        name: '机械工程学院',
+        host: 'http://jxgc.xtu.edu.cn',
+        path: {
+          news: '/e/action/ListInfo/?classid=23',
+          notice: '/e/action/ListInfo/?classid=24',
+          lecture: '/e/action/ListInfo/?classid=38'
+        },
+        info: '我校1958年建校时即开设机械专业，1974学校恢复招生时设立化工机械系，为全校仅有的两个教学机构之一；1980年成立机械工程系；1998年9月成立机械工程学院。'
+      }
+    ],
+    [
+      'hjzy', {
+        name: '环境与资源学院',
+        host: 'http://hjzy.xtu.edu.cn',
+        path: {
+          news: '/e/action/ListInfo/?classid=30',
+          notice: '/e/action/ListInfo/?classid=35'
+        },
+        info: '湘潭大学环境与资源学院成立于2016年5月，由环境科学与工程、采矿工程与安全工程学科组建成立（以下简称环资学院），目前设立环境系与资源系两个系。'
+      }
+    ],
+    [
+      'tyb', {
+        name: '体育教学部',
+        host: 'http://tyb.xtu.edu.cn',
+        path: {
+          news: '/news',
+          notice: '/notices'
+        },
+        info: '湘潭大学体育教学部是直属主管校长领导下的学校二级教学单位，也是学校体育运动委员会的执行机构。'
+      }
+    ],
+    [
+      'art', {
+        name: '艺术学院',
+        host: 'http://art.xtu.edu.cn',
+        path: {
+          news: '/index/schooltrends',
+          notice: '/index/one_content?type=list&mytype=tztg&k_page=noselect',
+          lecture: '/index/one_content?type=list&mytype=zljz&k_page=noselect'
+        },
+        info: '湘潭大学艺术学院现有教授7人（含客座教授）、副教授6人（含客座教授），博士及在读博士4人，硕士28人，有视觉传达设计、艺术设计学和动画等3个本科专业，有“艺术理论与实践”科学硕士点和“艺术硕士专业学位点”（MFA）各一个。'
+      }
+    ],
+    [
+      'gjjl', {
+        name: '国际交流学院',
+        host: 'http://gjjl.xtu.edu.cn',
+        path: {
+          news: '/info.php?catalog=22',
+          notice: '/info.php?catalog=23'
+        },
+        info: '湘潭大学国际交流学院，依托湘潭大学优秀的教学资源，是以招收外国留学生和输送中国学生留学并开设国际联合培养课程，与英国、法国、西班牙多所名校联合培养高层次、国际型专门人才的中外合作学院。'
+      }
+    ],
   ],
 
   rules: {
@@ -542,6 +622,131 @@ export default {
             title: $a.text(),
             href: $a.attr('href'),
             time
+          }
+        }
+      }
+    },
+    mks: {
+      default: {
+        charset: 'gbk',
+        el: '.list',
+        parent: 'li',
+        time: 'span',
+        func: (dom) => {
+          const $a = dom.find('a').eq(0)
+
+          return {
+            title: $a.attr('title'),
+            href: $a.attr('href')
+          }
+        }
+      }
+    },
+    wlxy: {
+      default: {
+        el: '.newsmain',
+        parent: 'li',
+        time: 'span',
+        func: (dom) => {
+          const $a = dom.find('a').eq(0)
+
+          return {
+            title: $a.text(),
+            href: $a.attr('href')
+          }
+        }
+      }
+    },
+    jxgc: {
+      default: {
+        charset: 'gbk',
+        el: '.list-news',
+        parent: 'li',
+        time: 'span',
+        func: (dom) => {
+          const $a = dom.find('a').eq(0)
+
+          return {
+            title: $a.attr('title'),
+            href: $a.attr('href')
+          }
+        }
+      }
+    },
+    hjzy: {
+      default: {
+        el: '.newslist',
+        parent: 'li',
+        time: 'span',
+        func: (dom) => {
+          const $a = dom.find('a').eq(0)
+
+          return {
+            title: $a.attr('title'),
+            href: $a.attr('href')
+          }
+        }
+      }
+    },
+    tyb: {
+      default: {
+        charset: 'gbk',
+        el: '.news_list table table',
+        parent: 'tr',
+        time: 'td[align="right"]',
+        func: (dom) => {
+          const $a = dom.find('a').eq(0)
+
+          return {
+            title: $a.text(),
+            href: $a.attr('href')
+          }
+        }
+      }
+    },
+    art: {
+      default: {
+        el: '.list_part',
+        parent: 'li',
+        time: '.list_item_date',
+        func: (dom) => {
+          const $a = dom.find('.list_item a').eq(0)
+
+          if (!$a.attr('onclick')) {
+            return {}
+          }
+
+          return {
+            title: dom.find('.list_item_title').text(),
+            href: $a.attr('onclick').replace(/.*\(\'(.*)\'\)/g, (str, $1) => $1)
+          }
+        }
+      },
+      news: {
+        el: '.school_trends_1',
+        parent: '.trend',
+        time: '.right_top',
+        func: (dom) => {
+          const $a = dom.find('.intro a').eq(0)
+
+          return {
+            title: $a.text(),
+            href: $a.attr('href')
+          }
+        }
+      }
+    },
+    gjjl: {
+      default: {
+        el: '.list1 .cl1',
+        parent: 'li',
+        time: 'span',
+        func: (dom) => {
+          const $a = dom.children('a').eq(0)
+
+          return {
+            title: $a.text(),
+            href: $a.attr('href')
           }
         }
       }
