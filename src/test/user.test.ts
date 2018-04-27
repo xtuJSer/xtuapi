@@ -5,13 +5,31 @@ import app from '../app'
 import config from '../config'
 
 const server = app.listen(config.testPort)
-const testRequest = request(server)
+const testRequest: any = request(server)
+
+type TEST_FN_TYPE = {
+  method?: string,
+  url: string,
+  data?: null | object,
+  status?: number
+}
+
+type DONE_RES_TYPE = {
+  body: {
+    token: string,
+    time: any,
+    data: any
+  },
+  text: string
+}
 
 const headers = {
-  'Content-Type': 'application/x-www-form-urlencoded'
+  'Content-Type': 'application/x-www-form-urlencoded',
+  authorization: ''
 }
+
 const loginData = require('../../config/private') || {}
-const testFn = function ({ method = 'get', url, data = null, status = 200 }, done) {
+const testFn = function ({ method = 'get', url, data = null, status = 200 }: TEST_FN_TYPE, done?: (res: DONE_RES_TYPE) => any) {
   return testRequest[method](url)
     .set(headers)
     .send(data)
@@ -26,7 +44,7 @@ const testFn = function ({ method = 'get', url, data = null, status = 200 }, don
     })
 }
 
-describe(`#TEST User`, () => {
+describe(`进行 User 接口测试`, () => {
   it('【登录】正常登录', async () => {
     await testFn({
       method: 'post',
@@ -42,7 +60,7 @@ describe(`#TEST User`, () => {
     await testFn({
       method: 'post',
       url: '/user/login',
-      status: 401,
+      status: 400,
       data: {
         ...loginData.xtu,
         username: ''
@@ -56,7 +74,7 @@ describe(`#TEST User`, () => {
     await testFn({
       method: 'post',
       url: '/user/login',
-      status: 401,
+      status: 400,
       data: {
         ...loginData,
         password: ''
@@ -70,7 +88,7 @@ describe(`#TEST User`, () => {
     await testFn({
       method: 'post',
       url: '/user/login',
-      status: 401,
+      status: 400,
       data: {
         ...loginData,
         username: '2014'
@@ -84,7 +102,7 @@ describe(`#TEST User`, () => {
     await testFn({
       method: 'post',
       url: '/user/login',
-      status: 401,
+      status: 400,
       data: {
         ...loginData,
         password: '12345678'
@@ -110,9 +128,9 @@ describe(`#TEST User`, () => {
       status: 200
     }, (res) => {
       expect(res.body).to.be.a('object')
-      expect(res.body).to.have.property('rank').lengthOf(3)
+      expect(res.body).to.have.property('data')
       expect(res.body).to.have.property('time')
-      expect(res.body.time.join('')).to.equal('2017-2018-1')
+      expect(res.body.time.join('')).to.equal('2017-2018-2')
     })
   })
 

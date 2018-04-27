@@ -44,7 +44,7 @@ export const log = async (ctx, next) => {
   await next()
   const ms = Date.now() - start
 
-  console.log(`${ctx.method} ${ctx.url} ${JSON.stringify(ctx.data)} ${ms}ms`)
+  process.env.NODE_ENV === 'test' || console.log(`${ctx.method} ${ctx.url} ${JSON.stringify(ctx.data)} ${ms}ms`)
 }
 
 export const handleError = async (ctx, next) => {

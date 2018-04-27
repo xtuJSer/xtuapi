@@ -409,14 +409,14 @@ export default {
       default: {
         el: '#ctl00_ContentPlaceHolder1_GridView1',
         parent: 'tr',
-        // prev: 'a[id^=ctl00_ContentPlaceHolder1]',
-        time: 'td',
         func: (dom) => {
           const $a = dom.find('a').eq(0)
+          const time = dom.find('td').eq(1).text()
 
           return {
             title: $a.attr('title'),
-            href: $a.attr('href')
+            href: $a.attr('href'),
+            time
           }
         }
       }
@@ -738,7 +738,7 @@ export default {
     },
     gjjl: {
       default: {
-        el: '.list1 .cl1',
+        el: '.list1.cl1',
         parent: 'li',
         time: 'span',
         func: (dom) => {
