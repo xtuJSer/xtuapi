@@ -35,10 +35,10 @@ interface LIST_TYPE_RULE_FUNC {
 
 const _filterTime = ({ time }: TIME_TYPE) => {
   return time
-    .replace(/\s/g, '')
-    .replace(/^（\d*次）/, '') // (**次)Date
-    .replace(/^\(([\d-]+)\)$/, (str, $1) => $1) // (Date)
-    .replace(/.*(\d{4}).{1}(\d+).{1}(\d+).*/mg, (str, $1, $2, $3) => $1 + '-' + $2 + '-' + $3)
+    // .replace(/\s/g, '')
+    // .replace(/^（\d*次）/, '') // (**次)Date
+    // .replace(/^\(([\d-]+)\)$/, (str, $1) => $1) // (Date)
+    .replace(/.*(\d{4}).{1}(\d{1,2}).{1}(\d{1,2}).*/mg, (str, $1, $2, $3) => $1 + '-' + $2 + '-' + $3)
 }
 
 const _formatTime = ({ time }: TIME_TYPE) => {
