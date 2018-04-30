@@ -9,21 +9,12 @@ const { rules } = config
 const headers = _h.updateHeaders()
 
 /**
- * 获取信息详情
- * @param {*} ctx
- * @param {*} options
- */
-const crawlerItem = async (ctx: object, options: object) => {
-  // const $ = cheerio.load()
-}
-
-/**
  * 获取信息列表
  * @param {*} ctx
  * @param {*} options
  * @param {*} newest
  */
-export const crawlerList = (ctx: object, options: object) => new Promise((resolve, reject) => {
+export const crawlerList = (ctx: any, options: object) => new Promise((resolve, reject) => {
   const { host, url, scope, topic, newest = '' } = options
   const rule = rules[scope][topic] || rules[scope].default || {}
 
@@ -50,8 +41,3 @@ export const crawlerList = (ctx: object, options: object) => new Promise((resolv
       resolve(ret)
     })
 })
-
-// export default {
-//   crawlerItem,
-//   crawlerList
-// }

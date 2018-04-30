@@ -534,7 +534,7 @@ export default {
     },
     hqbzc: {
       default: {
-        el: '.content_important',
+        el: '.content_center',
         parent: 'li',
         time: 'span',
         func: (dom) => {

@@ -41,11 +41,13 @@ const _filterTime = ({ time }: TIME_TYPE) => {
     .replace(/.*(\d{4}).{1}(\d{1,2}).{1}(\d{1,2}).*/mg, (str, $1, $2, $3) => $1 + '-' + $2 + '-' + $3)
 }
 
-const _formatTime = ({ time }: TIME_TYPE) => {
-  return time
+const _formatTime = ({ time }: TIME_TYPE): any => {
+  const ret = time
     .replace(/(\d{4})-(\d+)-(\d+)/mg, (str, $1, $2, $3): string => {
       return $1 + '-' + ('0' + $2).slice(-2) + '-' + ('0' + $3).slice(-2)
     })
+
+  return ret ? new Date(ret) : null
 }
 
 const _filterHref = ({ host, href }: HREF_TYPE) => {
@@ -54,6 +56,15 @@ const _filterHref = ({ host, href }: HREF_TYPE) => {
     : /^\//.test(href)
       ? host + href
       : host + '/' + href
+}
+
+const _filterOldItem = ({ newest, list }: { newest: string, list: any }) => {
+  const arr = list.sort((a, b) => b.time - a.time)
+  const idx = arr.findIndex(el => el.title === newest)
+
+  return arr.slice(0,
+    idx === -1 ? list.length : idx
+  )
 }
 
 export const filterList = ({ host, html, rule, newest, scope, topic }: LIST_TYPE) => {
@@ -68,9 +79,6 @@ export const filterList = ({ host, html, rule, newest, scope, topic }: LIST_TYPE
         return false
       } else {
         title = title.trim()
-        if (title.trim() === newest) {
-          return false
-        }
       }
 
       href = _filterHref({ host, href })
@@ -91,5 +99,8 @@ export const filterList = ({ host, html, rule, newest, scope, topic }: LIST_TYPE
     return false
   }
 
-  return ret.reverse()
+  return _filterOldItem({
+    list: ret,
+    newest
+  })
 }
