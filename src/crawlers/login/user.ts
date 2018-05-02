@@ -38,8 +38,11 @@ export const getCookie = () => new Promise((resolve, reject) => {
         return reject(err)
       }
 
-      let cookie = sres.headers['set-cookie'].pop().split(';')[0]
-      return resolve(cookie)
+      let cookie = sres.headers['set-cookie'].find(el => el.includes('JSESSIONID'))
+
+      return resolve(
+        cookie.split(';')[0]
+      )
     })
 })
 
@@ -116,11 +119,11 @@ export const packEncoded = ({ username, password, encoded = '' }: TYPE) => {
 
   for (let i = 0; i < code.length; i++) {
     if (i < 20) {
-      ret = ret + code.substring(i,i+1)+scode.substring(0,parseInt(sxh.substring(i,i+1)));
-      scode = scode.substring(parseInt(sxh.substring(i,i+1)),scode.length);
+      ret = ret + code.substring(i, i + 1) + scode.substring(0,parseInt(sxh.substring(i, i + 1)));
+      scode = scode.substring(parseInt(sxh.substring(i, i + 1)), scode.length);
     }else{
-      ret= ret + code.substring(i,code.length);
-      i=code.length;
+      ret = ret + code.substring(i, code.length);
+      i = code.length;
     }
   }
 
@@ -131,6 +134,7 @@ export const loginToJWXT = ({ randomCode, username, password, encoded, cookie }:
   request
     .post(loginURL)
     .type('form')
+    .charset('gbk')
     .set({
       ...headers,
       Cookie: cookie,
@@ -148,8 +152,6 @@ export const loginToJWXT = ({ randomCode, username, password, encoded, cookie }:
       if (err) {
         return reject(err)
       }
-
-      _c(sres)
 
       if (sres.text.includes('用户名或密码错误')) {
         err = '用户名或密码错误'
