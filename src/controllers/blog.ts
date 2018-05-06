@@ -19,8 +19,6 @@ const controller = async (ctx, options = {}) => {
 
   topic === 'all' && (topic = '')
 
-  // TODO: 类型校验
-
   const now = Date.now()
   const cur = scope + '-' + topic
 

@@ -24,6 +24,7 @@ type TYPE = {
   username?: string,
   password?: string,
   cookie?: string,
+  appCookie?: string,
   imgDir?: string,
   encoded?: string,
   img?: string
@@ -38,19 +39,22 @@ export const getCookie = () => new Promise((resolve, reject) => {
         return reject(err)
       }
 
-      let cookie = sres.headers['set-cookie'].find(el => el.includes('JSESSIONID'))
+      const cookies = sres.headers['set-cookie']
+      let cookie = cookies.find(el => el.includes('JSESSIONID'))
+      let appCookie = cookies.find(el => el.includes('SERVERID'))
 
-      return resolve(
-        cookie.split(';')[0]
-      )
+      return resolve({
+        cookie: cookie.split(';')[0],
+        appCookie: appCookie.split(';')[0]
+      })
     })
 })
 
-export const getImg = (cookie: string) => new Promise((resolve, reject) => {
+export const getImg = (cookie: string, appCookie: string) => new Promise((resolve, reject) => {
   request
     .get(imgURL)
     .set(headers)
-    .set('Cookie', cookie)
+    .set('Cookie', cookie + ';' + appCookie)
     .end((err, sres) => {
       if (err) {
         return reject(err)
@@ -90,17 +94,16 @@ export const spotImg = ({ username, imgDir }: TYPE) => new Promise((resolve, rej
       err = '验证码不合法'
       return reject(err)
     }
+
     resolve(text)
   })
 })
 
-export const fetchEncoded = (cookie: string) => new Promise((resolve, reject) => {
+export const fetchEncoded = (cookie: string, appCookie: string) => new Promise((resolve, reject) => {
   request
     .post(loginURL + encoded)
     .set(headers)
-    .set({
-      Cookie: cookie
-    })
+    .set('Cookie', cookie + ';' + appCookie)
     .end((err: any, sres: any) => {
       if (err) {
         return reject(err)
@@ -130,17 +133,17 @@ export const packEncoded = ({ username, password, encoded = '' }: TYPE) => {
   return ret
 }
 
-export const loginToJWXT = ({ randomCode, username, password, encoded, cookie }: TYPE) => new Promise((resolve, reject) => {
+export const loginToJWXT = ({ randomCode, username, password, encoded, cookie, appCookie }: TYPE) => new Promise((resolve, reject) => {
   request
     .post(loginURL)
     .type('form')
     .charset('gbk')
     .set({
       ...headers,
-      Cookie: cookie,
-      Referer: 'http://jwxt.xtu.edu.cn/jsxsd/',
-      Origin: 'http://jwxt.xtu.edu.cn',
-      Host: 'jwxt.xtu.edu.cn'
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+      // 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
+      Cookie: cookie + ';' + appCookie,
+      Referer: 'http://jwxt.xtu.edu.cn/jsxsd/xk/LoginToXk'
     })
     .send({
       USERNAME: username,

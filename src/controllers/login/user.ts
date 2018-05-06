@@ -31,8 +31,8 @@ export default ({ username = '', password = '' }, { sid = {} }) => new Promise((
   ;(async () => {
     while (!isSuccess && !isWrong && loopTime < MAX_LOOP_TIME) {
       try {
-        const cookie = await getCookie()
-        const img = await getImg(cookie)
+        const { cookie, appCookie } = await getCookie()
+        const img = await getImg(cookie, appCookie)
 
         await saveImg({ img, username, imgDir })
         await editImg({ username, imgDir })
@@ -41,12 +41,12 @@ export default ({ username = '', password = '' }, { sid = {} }) => new Promise((
         let encoded = packEncoded({
           username,
           password,
-          encoded: await fetchEncoded(cookie)
+          encoded: await fetchEncoded(cookie, appCookie)
         })
 
-        await loginToJWXT({ randomCode, username, password, encoded, cookie })
+        await loginToJWXT({ randomCode, username, password, encoded, cookie, appCookie })
 
-        const ret = successLogin('user')({ username, cookie, sid })
+        const ret = successLogin('user')({ username, cookie, appCookie, sid })
 
         isSuccess = ret.isSuccess
         token = ret.token

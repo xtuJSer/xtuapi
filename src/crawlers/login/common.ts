@@ -1,8 +1,8 @@
 import _t from '../../utils/token'
 const { createToken } = _t
 
-export const successLogin = (type) => ({ username, cookie, sid }) => ({
-  token: createToken(type)({ username, cookie, sid }),
+export const successLogin = (type) => ({ username, cookie, appCookie, sid }) => ({
+  token: createToken(type)({ username, cookie, appCookie, sid }),
   isSuccess: true
 })
 
