@@ -750,6 +750,6 @@ export default {
           }
         }
       }
-    },
+    }
   }
 }

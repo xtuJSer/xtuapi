@@ -1,6 +1,5 @@
 import blog from './blog'
 import user from './user'
-import book from './book'
 
 export default {
   port: process.env.PORT || 3000,
@@ -35,6 +34,5 @@ export default {
   ],
 
   blog,
-  user,
-  book
+  user
 }

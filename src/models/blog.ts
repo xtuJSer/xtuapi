@@ -28,7 +28,7 @@ Blog.statics.getNewestTitle = async function ({ scope, topic }: TYPE) {
     { time: -1, _id: -1 }
   ).exec()
 
-  return newest && newest.title
+  return newest ? newest.title : ''
 }
 
 /**
