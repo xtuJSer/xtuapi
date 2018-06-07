@@ -24,7 +24,6 @@ type TYPE = {
   username?: string,
   password?: string,
   cookie?: string,
-  appCookie?: string,
   imgDir?: string,
   encoded?: string,
   img?: string
@@ -41,20 +40,18 @@ export const getCookie = () => new Promise((resolve, reject) => {
 
       const cookies = sres.headers['set-cookie']
       let cookie = cookies.find(el => el.includes('JSESSIONID'))
-      let appCookie = cookies.find(el => el.includes('SERVERID'))
 
       return resolve({
-        cookie: cookie.split(';')[0],
-        appCookie: appCookie.split(';')[0]
+        cookie: cookie.split(';')[0]
       })
     })
 })
 
-export const getImg = (cookie: string, appCookie: string) => new Promise((resolve, reject) => {
+export const getImg = (cookie: string) => new Promise((resolve, reject) => {
   request
     .get(imgURL)
     .set(headers)
-    .set('Cookie', cookie + ';' + appCookie)
+    .set('Cookie', cookie)
     .end((err, sres) => {
       if (err) {
         return reject(err)
@@ -99,11 +96,11 @@ export const spotImg = ({ username, imgDir }: TYPE) => new Promise((resolve, rej
   })
 })
 
-export const fetchEncoded = (cookie: string, appCookie: string) => new Promise((resolve, reject) => {
+export const fetchEncoded = (cookie: string) => new Promise((resolve, reject) => {
   request
     .post(loginURL + encoded)
     .set(headers)
-    .set('Cookie', cookie + ';' + appCookie)
+    .set('Cookie', cookie)
     .end((err: any, sres: any) => {
       if (err) {
         return reject(err)
@@ -133,7 +130,7 @@ export const packEncoded = ({ username, password, encoded = '' }: TYPE) => {
   return ret
 }
 
-export const loginToJWXT = ({ randomCode, username, password, encoded, cookie, appCookie }: TYPE) => new Promise((resolve, reject) => {
+export const loginToJWXT = ({ randomCode, username, password, encoded, cookie }: TYPE) => new Promise((resolve, reject) => {
   request
     .post(loginURL)
     .type('form')
@@ -142,7 +139,7 @@ export const loginToJWXT = ({ randomCode, username, password, encoded, cookie, a
       ...headers,
       // 'Content-Type': 'application/x-www-form-urlencoded',
       // 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36',
-      Cookie: cookie + ';' + appCookie,
+      Cookie: cookie,
       Referer: 'http://jwxt.xtu.edu.cn/jsxsd/xk/LoginToXk'
     })
     .send({
