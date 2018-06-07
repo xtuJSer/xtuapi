@@ -1,7 +1,7 @@
 export default {
   defaultTime: {
-    year: 2017,
-    half: 2
+    year: 2018,
+    half: 1
   },
 
   url: {
